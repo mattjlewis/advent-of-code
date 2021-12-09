@@ -21,15 +21,36 @@ public class Day9 {
 	}
 
 	private static void part1(Path input) throws IOException {
+		int[][] heights = loadData(input);
+		int risk_level = getLowPoints(heights).stream().mapToInt(point -> 1 + heights[point.y][point.x]).sum();
+		System.out.println("risk level: " + risk_level);
+	}
+
+	private static void part2(Path input) throws IOException {
+		int[][] heights = loadData(input);
+
+		// Radiate out from each of the low points to determine the basin size
+		// Note that mapToInt negates the numbers to sort in reverse order
+		int result = getLowPoints(heights).stream()
+				.mapToInt(point -> -1
+						* getBasinSize(point.x, point.y, heights, new boolean[heights.length][heights[0].length], 1))
+				.sorted().limit(3).map(size -> size * -1).reduce(1, (a, b) -> a * b);
+		System.out.println("Product of 3 largest bain sizes: " + result);
+	}
+
+	private static int[][] loadData(Path input) throws IOException {
+		// Note the lazy conversion from ASCII character code to integer
 		int[][] heights = Files.lines(input).map(line -> line.chars().map(c -> c - 48).toArray())
 				.collect(Collectors.toList()).toArray(int[][]::new);
-		for (int[] height : heights) {
-			System.out.println(Arrays.toString(height));
+
+		// Print the height grid if not too big
+		if (heights.length < 20) {
+			for (int[] height : heights) {
+				System.out.println(Arrays.toString(height));
+			}
 		}
 
-		List<Point> low_points = getLowPoints(heights);
-		int risk_level = low_points.stream().mapToInt(point -> 1 + heights[point.y][point.x]).sum();
-		System.out.println("risk level: " + risk_level);
+		return heights;
 	}
 
 	private static List<Point> getLowPoints(int[][] heights) {
@@ -39,6 +60,7 @@ public class Day9 {
 			for (int x = 0; x < heights[y].length; x++) {
 				int height = heights[y][x];
 
+				// Avoid worrying about edges by setting to max integer value
 				int up = (y - 1) < 0 ? Integer.MAX_VALUE : heights[y - 1][x];
 				int down = (y + 1) < heights.length ? heights[y + 1][x] : Integer.MAX_VALUE;
 				int left = (x - 1) < 0 ? Integer.MAX_VALUE : heights[y][x - 1];
@@ -53,31 +75,10 @@ public class Day9 {
 		return low_points;
 	}
 
-	private static void part2(Path input) throws IOException {
-		int[][] heights = Files.lines(input).map(line -> line.chars().map(c -> c - 48).toArray())
-				.collect(Collectors.toList()).toArray(int[][]::new);
-
-		// First find the low points
-		List<Point> low_points = getLowPoints(heights);
-
-		// Radiate out from each of the low points to determine the basin size
-		int[] basin_sizes = low_points.stream().mapToInt(point -> -1 * getBasinSize(point, heights)).sorted().limit(3)
-				.map(size -> size * -1).toArray();
-		System.out.println(Arrays.toString(basin_sizes));
-		int result = low_points.stream().mapToInt(point -> -1 * getBasinSize(point, heights)).sorted().limit(3)
-				.map(size -> size * -1).reduce(1, (a, b) -> a * b);
-		System.out.println(result);
-	}
-
-	public static int getBasinSize(Point point, int[][] heights) {
-		return getBasinSize(point.x, point.y, heights, new boolean[heights.length][heights[0].length], 1);
-	}
-
-	public static int getBasinSize(int x, int y, int[][] heights, boolean[][] checked, int basinSize) {
+	private static int getBasinSize(int x, int y, int[][] heights, boolean[][] checked, int basinSize) {
 		checked[y][x] = true;
 
-		// Recurse outward in all directions from this low point until we hit an edge or
-		// a 9
+		// Recurse outward in all directions until we hit an edge or a 9
 		int up = y - 1;
 		if (up >= 0 && !checked[up][x] && heights[up][x] != 9) {
 			basinSize = getBasinSize(x, up, heights, checked, basinSize + 1);
