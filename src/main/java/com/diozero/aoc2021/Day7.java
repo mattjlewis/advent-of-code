@@ -1,21 +1,18 @@
+package com.diozero.aoc2021;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class Day7 {
+import org.tinylog.Logger;
+
+import com.diozero.aoc2021.util.AocBase;
+
+public class Day7 extends AocBase {
 	public static void main(String[] args) {
-		// String input_file = "day7sample.txt";
-		String input_file = "day7.txt";
-		Path input_path = Path.of(input_file);
-		try {
-			part1(input_path);
-			System.out.println();
-			part2(input_path);
-		} catch (IOException e) {
-			System.out.println("Error unable to read input file '" + input_file + "'");
-		}
+		new Day7().run();
 	}
 
 	private static int[] loadData(Path input) throws IOException {
@@ -24,18 +21,21 @@ public class Day7 {
 	}
 
 	// distance: 333, fuel: 328262
-	private static void part1(Path input) throws IOException {
+	@Override
+	public long part1(Path input) throws IOException {
 		final int[] positions = loadData(input);
 
 		// Get the median value
 		final int median = positions[positions.length / 2];
 
 		int fuel = IntStream.of(positions).map(pos -> Math.abs(pos - median)).sum();
-		System.out.println("distance: " + median + ", fuel: " + fuel);
+		Logger.debug("distance: {}, fuel: {}", median, fuel);
+		return fuel;
 	}
 
 	// distance: 464, min fuel: 90040997
-	private static void part2(Path input) throws IOException {
+	@Override
+	public long part2(Path input) throws IOException {
 		int[] positions = loadData(input);
 
 		// Old school loop to get min, max, sum and mean of positions
@@ -54,7 +54,7 @@ public class Day7 {
 
 		// Use the mean distance as an approximate starting point
 		int mean = (int) Math.floor(sum / (double) positions.length);
-		System.out.println("mean: " + mean + ", min: " + min + ", max: " + max);
+		Logger.debug("mean: {}, min: {}, max: {}", mean, min, max);
 
 		/*-
 		 * Movement cost by distance
@@ -80,16 +80,17 @@ public class Day7 {
 				int dist = Math.abs(positions[i] - x);
 				fuel += (dist * (dist + 1)) / 2;
 			}
-			System.out.println("fuel at " + x + ": " + fuel);
+			Logger.debug("fuel at {}: {}", x, fuel);
 			if (fuel < min_fuel) {
 				min_fuel = fuel;
 				distance = x;
 			} else {
-				System.out.println("Fuel is increasing, exiting loop");
+				Logger.debug("Fuel is increasing, exiting loop");
 				break;
 			}
 		}
 
-		System.out.println("distance: " + distance + ", min fuel: " + min_fuel);
+		Logger.debug("distance: {}, min fuel: {}", distance, min_fuel);
+		return min_fuel;
 	}
 }

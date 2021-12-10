@@ -1,15 +1,24 @@
+package com.diozero.aoc2021.util;
 
-public class Point {
-	int x, y;
+public class Point2D {
+	private int x, y;
 
-	public Point(int x, int y) {
+	public Point2D(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
 
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
 	@Override
 	public String toString() {
-		return "Point [x=" + x + ", y=" + y + "]";
+		return "Point2D [x=" + x + ", y=" + y + "]";
 	}
 
 	@Override
@@ -29,7 +38,7 @@ public class Point {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Point other = (Point) obj;
+		Point2D other = (Point2D) obj;
 		if (x != other.x)
 			return false;
 		if (y != other.y)

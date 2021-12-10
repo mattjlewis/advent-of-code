@@ -1,3 +1,5 @@
+package com.diozero.aoc2021;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -8,6 +10,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.tinylog.Logger;
+
+import com.diozero.aoc2021.util.AocBase;
 
 /*-
  *   0:      1:      2:      3:      4:
@@ -28,18 +34,9 @@ import java.util.stream.Stream;
  * .    f  e    f  .    f  e    f  .    f
  *  gggg    gggg    ....    gggg    gggg
  */
-public class Day8 {
+public class Day8 extends AocBase {
 	public static void main(String[] args) {
-		String input_file = "day8.txt";
-		// String input_file = "day8sample.txt";
-		Path input_path = Path.of(input_file);
-		try {
-			part1(input_path);
-			System.out.println();
-			part2(input_path);
-		} catch (IOException e) {
-			System.out.println("Error unable to read input file '" + input_file + "'");
-		}
+		new Day8().run();
 	}
 
 	private static class Line {
@@ -69,10 +66,11 @@ public class Day8 {
 				.toString();
 	}
 
-	private static void part1(Path input) throws IOException {
+	@Override
+	public long part1(Path input) throws IOException {
 		long sum = Files.lines(input).map(line -> line.split("\\|")[1].trim()).map(line -> line.split(" "))
 				.mapToLong(Day8::count1478).sum();
-		System.out.println("part 1 sum: " + sum);
+		return sum;
 	}
 
 	public static long count1478(String[] values) {
@@ -82,7 +80,8 @@ public class Day8 {
 		}).count();
 	}
 
-	private static void part2(Path input) throws IOException {
+	@Override
+	public long part2(Path input) throws IOException {
 		List<Line> lines = Files.lines(input).map(Day8::parseLine).collect(Collectors.toList());
 
 		for (Line line : lines) {
@@ -107,8 +106,8 @@ public class Day8 {
 				}
 			}
 
-			// System.out.println("Starting pattern to number map: " + pattern_to_number);
-			// System.out.println("Starting number to pattern map: " + number_to_pattern);
+			Logger.debug("Starting pattern to number map: {}", pattern_to_number);
+			Logger.debug("Starting number to pattern map: {}", number_to_pattern);
 
 			// Now determine the remaining numbers
 			// The delta between 1 and 7 is the top row (a)
@@ -126,11 +125,11 @@ public class Day8 {
 			Set<Character> cf = toSet(one);
 
 			Character a = distinct(seven, cf).stream().findFirst().orElseThrow();
-			// System.out.println("a: " + a);
+			Logger.debug("a: {}", a);
 
 			// Segments b and d are the delta between 4 and 1
 			Set<Character> bd = distinct(four, cf);
-			// System.out.println("bd: " + bd);
+			Logger.debug("bd: {}", bd);
 
 			// Nine is the the only segment with 1 additional segment after joining abcdf
 			// (g)
@@ -151,12 +150,12 @@ public class Day8 {
 					break;
 				}
 			}
-			// System.out.println("9 is " + nine);
-			// System.out.println("g: " + g);
+			Logger.debug("9 is {}", nine);
+			Logger.debug("g: {}", g);
 
 			// Difference between 8 and 9 is e
 			Character e = distinct(eight, toSet(nine)).stream().findFirst().orElseThrow();
-			// System.out.println("e: " + e);
+			Logger.debug("e: {}", e);
 
 			// Now know: cf, a, bd, g, e
 
@@ -178,37 +177,37 @@ public class Day8 {
 					number_to_pattern.put(Integer.valueOf(6), six);
 				}
 			}
-			// System.out.println("0 is " + zero);
-			// System.out.println("d: " + d);
-			// System.out.println("6 is " + six);
+			Logger.debug("0 is {}", zero);
+			Logger.debug("d: {}", d);
+			Logger.debug("6 is {}", six);
 
 			// Difference between 6 and 8 is c
 			Character c = distinct(eight, six).stream().findFirst().orElseThrow();
-			// System.out.println("c: " + c);
+			Logger.debug("c: {}", c);
 			Character b = distinct(bd, Set.of(d)).stream().findFirst().orElseThrow();
-			// System.out.println("b: " + b);
+			Logger.debug("b: {}", b);
 			Character f = distinct(cf, Set.of(c)).stream().findFirst().orElseThrow();
-			// System.out.println("f: " + f);
+			Logger.debug("f: {}", f);
 
 			// Now know: a, b, c, d, e, f, g
 
 			two = sortCharactersInString("" + a + c + d + e + g);
 			pattern_to_number.put(two, Integer.valueOf(2));
 			number_to_pattern.put(Integer.valueOf(2), two);
-			// System.out.println("two is " + two);
+			Logger.debug("two is {}", two);
 
 			three = sortCharactersInString("" + a + c + d + f + g);
 			pattern_to_number.put(three, Integer.valueOf(3));
 			number_to_pattern.put(Integer.valueOf(3), three);
-			// System.out.println("three is " + three);
+			Logger.debug("three is {}", three);
 
 			five = sortCharactersInString("" + a + b + d + f + g);
 			pattern_to_number.put(five, Integer.valueOf(5));
 			number_to_pattern.put(Integer.valueOf(5), five);
-			// System.out.println("five is " + five);
+			Logger.debug("five is {}", five);
 
-			// System.out.println(pattern_to_number);
-			// System.out.println(number_to_pattern);
+			Logger.debug("pattern to number map: {}", pattern_to_number);
+			Logger.debug("number to pattern map: {}", number_to_pattern);
 
 			line.patternToNumber = pattern_to_number;
 		}
@@ -219,14 +218,15 @@ public class Day8 {
 			for (String segment : line.outputValues) {
 				Integer value = line.patternToNumber.get(segment);
 				if (value == null) {
-					System.out.println("unknown segment '" + segment + "'");
+					Logger.debug("unknown segment '" + segment + "'");
 				} else {
 					i = i * 10 + value.intValue();
 				}
 			}
 			sum += i;
 		}
-		System.out.println(sum);
+
+		return sum;
 	}
 
 	private static Set<Character> toSet(String s) {

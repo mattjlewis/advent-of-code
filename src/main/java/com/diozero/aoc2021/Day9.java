@@ -1,3 +1,5 @@
+package com.diozero.aoc2021;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -6,36 +8,37 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Day9 {
+import org.tinylog.Logger;
+
+import com.diozero.aoc2021.util.AocBase;
+import com.diozero.aoc2021.util.Point2D;
+
+public class Day9 extends AocBase {
 	public static void main(String[] args) {
-		// String input_file = "day9sample.txt";
-		String input_file = "day9.txt";
-		Path input_path = Path.of(input_file);
-		try {
-			part1(input_path);
-			System.out.println();
-			part2(input_path);
-		} catch (IOException e) {
-			System.out.println("Error unable to read input file '" + input_file + "'");
-		}
+		new Day9().run();
 	}
 
-	private static void part1(Path input) throws IOException {
+	@Override
+	public long part1(Path input) throws IOException {
 		int[][] heights = loadData(input);
-		int risk_level = getLowPoints(heights).stream().mapToInt(point -> 1 + heights[point.y][point.x]).sum();
-		System.out.println("risk level: " + risk_level);
+		int risk_level = getLowPoints(heights).stream().mapToInt(point -> 1 + heights[point.getY()][point.getX()])
+				.sum();
+
+		return risk_level;
 	}
 
-	private static void part2(Path input) throws IOException {
+	@Override
+	public long part2(Path input) throws IOException {
 		int[][] heights = loadData(input);
 
 		// Radiate out from each of the low points to determine the basin size
 		// Note that mapToInt negates the numbers to sort in reverse order
 		int result = getLowPoints(heights).stream()
-				.mapToInt(point -> -1
-						* getBasinSize(point.x, point.y, heights, new boolean[heights.length][heights[0].length], 1))
+				.mapToInt(point -> -1 * getBasinSize(point.getX(), point.getY(), heights,
+						new boolean[heights.length][heights[0].length], 1))
 				.sorted().limit(3).map(size -> size * -1).reduce(1, (a, b) -> a * b);
-		System.out.println("Product of 3 largest bain sizes: " + result);
+
+		return result;
 	}
 
 	private static int[][] loadData(Path input) throws IOException {
@@ -46,15 +49,15 @@ public class Day9 {
 		// Print the height grid if not too big
 		if (heights.length < 20) {
 			for (int[] height : heights) {
-				System.out.println(Arrays.toString(height));
+				Logger.debug("heights: {}", Arrays.toString(height));
 			}
 		}
 
 		return heights;
 	}
 
-	private static List<Point> getLowPoints(int[][] heights) {
-		List<Point> low_points = new ArrayList<>();
+	private static List<Point2D> getLowPoints(int[][] heights) {
+		List<Point2D> low_points = new ArrayList<>();
 
 		for (int y = 0; y < heights.length; y++) {
 			for (int x = 0; x < heights[y].length; x++) {
@@ -67,7 +70,7 @@ public class Day9 {
 				int right = (x + 1) < heights[y].length ? heights[y][x + 1] : Integer.MAX_VALUE;
 
 				if (height < up && height < down && height < left && height < right) {
-					low_points.add(new Point(x, y));
+					low_points.add(new Point2D(x, y));
 				}
 			}
 		}

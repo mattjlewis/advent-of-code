@@ -1,3 +1,5 @@
+package com.diozero.aoc2021;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -6,21 +8,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Day6 {
+import org.tinylog.Logger;
+
+import com.diozero.aoc2021.util.AocBase;
+
+public class Day6 extends AocBase {
 	public static void main(String[] args) {
-		// String input_file = "day6sample.txt";
-		String input_file = "day6.txt";
-		Path input_path = Path.of(input_file);
-		try {
-			part1(input_path);
-			System.out.println();
-			part2(input_path);
-		} catch (IOException e) {
-			System.out.println("Error unable to read input file '" + input_file + "'");
-		}
+		new Day6().run();
 	}
 
-	private static void part1(Path input) throws IOException {
+	@Override
+	public long part1(Path input) throws IOException {
 		List<AtomicInteger> ages = Stream.of(Files.lines(input).findFirst().orElseThrow().split(","))
 				.map(line -> new AtomicInteger(Integer.parseInt(line))).collect(Collectors.toList());
 
@@ -38,14 +36,15 @@ public class Day6 {
 			for (int i = 0; i < num_to_add; i++) {
 				ages.add(new AtomicInteger(8));
 			}
-			System.out.println("Day: " + day);
+			Logger.debug("Day: {}", day);
 			// System.out.format("After %3d day(s): %s%n", day, ages);
 		}
 
-		System.out.println(ages.size());
+		return ages.size();
 	}
 
-	private static void part2(Path input) throws IOException {
+	@Override
+	public long part2(Path input) throws IOException {
 		final long[] count_at_age = new long[9];
 		Stream.of(Files.lines(input).findFirst().orElseThrow().split(",")).mapToInt(Integer::parseInt)
 				.forEach(age -> count_at_age[age]++);
@@ -68,6 +67,7 @@ public class Day6 {
 		for (int age = 0; age < count_at_age.length; age++) {
 			total += count_at_age[age];
 		}
-		System.out.println(total);
+
+		return total;
 	}
 }
