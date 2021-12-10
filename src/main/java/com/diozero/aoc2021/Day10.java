@@ -3,12 +3,12 @@ package com.diozero.aoc2021;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
+import java.util.ArrayDeque;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 
 import org.tinylog.Logger;
 
@@ -37,7 +37,7 @@ public class Day10 extends AocBase {
 
 	private static int part1Score(String line) {
 		try {
-			findClosing(line, 0, new Stack<>());
+			findClosing(line, 0, new ArrayDeque<>());
 			return 0;
 		} catch (SyntaxError e) {
 			if (e.pos == line.length()) {
@@ -57,7 +57,8 @@ public class Day10 extends AocBase {
 	}
 
 	private static long part2Score(String line) {
-		Stack<Character> close_char_stack = new Stack<>();
+		// Don't use Stack as stream() returns items in FIFO order, not LIFO
+		Deque<Character> close_char_stack = new ArrayDeque<>();
 		try {
 			findClosing(line, 0, close_char_stack);
 			// Ignore complete lines
@@ -69,25 +70,20 @@ public class Day10 extends AocBase {
 			}
 			// Process only incomplete lines
 
-			// Need to process the stack in reverse order to calculate the score
-			List<Character> close_char_list = new ArrayList<>();
-			while (!close_char_stack.isEmpty()) {
-				close_char_list.add(close_char_stack.pop());
-			}
-
-			return close_char_list.stream().mapToLong(ch -> 1 + CLOSE_CHARS.indexOf(ch)).reduce(0, (a, b) -> 5 * a + b);
+			return close_char_stack.stream().mapToLong(ch -> 1 + CLOSE_CHARS.indexOf(ch)).reduce(0,
+					(a, b) -> 5 * a + b);
 		}
 	}
 
-	private static void findClosing(String line, int pos, Stack<Character> closeChars) throws SyntaxError {
+	private static void findClosing(String line, int pos, Deque<Character> closeChars) throws SyntaxError {
 		Logger.debug("line: {}, pos: {}, looking for closeChar: {}", line, pos,
 				closeChars.isEmpty() ? null : closeChars.peek());
 
 		// Have we reached the end of the line?
-		if (pos == line.length()) {
+		if (pos >= line.length()) {
 			// Still searching for a close character?
 			if (!closeChars.isEmpty()) {
-				throw new SyntaxError(null, closeChars.peek(), pos);
+				throw new SyntaxError(closeChars.peek(), pos);
 			}
 
 			return;
@@ -105,20 +101,26 @@ public class Day10 extends AocBase {
 			if (line.charAt(pos) != expected_close_char.charValue()) {
 				throw new SyntaxError(line.charAt(pos), expected_close_char, pos);
 			}
-		}
 
-		findClosing(line, pos + 1, closeChars);
+			findClosing(line, pos + 1, closeChars);
+		}
 	}
 
 	static final class SyntaxError extends Exception {
 		private static final long serialVersionUID = -3074774300106309441L;
 
-		Character ch;
-		Character closeChar;
-		int pos;
+		final Character ch;
+		final Character closeChar;
+		final int pos;
 
-		public SyntaxError(Character ch, Character closeChar, int pos) {
-			this.ch = ch;
+		public SyntaxError(Character closeChar, int pos) {
+			this.ch = null;
+			this.closeChar = closeChar;
+			this.pos = pos;
+		}
+
+		public SyntaxError(char ch, Character closeChar, int pos) {
+			this.ch = Character.valueOf(ch);
 			this.closeChar = closeChar;
 			this.pos = pos;
 		}
