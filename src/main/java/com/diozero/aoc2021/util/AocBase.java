@@ -16,8 +16,9 @@ public abstract class AocBase {
 			sample = "_" + sample;
 		}
 		String input = day.toLowerCase() + sample;
-		Path input_path = Path.of(input + ".txt");
-		Path answers_path = Path.of(input + "_answers.txt");
+		Path input_folder = Path.of("src/main/resources/input");
+		Path input_path = input_folder.resolve(input + ".txt");
+		Path answers_path = input_folder.resolve(input + "_answers.txt");
 
 		if (!sample.isEmpty()) {
 			System.out.println(day + " - Working from sample data set");

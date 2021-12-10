@@ -3,3 +3,5 @@
 ![](https://img.shields.io/badge/days%20completed-10-red)
 
 Java solutions for the daily challenges in Advent of Code 2021.
+
+Warning - includes the answers to enable self verification!
