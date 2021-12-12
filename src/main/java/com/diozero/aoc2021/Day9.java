@@ -6,7 +6,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.tinylog.Logger;
 
@@ -43,8 +42,7 @@ public class Day9 extends AocBase {
 
 	private static int[][] loadData(Path input) throws IOException {
 		// Note the lazy conversion from ASCII character code to integer
-		int[][] heights = Files.lines(input).map(line -> line.chars().map(c -> c - 48).toArray())
-				.collect(Collectors.toList()).toArray(int[][]::new);
+		int[][] heights = Files.lines(input).map(line -> line.chars().map(c -> c - 48).toArray()).toArray(int[][]::new);
 
 		// Print the height grid if not too big
 		if (heights.length < 20) {
