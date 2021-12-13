@@ -50,7 +50,7 @@ public abstract class AocBase {
 		}
 	}
 
-	protected abstract long part1(Path input) throws IOException;
+	public abstract long part1(Path input) throws IOException;
 
-	protected abstract long part2(Path input) throws IOException;
+	public abstract long part2(Path input) throws IOException;
 }

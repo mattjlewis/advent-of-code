@@ -20,8 +20,7 @@ public class Day9 extends AocBase {
 	@Override
 	public long part1(Path input) throws IOException {
 		int[][] heights = loadData(input);
-		int risk_level = getLowPoints(heights).stream().mapToInt(point -> 1 + heights[point.getY()][point.getX()])
-				.sum();
+		int risk_level = getLowPoints(heights).stream().mapToInt(point -> 1 + heights[point.y()][point.x()]).sum();
 
 		return risk_level;
 	}
@@ -33,7 +32,7 @@ public class Day9 extends AocBase {
 		// Radiate out from each of the low points to determine the basin size
 		// Note that mapToInt negates the numbers to sort in reverse order
 		int result = getLowPoints(heights).stream()
-				.mapToInt(point -> -1 * getBasinSize(point.getX(), point.getY(), heights,
+				.mapToInt(point -> -1 * getBasinSize(point.x(), point.y(), heights,
 						new boolean[heights.length][heights[0].length], 1))
 				.sorted().limit(3).map(size -> size * -1).reduce(1, (a, b) -> a * b);
 

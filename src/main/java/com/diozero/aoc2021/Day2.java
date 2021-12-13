@@ -18,7 +18,7 @@ public class Day2 extends AocBase {
 	public long part1(Path input) throws IOException {
 		final AtomicInteger horizontal = new AtomicInteger();
 		final AtomicInteger depth = new AtomicInteger();
-		Files.lines(input).map(Instruction::new).forEach(instruction -> {
+		Files.lines(input).map(Instruction::create).forEach(instruction -> {
 			switch (instruction.movement) {
 			case FORWARD:
 				horizontal.addAndGet(instruction.amount);
@@ -37,7 +37,7 @@ public class Day2 extends AocBase {
 		final AtomicInteger horizontal = new AtomicInteger();
 		final AtomicInteger depth = new AtomicInteger();
 		final AtomicInteger aim = new AtomicInteger();
-		Files.lines(input).map(Instruction::new).forEach(instruction -> {
+		Files.lines(input).map(Instruction::create).forEach(instruction -> {
 			switch (instruction.movement) {
 			case FORWARD:
 				horizontal.addAndGet(instruction.amount);
@@ -53,24 +53,19 @@ public class Day2 extends AocBase {
 		return depth.get() * horizontal.get();
 	}
 
-	public static class Instruction {
-		public enum Movement {
-			FORWARD, UP, DOWN;
-		}
+	public enum Movement {
+		FORWARD, UP, DOWN;
+	}
 
-		final Movement movement;
-		final int amount;
-
-		public Instruction(String line) {
+	public static record Instruction(Movement movement, int amount) {
+		public static Instruction create(String line) {
 			String[] parts = line.split(" ");
-			this.movement = Instruction.Movement.valueOf(parts[0].toUpperCase());
-			int val = Integer.parseInt(parts[1]);
-
+			var movement = Movement.valueOf(parts[0].toUpperCase());
+			int amount = Integer.parseInt(parts[1]);
 			if (movement == Movement.UP) {
-				this.amount = -val;
-			} else {
-				this.amount = val;
+				amount *= -1;
 			}
+			return new Instruction(movement, amount);
 		}
 	}
 }

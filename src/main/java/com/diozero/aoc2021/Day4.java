@@ -34,7 +34,7 @@ public class Day4 extends AocBase {
 					cards.add(card);
 					added_to_list = true;
 				}
-				card = new BingoCard();
+				card = new BingoCard(new ArrayList<>(), new ArrayList<>());
 			} else {
 				card.addRow(Stream.of(card_lines[i].trim().split("\\s+")).mapToInt(Integer::parseInt).toArray());
 				added_to_list = false;
@@ -96,20 +96,11 @@ public class Day4 extends AocBase {
 		return last_winning_card.getSum() * last_number;
 	}
 
-	public static class BingoGame {
-		int[] numbers;
-		List<BingoCard> cards;
-
-		public BingoGame(int[] numbers, List<Day4.BingoCard> cards) {
-			this.numbers = numbers;
-			this.cards = cards;
-		}
+	public static record BingoGame(int[] numbers, List<BingoCard> cards) {
+		//
 	}
 
-	public static class BingoCard {
-		List<List<Integer>> rows = new ArrayList<>();
-		List<List<Integer>> columns = new ArrayList<>();
-
+	public static record BingoCard(List<List<Integer>> rows, List<List<Integer>> columns) {
 		public void addRow(int[] numbers) {
 			List<Integer> row = new ArrayList<>();
 			for (int i = 0; i < numbers.length; i++) {

@@ -104,10 +104,6 @@ public class Day10 extends AocBase {
 			closeCharStack = null;
 		}
 
-		public boolean isComplete() {
-			return complete;
-		}
-
 		public boolean isIncomplete() {
 			return !complete;
 		}

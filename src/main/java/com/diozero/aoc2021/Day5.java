@@ -21,8 +21,8 @@ public class Day5 extends AocBase {
 	}
 
 	private static void print(Map<Point2D, AtomicInteger> counts) {
-		int max_x = counts.keySet().stream().mapToInt(point -> point.getX()).max().getAsInt();
-		int max_y = counts.keySet().stream().mapToInt(point -> point.getY()).max().getAsInt();
+		int max_x = counts.keySet().stream().mapToInt(point -> point.x()).max().getAsInt();
+		int max_y = counts.keySet().stream().mapToInt(point -> point.y()).max().getAsInt();
 		Logger.debug("max_x: {}, max_y: {}", max_x, max_y);
 		if (max_x < 20 && max_y < 20) {
 			for (int y = 0; y <= max_y; y++) {
@@ -41,7 +41,7 @@ public class Day5 extends AocBase {
 	}
 
 	private static List<Line2D> loadData(Path input) throws IOException {
-		return Files.lines(input).map(Line2D::new).collect(Collectors.toList());
+		return Files.lines(input).map(Line2D::create).collect(Collectors.toList());
 	}
 
 	@Override
@@ -51,15 +51,15 @@ public class Day5 extends AocBase {
 
 		Map<Point2D, AtomicInteger> counts = new HashMap<>();
 		for (Line2D line : lines) {
-			switch (line.getDirection()) {
+			switch (line.direction()) {
 			case VERTICAL:
-				for (int y = line.getY1(); y <= line.getY2(); y++) {
-					incrementCount(counts, line.getX1(), y);
+				for (int y = line.y1(); y <= line.y2(); y++) {
+					incrementCount(counts, line.x1(), y);
 				}
 				break;
 			case HORIZONTAL:
-				for (int x = line.getX1(); x <= line.getX2(); x++) {
-					incrementCount(counts, x, line.getY1());
+				for (int x = line.x1(); x <= line.x2(); x++) {
+					incrementCount(counts, x, line.y1());
 				}
 				break;
 			default:
@@ -80,19 +80,19 @@ public class Day5 extends AocBase {
 
 		Map<Point2D, AtomicInteger> counts = new HashMap<>();
 		for (Line2D line : lines) {
-			switch (line.getDirection()) {
+			switch (line.direction()) {
 			case DIAGONAL:
-				int y = line.getY1();
+				int y = line.y1();
 				// Lines can only be at 45 degrees
-				for (int x = line.getX1();;) {
+				for (int x = line.x1();;) {
 					incrementCount(counts, x, y);
 
 					if (line.goesBackwards()) {
-						if (--x < line.getX2()) {
+						if (--x < line.x2()) {
 							break;
 						}
 					} else {
-						if (++x > line.getX2()) {
+						if (++x > line.x2()) {
 							break;
 						}
 					}
@@ -104,13 +104,13 @@ public class Day5 extends AocBase {
 				}
 				break;
 			case VERTICAL:
-				for (y = line.getY1(); y <= line.getY2(); y++) {
-					incrementCount(counts, line.getX1(), y);
+				for (y = line.y1(); y <= line.y2(); y++) {
+					incrementCount(counts, line.x1(), y);
 				}
 				break;
 			case HORIZONTAL:
-				for (int x = line.getX1(); x <= line.getX2(); x++) {
-					incrementCount(counts, x, line.getY1());
+				for (int x = line.x1(); x <= line.x2(); x++) {
+					incrementCount(counts, x, line.y1());
 				}
 			default:
 			}

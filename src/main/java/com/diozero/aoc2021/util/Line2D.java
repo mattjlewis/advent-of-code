@@ -2,27 +2,25 @@ package com.diozero.aoc2021.util;
 
 /**
  * Simple 2D line class that only supports horizontal, vertical or diagonal
- * lines at an angle of 45 degrees.
+ * lines. Diagonal lines can only be at an angle of 45 degrees.
  */
-public class Line2D {
+public record Line2D(int x1, int y1, int x2, int y2, Line2D.Direction direction) {
 	public enum Direction {
 		HORIZONTAL, VERTICAL, DIAGONAL;
 	}
 
-	private int x1, y1, x2, y2;
-	private Direction direction;
-
-	public Line2D(String s) {
+	public static Line2D create(String s) {
 		String[] parts = s.split(" -> ");
 
 		String[] x1_y1 = parts[0].split(",");
-		x1 = Integer.parseInt(x1_y1[0]);
-		y1 = Integer.parseInt(x1_y1[1]);
+		int x1 = Integer.parseInt(x1_y1[0]);
+		int y1 = Integer.parseInt(x1_y1[1]);
 
 		String[] x2_y2 = parts[1].split(",");
-		x2 = Integer.parseInt(x2_y2[0]);
-		y2 = Integer.parseInt(x2_y2[1]);
+		int x2 = Integer.parseInt(x2_y2[0]);
+		int y2 = Integer.parseInt(x2_y2[1]);
 
+		Direction direction;
 		if (x1 != x2 && y1 == y2) {
 			direction = Direction.HORIZONTAL;
 			// Normalise so that x1 is less than x2
@@ -42,26 +40,8 @@ public class Line2D {
 		} else {
 			direction = Direction.DIAGONAL;
 		}
-	}
 
-	public int getX1() {
-		return x1;
-	}
-
-	public int getY1() {
-		return y1;
-	}
-
-	public int getX2() {
-		return x2;
-	}
-
-	public int getY2() {
-		return y2;
-	}
-
-	public Direction getDirection() {
-		return direction;
+		return new Line2D(x1, y1, x2, y2, direction);
 	}
 
 	public boolean isHorizontal() {
@@ -90,10 +70,5 @@ public class Line2D {
 
 	public boolean goesDown() {
 		return y1 > y2;
-	}
-
-	@Override
-	public String toString() {
-		return x1 + "," + y1 + " -> " + x2 + "," + y2;
 	}
 }

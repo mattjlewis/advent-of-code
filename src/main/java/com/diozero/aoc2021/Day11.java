@@ -119,7 +119,7 @@ public class Day11 extends AocBase {
 		System.out.println();
 	}
 
-	private static void printGrid(int[][] energyLevels) {
+	static void printGrid(int[][] energyLevels) {
 		if (!Logger.isDebugEnabled()) {
 			return;
 		}
