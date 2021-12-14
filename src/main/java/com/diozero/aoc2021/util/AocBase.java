@@ -6,6 +6,16 @@ import java.nio.file.Path;
 
 public abstract class AocBase {
 	public void run() {
+		String s = System.getProperty("perf");
+		boolean perf = false;
+		int iterations = 10;
+		if (s != null) {
+			perf = true;
+			if (!s.isBlank()) {
+				iterations = Integer.parseInt(s);
+			}
+		}
+
 		String day = getClass().getSimpleName();
 		String sample = System.getProperty("sample");
 		if (sample == null) {
@@ -30,22 +40,39 @@ public abstract class AocBase {
 				answers = Files.lines(answers_path).mapToLong(Long::valueOf).toArray();
 			}
 
-			checkResult(day, 1, answers, part1(input_path));
-			checkResult(day, 2, answers, part2(input_path));
+			if (perf) {
+				for (int i = 0; i < iterations; i++) {
+					part1(input_path);
+				}
+			}
+			long start = System.currentTimeMillis();
+			long answer = part1(input_path);
+			long duration = System.currentTimeMillis() - start;
+			checkResult(day, 1, answers, answer, duration);
+
+			if (perf) {
+				for (int i = 0; i < iterations; i++) {
+					part2(input_path);
+				}
+			}
+			start = System.currentTimeMillis();
+			answer = part2(input_path);
+			duration = System.currentTimeMillis() - start;
+			checkResult(day, 2, answers, answer, duration);
 		} catch (IOException e) {
 			System.out.println("Error unable to read input '" + input_path + "'");
 		}
 	}
 
-	private static void checkResult(String day, int part, long[] answers, long result) {
+	private static void checkResult(String day, int part, long[] answers, long result, long duration) {
 		if (answers == null || answers.length < part) {
-			System.out.format("%s part %d: %d%n", day, part, result);
+			System.out.format("%s part %d: %d. Duration: %dms%n", day, part, result, duration);
 		} else {
 			if (result == answers[part - 1]) {
-				System.out.format("%s part %d - Correct answer: %d%n", day, part, result);
+				System.out.format("%s part %d - Correct answer: %d. Duration: %dms%n", day, part, result, duration);
 			} else {
-				System.out.format("%s part %d - Wrong answer (%d), expected: %d%n", day, part, result,
-						answers[part - 1]);
+				System.out.format("%s part %d - Wrong answer (%d), expected: %d. Duration: %dms%n", day, part, result,
+						answers[part - 1], duration);
 			}
 		}
 	}

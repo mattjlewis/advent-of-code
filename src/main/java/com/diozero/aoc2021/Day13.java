@@ -23,23 +23,24 @@ public class Day13 extends AocBase {
 		Puzzle puzzle = loadData(input);
 
 		// Part 1 calculates the number of dots after one fold
-		return calcDots(puzzle.matrix(), Arrays.asList(puzzle.folds().get(0)));
+		return fold(puzzle.matrix(), Arrays.asList(puzzle.folds().get(0)));
 	}
 
 	@Override
 	public long part2(Path input) throws IOException {
 		Puzzle puzzle = loadData(input);
 
-		return calcDots(puzzle.matrix(), puzzle.folds());
+		return fold(puzzle.matrix(), puzzle.folds());
 	}
 
-	private static int calcDots(final boolean[][] startMatrix, final List<Fold> folds) {
+	private static int fold(final boolean[][] startMatrix, final List<Fold> folds) {
 		boolean[][] matrix = startMatrix.clone();
 
 		for (Fold fold : folds) {
 			boolean[][] new_matrix;
 
-			if (fold.axis() == Axis.Y) {
+			switch (fold.axis()) {
+			case Y:
 				// Horizontal fold
 				int new_height = matrix.length - fold.point() - 1;
 				Logger.debug("new_height: {} after horizontal fold at point {}", new_height, fold.point());
@@ -47,13 +48,16 @@ public class Day13 extends AocBase {
 					// It would appear that all folds are in the middle
 					Logger.warn("Non-middle fold! " + fold);
 				}
+				// FIXME Optimise by working from a collection of points
 				new_matrix = new boolean[new_height][matrix[0].length];
 				for (int y = 0; y < new_height; y++) {
 					for (int x = 0; x < matrix[y].length; x++) {
 						new_matrix[y][x] = matrix[y][x] | matrix[matrix.length - 1 - y][x];
 					}
 				}
-			} else {
+				break;
+			case X:
+			default:
 				// Vertical fold
 				int new_width = matrix[0].length - fold.point() - 1;
 				Logger.debug("new_width: {} after vertical fold at point {}", new_width, fold.point());
@@ -61,6 +65,7 @@ public class Day13 extends AocBase {
 					// It would appear that all folds are in the middle
 					Logger.warn("Non-middle fold! " + fold);
 				}
+				// FIXME Optimise by working from a collection of points
 				new_matrix = new boolean[matrix.length][new_width];
 				for (int y = 0; y < matrix.length; y++) {
 					for (int x = 0; x < new_width; x++) {
@@ -123,6 +128,7 @@ public class Day13 extends AocBase {
 		Logger.debug("dimensions: {}x{}", max_x + 1, max_y + 1);
 		Logger.debug("dots: " + dots);
 
+		// FIXME Optimise by working from the collection of points
 		final boolean[][] matrix = new boolean[max_y + 1][max_x + 1];
 		dots.forEach(dot -> matrix[dot.y()][dot.x()] = true);
 
@@ -132,7 +138,7 @@ public class Day13 extends AocBase {
 	private static void printMatrix(boolean[][] matrix) {
 		for (int y = 0; y < matrix.length; y++) {
 			for (int x = 0; x < matrix[y].length; x++) {
-				System.out.print(matrix[y][x] ? "#" : ".");
+				System.out.print(matrix[y][x] ? "█" : " ");
 			}
 			System.out.println();
 		}
