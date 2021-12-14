@@ -20,8 +20,9 @@ public class Day14 extends AocBase {
 	private static Puzzle loadData(Path input) throws IOException {
 		String text = Files.lines(input).findFirst().orElseThrow().trim();
 
-		Map<String, Rule> rules = Files.lines(input).skip(2).map(line -> line.split(" -> ")).collect(
-				Collectors.toMap(rule -> rule[0], rule -> Rule.create(rule[0], Character.valueOf(rule[1].charAt(0)))));
+		Map<String, Rule> rules = Files.lines(input).skip(2).map(line -> line.split(" -> "))
+				.collect(Collectors.toUnmodifiableMap(rule -> rule[0],
+						rule -> Rule.create(rule[0], Character.valueOf(rule[1].charAt(0)))));
 		Logger.debug("rules: {}", rules);
 
 		return new Puzzle(text, rules);

@@ -39,7 +39,7 @@ public class Day10 extends AocBase {
 
 	@Override
 	public long part2(Path input) throws IOException {
-		long[] scores = Files.lines(input).map(Day10::findClosing)
+		final long[] scores = Files.lines(input).map(Day10::findClosing)
 				.filter(result -> result.isIncomplete() && result.isUncorrupted())
 				.mapToLong(result -> result.getCloseCharStack().stream().mapToLong(ch -> 1 + CLOSE_CHARS.indexOf(ch))
 						.reduce(0, (a, b) -> 5 * a + b))
@@ -50,14 +50,14 @@ public class Day10 extends AocBase {
 
 	private static Result findClosing(String line) {
 		// Don't use Stack as Stack.stream() returns items in FIFO order, not LIFO
-		Deque<Character> close_char_stack = new ArrayDeque<>();
+		final Deque<Character> close_char_stack = new ArrayDeque<>();
 		for (int i = 0; i < line.length(); i++) {
-			Character ch = Character.valueOf(line.charAt(i));
-			int open_char_index = OPEN_CHARS.indexOf(ch);
+			final Character ch = Character.valueOf(line.charAt(i));
+			final int open_char_index = OPEN_CHARS.indexOf(ch);
 			if (open_char_index != -1) {
 				close_char_stack.push(CLOSE_CHARS.get(open_char_index));
 			} else {
-				Character expected_close_char = close_char_stack.pop();
+				final Character expected_close_char = close_char_stack.pop();
 				if (!ch.equals(expected_close_char)) {
 					return new Result(ch.charValue(), true);
 				}

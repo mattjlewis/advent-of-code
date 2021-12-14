@@ -19,10 +19,10 @@ public class Day6 extends AocBase {
 
 	@Override
 	public long part1(Path input) throws IOException {
-		List<AtomicInteger> ages = Stream.of(Files.lines(input).findFirst().orElseThrow().split(","))
+		final List<AtomicInteger> ages = Stream.of(Files.lines(input).findFirst().orElseThrow().split(","))
 				.map(line -> new AtomicInteger(Integer.parseInt(line))).collect(Collectors.toList());
 
-		int days = 80;
+		final int days = 80;
 		for (int day = 1; day <= days; day++) {
 			int num_to_add = 0;
 			for (int i = 0; i < ages.size(); i++) {
@@ -49,9 +49,9 @@ public class Day6 extends AocBase {
 		Stream.of(Files.lines(input).findFirst().orElseThrow().split(",")).mapToInt(Integer::parseInt)
 				.forEach(age -> count_at_age[age]++);
 
-		int days = 256;
+		final int days = 256;
 		for (int day = 1; day <= days; day++) {
-			long prev_count_at_age_0 = count_at_age[0];
+			final long prev_count_at_age_0 = count_at_age[0];
 			count_at_age[0] = count_at_age[1];
 			count_at_age[1] = count_at_age[2];
 			count_at_age[2] = count_at_age[3];

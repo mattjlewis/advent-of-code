@@ -27,14 +27,14 @@ public class Day12 extends AocBase {
 	public long part1(Path input) throws IOException {
 		final Map<String, GraphNode> nodes = loadData(input);
 
-		Deque<Deque<GraphNode>> search_space = new ArrayDeque<>();
+		final Deque<Deque<GraphNode>> search_space = new ArrayDeque<>();
 		search_space.addLast(new ArrayDeque<>());
 		search_space.getLast().addLast(nodes.get(START_NAME));
 
 		int num_paths = 0;
 		while (!search_space.isEmpty()) {
-			Deque<GraphNode> current_path = search_space.removeFirst();
-			GraphNode current_node = current_path.getLast();
+			final Deque<GraphNode> current_path = search_space.removeFirst();
+			final GraphNode current_node = current_path.getLast();
 			for (String neighbour_name : current_node.getNeighbours()) {
 				GraphNode neighbour = nodes.get(neighbour_name);
 				if (neighbour.isStart()) {
@@ -59,16 +59,16 @@ public class Day12 extends AocBase {
 	public long part2(Path input) throws IOException {
 		final Map<String, GraphNode> nodes = loadData(input);
 
-		Deque<Deque<GraphNode>> search_space = new ArrayDeque<>();
+		final Deque<Deque<GraphNode>> search_space = new ArrayDeque<>();
 		search_space.addLast(new ArrayDeque<>());
 		search_space.getLast().addLast(nodes.get(START_NAME));
 
 		int num_paths = 0;
 		while (!search_space.isEmpty()) {
-			Deque<GraphNode> current_path = search_space.removeFirst();
-			GraphNode current_node = current_path.getLast();
+			final Deque<GraphNode> current_path = search_space.removeFirst();
+			final GraphNode current_node = current_path.getLast();
 			for (String neighbour_name : current_node.getNeighbours()) {
-				GraphNode neighbour = nodes.get(neighbour_name);
+				final GraphNode neighbour = nodes.get(neighbour_name);
 				if (neighbour.isStart()) {
 					continue;
 				} else if (neighbour.isEnd()) {
@@ -78,7 +78,7 @@ public class Day12 extends AocBase {
 						// Only one small cave can be visited at most twice, the remaining small
 						// caves can be visited at most once
 
-						var counts = current_path.stream().filter(GraphNode::isSmall)
+						final Map<String, Long> counts = current_path.stream().filter(GraphNode::isSmall)
 								.collect(Collectors.groupingBy(GraphNode::getName, Collectors.counting()));
 						if (counts.containsKey(neighbour_name)) {
 							// this cave has already been traversed
@@ -116,19 +116,19 @@ public class Day12 extends AocBase {
 
 	private static Deque<GraphNode> joinAsNewPath(Deque<GraphNode> path, GraphNode node) {
 		// Create a new path containing all of the nodes in path ...
-		Deque<GraphNode> new_path = new ArrayDeque<>(path);
+		final Deque<GraphNode> new_path = new ArrayDeque<>(path);
 		// ... and add node to the end of the path
 		new_path.offer(node);
 		return new_path;
 	}
 
 	public static final class GraphNode {
-		private String name;
-		private Set<String> neighbours;
+		private final String name;
+		private final Set<String> neighbours;
 
-		private boolean start;
-		private boolean end;
-		private boolean small;
+		private final boolean start;
+		private final boolean end;
+		private final boolean small;
 
 		public GraphNode(String name) {
 			this.name = name;

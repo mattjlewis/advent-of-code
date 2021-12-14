@@ -40,8 +40,8 @@ public class Day8 extends AocBase {
 	}
 
 	private static class Line {
-		String[] signalPatterns;
-		String[] outputValues;
+		final String[] signalPatterns;
+		final String[] outputValues;
 		Map<String, Integer> patternToNumber;
 
 		public Line(String[] signalPatterns, String[] outputValues) {
@@ -57,7 +57,7 @@ public class Day8 extends AocBase {
 	}
 
 	private static Line parseLine(String line) {
-		String[] parts = line.split("\\|");
+		final String[] parts = line.split("\\|");
 		return new Line(parts[0].trim().split(" "), parts[1].trim().split(" "));
 	}
 
@@ -68,9 +68,8 @@ public class Day8 extends AocBase {
 
 	@Override
 	public long part1(Path input) throws IOException {
-		long sum = Files.lines(input).map(line -> line.split("\\|")[1].trim()).map(line -> line.split(" "))
+		return Files.lines(input).map(line -> line.split("\\|")[1].trim()).map(line -> line.split(" "))
 				.mapToLong(Day8::count1478).sum();
-		return sum;
 	}
 
 	public static long count1478(String[] values) {
@@ -82,7 +81,7 @@ public class Day8 extends AocBase {
 
 	@Override
 	public long part2(Path input) throws IOException {
-		List<Line> lines = Files.lines(input).map(Day8::parseLine).collect(Collectors.toList());
+		final List<Line> lines = Files.lines(input).map(Day8::parseLine).collect(Collectors.toUnmodifiableList());
 
 		for (Line line : lines) {
 			// Get all unique values
@@ -140,7 +139,7 @@ public class Day8 extends AocBase {
 			Character g = null;
 			for (String segment : pattern_to_number.entrySet().stream().filter(entry -> entry.getValue() == null)
 					.filter(entry -> entry.getKey().length() == abcdf.length() + 1).map(Map.Entry::getKey)
-					.collect(Collectors.toList())) {
+					.collect(Collectors.toUnmodifiableList())) {
 				Set<Character> diff = distinct(segment, abcdf_set);
 				if (diff.size() == 1) {
 					nine = segment;
@@ -164,7 +163,7 @@ public class Day8 extends AocBase {
 			Character d = null;
 			for (String segment : pattern_to_number.entrySet().stream().filter(entry -> entry.getValue() == null)
 					.filter(entry -> entry.getKey().length() == 6).map(Map.Entry::getKey)
-					.collect(Collectors.toList())) {
+					.collect(Collectors.toUnmodifiableList())) {
 				Set<Character> diff = distinct(bd, toSet(segment));
 				if (diff.size() == 1) {
 					zero = segment;
@@ -230,7 +229,7 @@ public class Day8 extends AocBase {
 	}
 
 	private static Set<Character> toSet(String s) {
-		return s.chars().mapToObj(c -> Character.valueOf((char) c)).collect(Collectors.toSet());
+		return s.chars().mapToObj(c -> Character.valueOf((char) c)).collect(Collectors.toUnmodifiableSet());
 	}
 
 	private static Set<Character> distinct(String s1, String s2) {
@@ -239,11 +238,11 @@ public class Day8 extends AocBase {
 
 	private static Set<Character> distinct(String s, Set<Character> chars) {
 		return s.chars().mapToObj(c -> Character.valueOf((char) c)).filter(c -> !chars.contains(c))
-				.collect(Collectors.toSet());
+				.collect(Collectors.toUnmodifiableSet());
 	}
 
 	private static Set<Character> distinct(Set<Character> s, Set<Character> chars) {
-		return s.stream().filter(c -> !chars.contains(c)).collect(Collectors.toSet());
+		return s.stream().filter(c -> !chars.contains(c)).collect(Collectors.toUnmodifiableSet());
 	}
 
 	private static Integer getUniqueNumber(String pattern) {

@@ -28,7 +28,7 @@ public class Day7 extends AocBase {
 		// Get the median value
 		final int median = positions[positions.length / 2];
 
-		int fuel = IntStream.of(positions).map(pos -> Math.abs(pos - median)).sum();
+		final int fuel = IntStream.of(positions).map(pos -> Math.abs(pos - median)).sum();
 		Logger.debug("distance: {}, fuel: {}", median, fuel);
 		return fuel;
 	}
@@ -36,9 +36,10 @@ public class Day7 extends AocBase {
 	// distance: 464, min fuel: 90040997
 	@Override
 	public long part2(Path input) throws IOException {
-		int[] positions = loadData(input);
+		final int[] positions = loadData(input);
 
-		// Old school loop to get min, max, sum and mean of positions
+		// Old school loop to get min, max, sum and mean of positions - avoiding
+		// multiple streams
 		int sum = 0;
 		int min = Integer.MAX_VALUE;
 		int max = Integer.MIN_VALUE;
@@ -53,7 +54,7 @@ public class Day7 extends AocBase {
 		}
 
 		// Use the mean distance as an approximate starting point
-		int mean = (int) Math.floor(sum / (double) positions.length);
+		final int mean = (int) Math.floor(sum / (double) positions.length);
 		Logger.debug("mean: {}, min: {}, max: {}", mean, min, max);
 
 		/*-

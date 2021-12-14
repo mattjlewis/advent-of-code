@@ -19,13 +19,13 @@ public class Day4 extends AocBase {
 	}
 
 	private static BingoGame loadData(Path input) throws IOException {
-		int[] numbers = Stream.of(Files.lines(input).findFirst().orElseThrow().split(",")).mapToInt(Integer::valueOf)
-				.toArray();
+		final int[] numbers = Stream.of(Files.lines(input).findFirst().orElseThrow().split(","))
+				.mapToInt(Integer::valueOf).toArray();
 		Logger.debug(Arrays.toString(numbers));
 
-		String[] card_lines = Files.lines(input).skip(1).collect(Collectors.toList()).toArray(new String[0]);
+		final String[] card_lines = Files.lines(input).skip(1).collect(Collectors.toList()).toArray(new String[0]);
 
-		List<BingoCard> cards = new ArrayList<>();
+		final List<BingoCard> cards = new ArrayList<>();
 		BingoCard card = null;
 		boolean added_to_list = false;
 		for (int i = 0; i < card_lines.length; i++) {
@@ -67,7 +67,7 @@ public class Day4 extends AocBase {
 		}
 
 		Logger.debug("Winning card #: {}", winning_card_num + 1);
-		BingoCard winning_card = bg.cards.get(winning_card_num);
+		final BingoCard winning_card = bg.cards.get(winning_card_num);
 		Logger.debug("Final number: {}, Winning card sum: {}, Winning card score: {}", number, winning_card.getSum(),
 				winning_card.getSum() * number);
 		return winning_card.getSum() * number;

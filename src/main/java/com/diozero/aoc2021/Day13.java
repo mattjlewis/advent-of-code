@@ -20,7 +20,7 @@ public class Day13 extends AocBase {
 
 	@Override
 	public long part1(Path input) throws IOException {
-		Puzzle puzzle = loadData(input);
+		final Puzzle puzzle = loadData(input);
 
 		// Part 1 calculates the number of dots after one fold
 		return fold(puzzle.matrix(), Arrays.asList(puzzle.folds().get(0)));
@@ -28,7 +28,7 @@ public class Day13 extends AocBase {
 
 	@Override
 	public long part2(Path input) throws IOException {
-		Puzzle puzzle = loadData(input);
+		final Puzzle puzzle = loadData(input);
 
 		return fold(puzzle.matrix(), puzzle.folds());
 	}
@@ -37,12 +37,12 @@ public class Day13 extends AocBase {
 		boolean[][] matrix = startMatrix.clone();
 
 		for (Fold fold : folds) {
-			boolean[][] new_matrix;
+			final boolean[][] new_matrix;
 
 			switch (fold.axis()) {
 			case Y:
 				// Horizontal fold
-				int new_height = matrix.length - fold.point() - 1;
+				final int new_height = matrix.length - fold.point() - 1;
 				Logger.debug("new_height: {} after horizontal fold at point {}", new_height, fold.point());
 				if ((matrix.length - 1) / 2 != new_height) {
 					// It would appear that all folds are in the middle
@@ -59,7 +59,7 @@ public class Day13 extends AocBase {
 			case X:
 			default:
 				// Vertical fold
-				int new_width = matrix[0].length - fold.point() - 1;
+				final int new_width = matrix[0].length - fold.point() - 1;
 				Logger.debug("new_width: {} after vertical fold at point {}", new_width, fold.point());
 				if ((matrix[0].length - 1) / 2 != new_width) {
 					// It would appear that all folds are in the middle
@@ -102,10 +102,10 @@ public class Day13 extends AocBase {
 	}
 
 	private static Puzzle loadData(Path input) throws IOException {
-		Iterator<String> it = Files.lines(input).iterator();
+		final Iterator<String> it = Files.lines(input).iterator();
 		boolean process_points = true;
-		List<Point2D> dots = new ArrayList<>();
-		List<Fold> folds = new ArrayList<>();
+		final List<Point2D> dots = new ArrayList<>();
+		final List<Fold> folds = new ArrayList<>();
 		int max_x = Integer.MIN_VALUE;
 		int max_y = Integer.MIN_VALUE;
 		while (it.hasNext()) {

@@ -21,13 +21,13 @@ public class Day5 extends AocBase {
 	}
 
 	private static void print(Map<Point2D, AtomicInteger> counts) {
-		int max_x = counts.keySet().stream().mapToInt(point -> point.x()).max().getAsInt();
-		int max_y = counts.keySet().stream().mapToInt(point -> point.y()).max().getAsInt();
+		final int max_x = counts.keySet().stream().mapToInt(point -> point.x()).max().getAsInt();
+		final int max_y = counts.keySet().stream().mapToInt(point -> point.y()).max().getAsInt();
 		Logger.debug("max_x: {}, max_y: {}", max_x, max_y);
 		if (max_x < 20 && max_y < 20) {
 			for (int y = 0; y <= max_y; y++) {
 				for (int x = 0; x <= max_x; x++) {
-					Point2D p = new Point2D(x, y);
+					final Point2D p = new Point2D(x, y);
 					AtomicInteger count = counts.get(p);
 					if (count == null) {
 						System.out.print(".");
@@ -46,10 +46,10 @@ public class Day5 extends AocBase {
 
 	@Override
 	public long part1(Path input) throws IOException {
-		List<Line2D> lines = loadData(input);
+		final List<Line2D> lines = loadData(input);
 		lines.removeIf(Line2D::isDiagonal);
 
-		Map<Point2D, AtomicInteger> counts = new HashMap<>();
+		final Map<Point2D, AtomicInteger> counts = new HashMap<>();
 		for (Line2D line : lines) {
 			switch (line.direction()) {
 			case VERTICAL:
@@ -70,15 +70,14 @@ public class Day5 extends AocBase {
 			print(counts);
 		}
 
-		long num = counts.values().stream().filter(count -> count.get() >= 2).count();
-		return num;
+		return counts.values().stream().filter(count -> count.get() >= 2).count();
 	}
 
 	@Override
 	public long part2(Path input) throws IOException {
-		List<Line2D> lines = loadData(input);
+		final List<Line2D> lines = loadData(input);
 
-		Map<Point2D, AtomicInteger> counts = new HashMap<>();
+		final Map<Point2D, AtomicInteger> counts = new HashMap<>();
 		for (Line2D line : lines) {
 			switch (line.direction()) {
 			case DIAGONAL:
@@ -120,17 +119,10 @@ public class Day5 extends AocBase {
 			print(counts);
 		}
 
-		long num = counts.values().stream().filter(count -> count.get() > 1).count();
-		return num;
+		return counts.values().stream().filter(count -> count.get() > 1).count();
 	}
 
 	private static void incrementCount(Map<Point2D, AtomicInteger> counts, int x, int y) {
-		Point2D p = new Point2D(x, y);
-		AtomicInteger count = counts.get(p);
-		if (count == null) {
-			count = new AtomicInteger();
-			counts.put(p, count);
-		}
-		count.incrementAndGet();
+		counts.computeIfAbsent(new Point2D(x, y), p -> new AtomicInteger()).incrementAndGet();
 	}
 }

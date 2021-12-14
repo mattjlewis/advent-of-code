@@ -18,7 +18,7 @@ public class Day11 extends AocBase {
 		final int[][] energy_levels = loadData(input);
 		printGrid(0, energy_levels);
 
-		int steps = 100;
+		final int steps = 100;
 
 		int num_flashes = 0;
 		for (int i = 0; i < steps; i++) {
@@ -34,10 +34,10 @@ public class Day11 extends AocBase {
 		final int[][] energy_levels = loadData(input);
 		printGrid(0, energy_levels);
 
-		int grid_size = energy_levels.length * energy_levels[0].length;
+		final int grid_size = energy_levels.length * energy_levels[0].length;
 		int step = 0;
 		while (true) {
-			int num_flashes = incrementGrid(energy_levels);
+			final int num_flashes = incrementGrid(energy_levels);
 			printGrid(step + 1, energy_levels);
 			step++;
 
@@ -62,7 +62,7 @@ public class Day11 extends AocBase {
 		}
 		// printGrid(energyLevels);
 
-		boolean[][] radiated = new boolean[energyLevels.length][energyLevels[0].length];
+		final boolean[][] radiated = new boolean[energyLevels.length][energyLevels[0].length];
 		for (int y = 0; y < energyLevels.length;) {
 			for (int x = 0; x < energyLevels[y].length;) {
 				if (energyLevels[y][x] >= 10 && !radiated[y][x]) {
