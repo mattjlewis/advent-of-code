@@ -22,7 +22,7 @@ public class Day15 extends AocBase {
 		Node[][] node_matrix = new Node[matrix.length][matrix[0].length];
 		for (int y = 0; y < matrix.length; y++) {
 			for (int x = 0; x < matrix[y].length; x++) {
-				node_matrix[y][x] = new Node(String.format("%dx%d", Integer.valueOf(x), Integer.valueOf(y)));
+				node_matrix[y][x] = new Node(x + y * matrix[0].length);
 			}
 		}
 
@@ -36,8 +36,8 @@ public class Day15 extends AocBase {
 
 		if (Logger.isDebugEnabled()) {
 			end_node.getShortestPath()
-					.forEach(node -> System.out.format("%s (%d) -> ", node.getName(), node.getDistance()));
-			System.out.format("%s (%d)%n", end_node.getName(), end_node.getDistance());
+					.forEach(node -> System.out.format("%d (%d) -> ", node.getId(), node.getDistance()));
+			System.out.format("%d (%d)%n", end_node.getId(), end_node.getDistance());
 		}
 
 		return end_node.getDistance();
@@ -89,7 +89,7 @@ public class Day15 extends AocBase {
 		Node[][] node_matrix = new Node[matrix.length][matrix.length];
 		for (int y = 0; y < matrix.length; y++) {
 			for (int x = 0; x < matrix[y].length; x++) {
-				node_matrix[y][x] = new Node(String.format("%dx%d", Integer.valueOf(x), Integer.valueOf(y)));
+				node_matrix[y][x] = new Node(x + y * matrix[0].length);
 			}
 		}
 
@@ -103,8 +103,8 @@ public class Day15 extends AocBase {
 
 		if (Logger.isDebugEnabled()) {
 			end_node.getShortestPath()
-					.forEach(node -> System.out.format("%s (%d) -> ", node.getName(), node.getDistance()));
-			System.out.format("%s (%d)%n", end_node.getName(), end_node.getDistance());
+					.forEach(node -> System.out.format("%d (%d) -> ", node.getId(), node.getDistance()));
+			System.out.format("%d (%d)%n", end_node.getId(), end_node.getDistance());
 		}
 
 		return end_node.getDistance();
@@ -119,6 +119,7 @@ public class Day15 extends AocBase {
 
 				Node this_node = nodeMatrix[y][x];
 
+				// The optimal path can go up, down, left and right; not just down and right
 				for (int dy = Math.max(0, y - 1); dy <= Math.min(matrix.length - 1, y + 1); dy++) {
 					for (int dx = Math.max(0, x - 1); dx <= Math.min(matrix[dy].length - 1, x + 1); dx++) {
 						// No diagonals
