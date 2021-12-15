@@ -1,13 +1,9 @@
 package com.diozero.aoc2021;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
-import org.tinylog.Logger;
 
 import com.diozero.aoc2021.util.AocBase;
 import com.diozero.aoc2021.util.Point2D;
@@ -19,13 +15,13 @@ public class Day9 extends AocBase {
 
 	@Override
 	public long part1(Path input) throws IOException {
-		final int[][] heights = loadData(input);
+		final int[][] heights = AocBase.loadIntegerMatrix(input);
 		return getLowPoints(heights).stream().mapToInt(point -> 1 + heights[point.y()][point.x()]).sum();
 	}
 
 	@Override
 	public long part2(Path input) throws IOException {
-		final int[][] heights = loadData(input);
+		final int[][] heights = AocBase.loadIntegerMatrix(input);
 
 		// Radiate out from each of the low points to determine the basin size
 		// Note that mapToInt negates the numbers to sort in reverse order
@@ -33,21 +29,6 @@ public class Day9 extends AocBase {
 				.mapToInt(point -> -1 * getBasinSize(point.x(), point.y(), heights,
 						new boolean[heights.length][heights[0].length], 1))
 				.sorted().limit(3).map(size -> size * -1).reduce(1, (a, b) -> a * b);
-	}
-
-	private static int[][] loadData(Path input) throws IOException {
-		// Note the lazy conversion from ASCII character code to integer
-		final int[][] heights = Files.lines(input).map(line -> line.chars().map(c -> c - 48).toArray())
-				.toArray(int[][]::new);
-
-		// Print the height grid if not too big
-		if (heights.length < 20) {
-			for (int[] height : heights) {
-				Logger.debug("heights: {}", Arrays.toString(height));
-			}
-		}
-
-		return heights;
 	}
 
 	private static List<Point2D> getLowPoints(int[][] heights) {

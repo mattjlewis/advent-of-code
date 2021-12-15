@@ -1,7 +1,6 @@
 package com.diozero.aoc2021;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.tinylog.Logger;
@@ -15,8 +14,7 @@ public class Day11 extends AocBase {
 
 	@Override
 	public long part1(Path input) throws IOException {
-		final int[][] energy_levels = loadData(input);
-		printGrid(0, energy_levels);
+		final int[][] energy_levels = AocBase.loadIntegerMatrix(input);
 
 		final int steps = 100;
 
@@ -31,8 +29,7 @@ public class Day11 extends AocBase {
 
 	@Override
 	public long part2(Path input) throws IOException {
-		final int[][] energy_levels = loadData(input);
-		printGrid(0, energy_levels);
+		final int[][] energy_levels = AocBase.loadIntegerMatrix(input);
 
 		final int grid_size = energy_levels.length * energy_levels[0].length;
 		int step = 0;
@@ -49,10 +46,6 @@ public class Day11 extends AocBase {
 		return step;
 	}
 
-	private static int[][] loadData(Path input) throws IOException {
-		return Files.lines(input).map(line -> line.chars().map(c -> c - 48).toArray()).toArray(int[][]::new);
-	}
-
 	private static int incrementGrid(int[][] energyLevels) {
 		// First of all increment all energy levels
 		for (int y = 0; y < energyLevels.length; y++) {
@@ -60,7 +53,7 @@ public class Day11 extends AocBase {
 				energyLevels[y][x]++;
 			}
 		}
-		// printGrid(energyLevels);
+		// AocBase.printGrid(energyLevels);
 
 		final boolean[][] radiated = new boolean[energyLevels.length][energyLevels[0].length];
 		for (int y = 0; y < energyLevels.length;) {
@@ -68,7 +61,7 @@ public class Day11 extends AocBase {
 				if (energyLevels[y][x] >= 10 && !radiated[y][x]) {
 					// Logger.debug("x: " + x + ", y: " + y);
 					for (int dy = Math.max(0, y - 1); dy <= Math.min(energyLevels.length - 1, y + 1); dy++) {
-						for (int dx = Math.max(0, x - 1); dx <= Math.min(energyLevels.length - 1, x + 1); dx++) {
+						for (int dx = Math.max(0, x - 1); dx <= Math.min(energyLevels[dy].length - 1, x + 1); dx++) {
 							if (x != dx || y != dy) {
 								// Logger.debug("dx: " + dx + ", dy: " + dy);
 								energyLevels[dy][dx]++;
@@ -113,19 +106,6 @@ public class Day11 extends AocBase {
 		for (int y = 0; y < energyLevels.length; y++) {
 			for (int x = 0; x < energyLevels[y].length; x++) {
 				System.out.print(energyLevels[y][x]);
-			}
-			System.out.println();
-		}
-		System.out.println();
-	}
-
-	static void printGrid(int[][] energyLevels) {
-		if (!Logger.isDebugEnabled()) {
-			return;
-		}
-		for (int y = 0; y < energyLevels.length; y++) {
-			for (int x = 0; x < energyLevels[y].length; x++) {
-				System.out.format("%3d", energyLevels[y][x]);
 			}
 			System.out.println();
 		}

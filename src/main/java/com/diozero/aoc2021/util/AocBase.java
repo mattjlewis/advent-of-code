@@ -3,6 +3,9 @@ package com.diozero.aoc2021.util;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
+
+import org.tinylog.Logger;
 
 public abstract class AocBase {
 	public void run() {
@@ -11,6 +14,7 @@ public abstract class AocBase {
 		int iterations = 10;
 		if (s != null) {
 			perf = true;
+
 			if (!s.isBlank()) {
 				iterations = Integer.parseInt(s);
 			}
@@ -80,4 +84,34 @@ public abstract class AocBase {
 	public abstract long part1(Path input) throws IOException;
 
 	public abstract long part2(Path input) throws IOException;
+
+	public static int[][] loadIntegerMatrix(Path input) throws IOException {
+		// Note the lazy conversion from ASCII character code to integer
+		final int[][] matrix = Files.lines(input).map(line -> line.chars().map(c -> c - 48).toArray())
+				.toArray(int[][]::new);
+
+		if (Logger.isDebugEnabled()) {
+			// Print the matrix if not too big
+			if (matrix.length < 20) {
+				for (int[] row : matrix) {
+					Logger.debug("matrix: {}", Arrays.toString(row));
+				}
+			}
+		}
+
+		return matrix;
+	}
+
+	public static void printGrid(int[][] matrix) {
+		if (!Logger.isDebugEnabled()) {
+			return;
+		}
+		for (int y = 0; y < matrix.length; y++) {
+			for (int x = 0; x < matrix[y].length; x++) {
+				System.out.format("%3d", Integer.valueOf(matrix[y][x]));
+			}
+			System.out.println();
+		}
+		System.out.println();
+	}
 }
