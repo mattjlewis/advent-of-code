@@ -16,22 +16,26 @@ import com.diozero.aoc.AocBase;
 /*-
  * 8A,       00,       4A,       80,       1A,       80,       02,       F4,       78
  * 1000 1010 0000 0000 0100 1010 1000 0000 0001 1010 1000 0000 0000 0010 1111 0100 0111 1000
+ *
+ * Unpacking:
  * 100 010 1 00000000001
- * Version: 4, type: 2 (op), len type id: 1, num sub-packets: 1
+ * Version: 4, type: 2 (op - min), len type id: 1, num sub-packets: 1
  * 001 010 1 00000000001
- * Version: 1, type: 2 (op), len type id: 1, num sub-packets: 1
+ * Version: 1, type: 2 (op - min), len type id: 1, num sub-packets: 1
  * 101 010 0 000000000001011
- * Version: 5, type: 2 (op), len type id: 0, combined length of 2 sub-packets: 11
+ * Version: 5, type: 2 (op - min), len type id: 0, combined length of 2 sub-packets: 11
  * 110 100 01111 000
  * Version: 6, type: 4 (literal), value: 15
  */
 public class Day16 extends AocBase {
 	public static void main(String[] args) {
+		/*-
 		for (int i = 0; i < 15; i++) {
 			System.setProperty("sample", i == 0 ? "" : Integer.toString(i));
 			new Day16().run();
 		}
 		System.getProperties().remove("sample");
+		*/
 		new Day16().run();
 	}
 
@@ -73,8 +77,8 @@ public class Day16 extends AocBase {
 			long value = 0;
 			while (true) {
 				int i = bs.readBits(5);
-				boolean is_end = (i & 0b10000) == 0;
 				value |= i & 0b01111;
+				boolean is_end = (i & 0b10000) == 0;
 				Logger.debug("i: {}, new_val: {}, is_end: {}, value: {}", i, i & 0b01111, is_end, value);
 				if (is_end) {
 					Logger.debug("End of literal values");
@@ -97,7 +101,7 @@ public class Day16 extends AocBase {
 			 * packet
 			 */
 			int num_sub_packet_bits = bs.readBits(15);
-			Logger.debug("length type id 0, combined length of sub-packets: {}", num_sub_packet_bits);
+			Logger.debug("length type id 0, combined length of sub-packets: {} bits", num_sub_packet_bits);
 
 			// Can be up to 32768 bits to store sub-packets
 			Queue<Integer> sub_queue = new LinkedList<>();
@@ -110,6 +114,7 @@ public class Day16 extends AocBase {
 				sub_queue.add(Integer.valueOf(val));
 				num_sub_packet_bits -= bits_to_read;
 			}
+
 			BitStream sub_bs = new BitStream(sub_queue);
 			while (sub_bs.remainingBits() > 7) {
 				packets.add(readPacket(sub_bs));
@@ -144,7 +149,9 @@ public class Day16 extends AocBase {
 
 		private final Type type;
 		private final int version;
+		// Only if LITERAL
 		private long value;
+		// Only if not LITERAL
 		private List<Packet> packets;
 
 		public Packet(int version, long value) {
@@ -232,19 +239,21 @@ public class Day16 extends AocBase {
 		public int readBits(int numBits) {
 			int val = 0;
 
+			// TODO Could optimise this by processing up to 8 bits at a time
 			for (int i = 0; i < numBits; i++) {
 				val = (val << 1) | readBit();
 			}
 
-			// Logger.debug("read {} bits, value: {}", numBits, val);
+			Logger.trace("read {} bits, value: {}", numBits, val);
 
 			return val;
 		}
 
 		private int readBit() {
 			if (bitPos == -1) {
+				// Lazy load the next byte which must be present
 				currentByte = bytes.remove().intValue();
-				// Logger.debug("Loaded byte: 0x{}", Integer.toHexString(currentByte));
+				Logger.trace("Loaded byte: 0x{}", Integer.toHexString(currentByte));
 				bitPos = 7;
 			}
 

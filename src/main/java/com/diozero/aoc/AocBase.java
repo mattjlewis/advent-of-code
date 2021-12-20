@@ -40,7 +40,7 @@ public abstract class AocBase {
 		Path answers_path = input_folder.resolve(input + "_answers.txt");
 
 		if (sample_prop != null) {
-			System.out.println(day + " - Working from sample data set '" + input + "'");
+			System.out.println(year + " " + day + " - Working from sample data set '" + input + "'");
 		}
 
 		try {
@@ -75,13 +75,14 @@ public abstract class AocBase {
 
 	private static void checkResult(String day, int part, long[] answers, long result, long duration) {
 		if (answers == null || answers.length < part) {
-			System.out.format("%s part %d: %d. Duration: %dms%n", day, part, result, duration);
+			System.out.format("%d %s part %d: %d. Duration: %dms%n", year, day, part, result, duration);
 		} else {
 			if (result == answers[part - 1]) {
-				System.out.format("%s part %d - Correct answer: %d. Duration: %dms%n", day, part, result, duration);
+				System.out.format("%d %s part %d - Correct answer: %d. Duration: %dms%n", year, day, part, result,
+						duration);
 			} else {
-				System.out.format("%s part %d - Wrong answer (%d), expected: %d. Duration: %dms%n", day, part, result,
-						answers[part - 1], duration);
+				System.out.format("%d %s part %d - Wrong answer (%d), expected: %d. Duration: %dms%n", year, day, part,
+						result, answers[part - 1], duration);
 			}
 		}
 	}
