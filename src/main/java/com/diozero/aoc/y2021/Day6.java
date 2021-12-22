@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.tinylog.Logger;
@@ -20,7 +19,7 @@ public class Day6 extends AocBase {
 	@Override
 	public long part1(Path input) throws IOException {
 		final List<AtomicInteger> ages = Stream.of(Files.lines(input).findFirst().orElseThrow().split(","))
-				.map(line -> new AtomicInteger(Integer.parseInt(line))).collect(Collectors.toList());
+				.map(line -> new AtomicInteger(Integer.parseInt(line))).toList();
 
 		final int days = 80;
 		for (int day = 1; day <= days; day++) {

@@ -6,7 +6,6 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.PrimitiveIterator;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.tinylog.Logger;
 
@@ -95,7 +94,7 @@ public class Day18 extends AocBase {
 	 * @param input input data
 	 */
 	private static List<Pair> loadData(Path input) throws IOException {
-		return Files.lines(input).map(Day18::loadPairs).collect(Collectors.toList());
+		return Files.lines(input).map(Day18::loadPairs).toList();
 	}
 
 	private static Pair loadPairs(String line) {

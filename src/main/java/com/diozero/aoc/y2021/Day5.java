@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 import org.tinylog.Logger;
 
@@ -41,7 +40,7 @@ public class Day5 extends AocBase {
 	}
 
 	private static List<Line2D> loadData(Path input) throws IOException {
-		return Files.lines(input).map(Line2D::create).collect(Collectors.toList());
+		return Files.lines(input).map(Line2D::create).toList();
 	}
 
 	@Override

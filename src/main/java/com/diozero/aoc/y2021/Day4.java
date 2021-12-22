@@ -6,7 +6,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.tinylog.Logger;
@@ -23,7 +22,7 @@ public class Day4 extends AocBase {
 				.mapToInt(Integer::valueOf).toArray();
 		Logger.debug(Arrays.toString(numbers));
 
-		final String[] card_lines = Files.lines(input).skip(1).collect(Collectors.toList()).toArray(new String[0]);
+		final String[] card_lines = Files.lines(input).skip(1).toList().toArray(new String[0]);
 
 		final List<BingoCard> cards = new ArrayList<>();
 		BingoCard card = null;
