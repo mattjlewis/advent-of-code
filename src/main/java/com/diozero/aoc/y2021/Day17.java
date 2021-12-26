@@ -81,7 +81,7 @@ public class Day17 extends AocBase {
 
 	public static record Area2D(Point2D topLeft, Point2D bottomRight) {
 		// target area: x=20..30, y=-10..-5
-		private static final String TARGET_REGEXP = "target area: x=(-?\\d+)\\.+(-?\\d+), y=(-?\\d+)\\.+(-?\\d+)";
+		private static final String TARGET_REGEXP = "target area: x=(-?\\d+)\\.\\.(-?\\d+), y=(-?\\d+)\\.\\.(-?\\d+)";
 		private static final Pattern TARGET_PATTERN = Pattern.compile(TARGET_REGEXP);
 
 		public static Area2D create(String line) {

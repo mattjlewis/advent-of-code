@@ -14,7 +14,11 @@ public abstract class AocBase {
 		year = Integer.parseInt(getClass().getPackageName().split("\\.(?=[^.]*$)")[1].substring(1));
 	}
 
-	public void run() {
+	public final void run() {
+		if (System.getProperty("selftest") != null) {
+			selfTest();
+		}
+
 		String s = System.getProperty("perf");
 		boolean perf = false;
 		int iterations = 10;
@@ -85,6 +89,10 @@ public abstract class AocBase {
 						result, answers[part - 1], duration);
 			}
 		}
+	}
+
+	public void selfTest() {
+		//
 	}
 
 	public abstract long part1(Path input) throws IOException;
