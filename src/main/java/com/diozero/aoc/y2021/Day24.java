@@ -8,40 +8,69 @@ import java.util.List;
 
 import com.diozero.aoc.AocBase;
 
+/*-
+ * Maximum: 99,394,899,891,971
+ * Minimum: 92,171,126,131,911
+ * Wrong:   92,171,126,131,811
+ *                   |   Maximum    |   Minimum    |    Wrong
+ *-------------------+--------------+--------------+-------------
+ * Z  Div   X  Y inc | Input      Z | Input      Z | Input      Z
+ *-------------------+--------------+--------------+-------------
+ *  1   1  11      6 |   9       15 |   9       15 |   9       15
+ *  2   1  13     14 |   9      413 |   2      406 |   2      406
+ *  3   1  15     14 |   3   10,755 |   1   10,571 |   1   10,571
+ *  4  26  -8     10 |   9      413 |   7      406 |   7      406
+ *  5   1  13      9 |   4   10,751 |   1   10,566 |   1   10,566
+ *  6   1  15     12 |   8  279,546 |   1  274,729 |   1  274,729
+ *  7  26 -11      8 |   9   10,751 |   2   10,566 |   2   10,566
+ *  8  26  -4     13 |   9      413 |   6      406 |   6      406
+ *  9  26 -15     12 |   8       15 |   1       15 |   1       15
+ * 10   1  14      6 |   9      405 |   3      399 |   3      399
+ * 11   1  14      9 |   1   10,540 |   1   10,384 |   1   10,384
+ * 12  26  -1     15 |   9      405 |   9      399 |   8   10,397
+ * 13  26  -8      4 |   7       15 |   1       15 |   1   10,379
+ * 14  26 -14     10 |   1        0 |   1        0 |   1   10,385
+ *
+ * If Div != 1 then prev Z % 26 + X must equal Input.
+ * E.g. Max row 4, prev z = 10,755; 10,755 % 26 = 17; 17 + -8 = 9 == Input (9)
+ * E.g. Wrong row 12, prev z = 10,384; 10,384 % 26 = 10; 10 + -1 = 9 != Input (8)
+ */
 public class Day24 extends AocBase {
 	public static void main(String[] args) {
 		new Day24().run();
 	}
 
-	private static List<List<Instruction>> loadData(final Path input) throws IOException {
+	private static byte[][] loadData(final Path input) throws IOException {
 		final List<Instruction> alu = Files.lines(input).map(Instruction::parse).toList();
 
 		/*
-		 * The ALU has 14 blocks each with 18 instructions; one block for each input.
-		 * Only the Z variable carries over between instruction blocks; W, X, and Y all
-		 * get reset. Therefore we can calculate the ALU output once for each input
-		 * digit and previous Z value.
+		 * The ALU has 14 repeating blocks each with 18 instructions, one block for each
+		 * of the 14 model number digits. Only the Z variable carries over between
+		 * instruction blocks; W, X, and Y all get reset.
 		 *
 		 * Note the only difference between ALU blocks is the literal values on lines 5,
 		 * 6 and 16.
 		 */
-		// Note only actually use the literal values in blocks 4, 5 and 15 - could
-		// simply extract these values
 		final List<List<Instruction>> alu_blocks = new ArrayList<>();
 		for (int i = 0; i < 14; i++) {
 			alu_blocks.add(alu.subList(i * 18, (i + 1) * 18));
 		}
 
-		return alu_blocks;
+		// Only the literal values in instructions 4, 5 and 15 are required from each
+		// ALU block
+		byte[][] alu_variables = alu_blocks.stream().map(block -> new byte[] { block.get(4).valB.byteValue(),
+				block.get(5).valB.byteValue(), block.get(15).valB.byteValue() }).toArray(byte[][]::new);
+
+		return alu_variables;
 	}
 
 	@Override
 	public long part1(final Path input) throws IOException {
-		final List<List<Instruction>> alu_blocks = loadData(input);
+		final byte[][] alu_variables = loadData(input);
 
 		// Find the largest valid input value
 		try {
-			execute(alu_blocks, 0, 0, 0, false);
+			execute(alu_variables, 0, 0, 0, false);
 		} catch (Result r) {
 			return r.getModelNumber();
 		}
@@ -51,11 +80,11 @@ public class Day24 extends AocBase {
 
 	@Override
 	public long part2(final Path input) throws IOException {
-		final List<List<Instruction>> alu_blocks = loadData(input);
+		final byte[][] alu_variables = loadData(input);
 
 		// Find the smallest valid input value
 		try {
-			execute(alu_blocks, 0, 0, 0, true);
+			execute(alu_variables, 0, 0, 0, true);
 		} catch (Result r) {
 			return r.getModelNumber();
 		}
@@ -63,43 +92,44 @@ public class Day24 extends AocBase {
 		return -1;
 	}
 
-	private static void execute(final List<List<Instruction>> aluBlocks, final int n, final int z,
-			final long modelNumber, boolean incrementing) throws Result {
+	private static void execute(final byte[][] aluVariables, final int n, final int z, final long modelNumber,
+			boolean incrementing) throws Result {
 		if (n == 14) {
 			if (z == 0) {
 				throw new Result(modelNumber);
 			}
-			if (modelNumber % 100_000_000L == 99_999_999) {
-				System.out.println("Model number " + modelNumber + " is invalid (z = " + z + ")");
-			}
-			return;
-		}
-
-		// Bail out if there is no way for z to go back to 0
-		if (n > 8 && z > 26 * 26 * 26 * 26) {
 			return;
 		}
 
 		if (incrementing) {
 			for (int input = 1; input < 10; input++) {
-				// Pass the Z value to the next ALU block calculation
-				execute(aluBlocks, n + 1, runAlu(aluBlocks.get(n), z, input), modelNumber * 10 + input, incrementing);
+				// Previous Z % 26 + X must be == input if Div != 1, see the table above
+				if (aluVariables[n][0] != 1 && z % 26 + aluVariables[n][1] != input) {
+					continue;
+				}
+
+				execute(aluVariables, n + 1, runAlu(aluVariables[n], z, input), modelNumber * 10 + input, incrementing);
 			}
 		} else {
 			for (int input = 9; input > 0; input--) {
-				// Pass the Z value to the next ALU block calculation
-				execute(aluBlocks, n + 1, runAlu(aluBlocks.get(n), z, input), modelNumber * 10 + input, incrementing);
+				// Previous Z % 26 + X must be == input if Div != 1, see the table above
+				if (aluVariables[n][0] != 1 && z % 26 + aluVariables[n][1] != input) {
+					continue;
+				}
+
+				execute(aluVariables, n + 1, runAlu(aluVariables[n], z, input), modelNumber * 10 + input, incrementing);
 			}
 		}
 	}
 
-	private static int runAlu(final List<Instruction> aluBlock, final int z, final int input) {
-		// aluBlock.get(4).valB.intValue() is only either 1 or 26
+	private static int runAlu(final byte[] aluBlockVariables, final int z, final int input) {
+		// Manually interpreted the blocks of instructions down to the following
+		// aluBlockVariables[0] is only either 1 or 26
 		int new_z;
-		if (((z % 26) + aluBlock.get(5).valB.intValue()) != input) {
-			new_z = 26 * z / aluBlock.get(4).valB.intValue() + input + aluBlock.get(15).valB.intValue();
+		if ((z % 26 + aluBlockVariables[1]) == input) {
+			new_z = z / 26;
 		} else {
-			new_z = z / aluBlock.get(4).valB.intValue();
+			new_z = 26 * z + input + aluBlockVariables[2];
 		}
 		return new_z;
 	}
