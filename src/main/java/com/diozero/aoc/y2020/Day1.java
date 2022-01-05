@@ -1,7 +1,6 @@
 package com.diozero.aoc.y2020;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 
@@ -16,7 +15,7 @@ public class Day1 extends AocBase {
 
 	@Override
 	public long part1(Path input) throws IOException {
-		final int[] values = Files.lines(input).mapToInt(line -> Integer.parseInt(line)).toArray();
+		final int[] values = loadIntegerArray(input);
 		Logger.debug(Arrays.toString(values));
 
 		final int target = 2020;
@@ -34,7 +33,7 @@ public class Day1 extends AocBase {
 
 	@Override
 	public long part2(Path input) throws IOException {
-		final int[] values = Files.lines(input).mapToInt(line -> Integer.parseInt(line)).toArray();
+		final int[] values = loadIntegerArray(input);
 		Logger.debug(Arrays.toString(values));
 
 		final int target = 2020;

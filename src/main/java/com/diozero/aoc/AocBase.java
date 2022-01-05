@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.stream.IntStream;
 
 import org.tinylog.Logger;
 
@@ -50,7 +51,7 @@ public abstract class AocBase {
 		try {
 			long[] answers = null;
 			if (answers_path.toFile().canRead()) {
-				answers = Files.lines(answers_path).mapToLong(Long::valueOf).toArray();
+				answers = Files.lines(answers_path).filter(str -> !str.isBlank()).mapToLong(Long::valueOf).toArray();
 			}
 
 			if (perf) {
@@ -98,6 +99,22 @@ public abstract class AocBase {
 	public abstract long part1(Path input) throws IOException;
 
 	public abstract long part2(Path input) throws IOException;
+
+	public static int[] loadIntegerArray(Path input) throws IOException {
+		return Files.lines(input).mapToInt(Integer::parseInt).toArray();
+	}
+
+	public static int[] loadIntegerArray(Path input, boolean sorted) throws IOException {
+		IntStream is = Files.lines(input).mapToInt(Integer::parseInt);
+		if (sorted) {
+			is = is.sorted();
+		}
+		return is.toArray();
+	}
+
+	public static long[] loadLongArray(Path input) throws IOException {
+		return Files.lines(input).mapToLong(Long::parseLong).toArray();
+	}
 
 	public static int[][] loadIntegerMatrix(Path input) throws IOException {
 		// Note the lazy conversion from ASCII character code to integer

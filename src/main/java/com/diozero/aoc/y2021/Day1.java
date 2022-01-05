@@ -31,7 +31,7 @@ public class Day1 extends AocBase {
 
 	@Override
 	public long part2(Path input) throws IOException {
-		int[] numbers = Files.lines(input).mapToInt(Integer::valueOf).toArray();
+		int[] numbers = loadIntegerArray(input);
 		int part2 = 0;
 		for (int i = 1; i < numbers.length; i++) {
 			// (t[0] + t[1] + t[2]) < (t[1] + t[2] + t[3]) = t[0] < t[3]

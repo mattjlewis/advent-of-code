@@ -170,8 +170,6 @@ public class Day18 extends AocBase {
 			}
 		}
 
-		System.out.println(pair);
-
 		return pair.getMagnitude();
 	}
 
