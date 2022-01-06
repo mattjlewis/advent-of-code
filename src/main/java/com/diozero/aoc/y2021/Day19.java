@@ -18,7 +18,6 @@ import org.tinylog.Logger;
 
 import com.diozero.aoc.AocBase;
 import com.diozero.aoc.util.Point3D;
-import com.diozero.aoc.util.Rotation3D;
 
 /**
  * Did not enjoy this one!
@@ -235,12 +234,12 @@ public class Day19 extends AocBase {
 
 		public static Point3D orient(Point3D point, int face, int rotation) {
 			return switch (face) {
-			case 0 -> point.rotate(Rotation3D.Axis.X, rotation);
-			case 1 -> point.rotate(Rotation3D.Axis.Z, 1).rotate(Rotation3D.Axis.X, rotation);
-			case 2 -> point.rotate(Rotation3D.Axis.Z, 2).rotate(Rotation3D.Axis.X, rotation);
-			case 3 -> point.rotate(Rotation3D.Axis.Z, 3).rotate(Rotation3D.Axis.X, rotation);
-			case 4 -> point.rotate(Rotation3D.Axis.Y, 1).rotate(Rotation3D.Axis.X, rotation);
-			case 5 -> point.rotate(Rotation3D.Axis.Y, 3).rotate(Rotation3D.Axis.X, rotation);
+			case 0 -> point.rotate(Point3D.Axis.X, rotation);
+			case 1 -> point.rotate(Point3D.Axis.Z, 1).rotate(Point3D.Axis.X, rotation);
+			case 2 -> point.rotate(Point3D.Axis.Z, 2).rotate(Point3D.Axis.X, rotation);
+			case 3 -> point.rotate(Point3D.Axis.Z, 3).rotate(Point3D.Axis.X, rotation);
+			case 4 -> point.rotate(Point3D.Axis.Y, 1).rotate(Point3D.Axis.X, rotation);
+			case 5 -> point.rotate(Point3D.Axis.Y, 3).rotate(Point3D.Axis.X, rotation);
 			default -> throw new IllegalArgumentException("Invalid face value");
 			};
 		}

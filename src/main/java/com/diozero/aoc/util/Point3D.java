@@ -1,6 +1,9 @@
 package com.diozero.aoc.util;
 
 public record Point3D(int x, int y, int z) {
+	public enum Axis {
+		X, Y, Z;
+	}
 
 	private static final int[] COS_VALUES;
 	private static final int[] SIN_VALUES;
@@ -25,23 +28,11 @@ public record Point3D(int x, int y, int z) {
 		return new Point3D(delta.x + x, delta.y + y, delta.z + z);
 	}
 
-	public Point3D rotate90(Rotation3D.Axis axis) {
+	public Point3D rotate90(Axis axis) {
 		return rotate(axis, 1);
-		/*-
-		switch (axis) {
-		case X:
-			return new Point3D(x, -z, y);
-		case Y:
-			return new Point3D(z, y, -x);
-		case Z:
-			return new Point3D(-y, x, z);
-		default:
-			throw new IllegalArgumentException("Unhandled rotation axis " + axis);
-		}
-		*/
 	}
 
-	public Point3D rotate(Rotation3D.Axis axis, int amount) {
+	public Point3D rotate(Axis axis, int amount) {
 		int[][] matrix;
 
 		int cos = COS_VALUES[amount % 4];
