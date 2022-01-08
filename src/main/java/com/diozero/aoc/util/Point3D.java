@@ -1,5 +1,8 @@
 package com.diozero.aoc.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public record Point3D(int x, int y, int z) {
 	public enum Axis {
 		X, Y, Z;
@@ -16,8 +19,24 @@ public record Point3D(int x, int y, int z) {
 		}
 	}
 
-	public Point3D delta(Point3D target) {
-		return new Point3D(target.x - x, target.y - y, target.z - z);
+	private static final List<Point3D> ADJACENT_DELTAS;
+	static {
+		ADJACENT_DELTAS = new ArrayList<>();
+
+		for (int z = -1; z <= 1; z++) {
+			for (int y = -1; y <= 1; y++) {
+				for (int x = -1; x <= 1; x++) {
+					if (x == 0 && y == 0 && z == 0) {
+						continue;
+					}
+					ADJACENT_DELTAS.add(new Point3D(x, y, z));
+				}
+			}
+		}
+	}
+
+	public Point3D delta(Point3D other) {
+		return new Point3D(other.x - x, other.y - y, other.z - z);
 	}
 
 	public int manhattanDistance(Point3D p) {
@@ -26,6 +45,10 @@ public record Point3D(int x, int y, int z) {
 
 	public Point3D translate(Point3D delta) {
 		return new Point3D(delta.x + x, delta.y + y, delta.z + z);
+	}
+
+	public boolean isAdjacentTo(Point3D other) {
+		return ADJACENT_DELTAS.contains(delta(other));
 	}
 
 	public Point3D rotate90(Axis axis) {
