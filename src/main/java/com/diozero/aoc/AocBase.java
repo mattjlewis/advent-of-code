@@ -53,9 +53,9 @@ public abstract class AocBase {
 		}
 
 		try {
-			long[] answers = null;
+			String[] answers = null;
 			if (answers_path.toFile().canRead()) {
-				answers = Files.lines(answers_path).filter(str -> !str.isBlank()).mapToLong(Long::valueOf).toArray();
+				answers = Files.lines(answers_path).filter(str -> !str.isBlank()).toArray(String[]::new);
 			}
 
 			if (perf) {
@@ -64,7 +64,7 @@ public abstract class AocBase {
 				}
 			}
 			long start = System.currentTimeMillis();
-			long answer = part1(input_path);
+			String answer = part1(input_path);
 			long duration = System.currentTimeMillis() - start;
 			checkResult(day, 1, answers, answer, duration);
 
@@ -82,23 +82,23 @@ public abstract class AocBase {
 		}
 	}
 
-	private static void checkResult(String day, int part, long[] answers, long result, long duration) {
+	private static void checkResult(String day, int part, String[] answers, String result, long duration) {
 		if (answers == null || answers.length < part) {
-			System.out.format("%d %s part %d: %d. Duration: %dms%n", year, day, part, result, duration);
+			System.out.format("%d %s part %d: %s. Duration: %dms%n", year, day, part, result, duration);
 		} else {
-			if (result == answers[part - 1]) {
-				System.out.format("%d %s part %d - Correct answer: %d. Duration: %dms%n", year, day, part, result,
+			if (result.equals(answers[part - 1])) {
+				System.out.format("%d %s part %d - Correct answer: %s. Duration: %dms%n", year, day, part, result,
 						duration);
 			} else {
-				System.out.format("%d %s part %d - Wrong answer (%d), expected: %d. Duration: %dms%n", year, day, part,
+				System.out.format("%d %s part %d - Wrong answer (%s), expected: %s. Duration: %dms%n", year, day, part,
 						result, answers[part - 1], duration);
 			}
 		}
 	}
 
-	public abstract long part1(Path input) throws IOException;
+	public abstract String part1(Path input) throws IOException;
 
-	public abstract long part2(Path input) throws IOException;
+	public abstract String part2(Path input) throws IOException;
 
 	public static int[] loadIntegerArray(Path input) throws IOException {
 		return Files.lines(input).mapToInt(Integer::parseInt).toArray();

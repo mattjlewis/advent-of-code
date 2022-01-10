@@ -46,7 +46,7 @@ public class Day5 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
+	public String part1(Path input) throws IOException {
 		final List<Line2D> lines = loadData(input);
 		lines.removeIf(Line2D::isDiagonal);
 
@@ -71,11 +71,11 @@ public class Day5 extends AocBase {
 			print(counts);
 		}
 
-		return counts.values().stream().filter(count -> count.get() >= 2).count();
+		return Long.toString(counts.values().stream().filter(count -> count.get() >= 2).count());
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		final List<Line2D> lines = loadData(input);
 
 		final Map<Point2D, AtomicInteger> counts = new HashMap<>();
@@ -120,7 +120,7 @@ public class Day5 extends AocBase {
 			print(counts);
 		}
 
-		return counts.values().stream().filter(count -> count.get() > 1).count();
+		return Long.toString(counts.values().stream().filter(count -> count.get() > 1).count());
 	}
 
 	private static void incrementCount(Map<Point2D, AtomicInteger> counts, int x, int y) {

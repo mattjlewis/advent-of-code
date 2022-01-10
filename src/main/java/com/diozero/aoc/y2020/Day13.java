@@ -6,9 +6,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import com.diozero.aoc.AocBase;
 
@@ -18,23 +18,23 @@ public class Day13 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
+	public String part1(Path input) throws IOException {
 		List<String> lines = Files.readAllLines(input);
 		// The earliest departure time
 		final int departure_time = Integer.parseInt(lines.get(0));
 
-		return Stream.of(lines.get(1).split(",")).filter(s -> !s.equals("x")).map(Integer::valueOf)
+		return Integer.toString(Arrays.stream(lines.get(1).split(",")).filter(s -> !s.equals("x")).map(Integer::valueOf)
 				// Map from bus id to the time to wait after the departure time
 				.collect(Collectors.toMap(v -> v, v -> Integer.valueOf(v.intValue() - departure_time % v.intValue())))
 				.entrySet().stream()
 				// Get the minimum wait time
 				.min((e1, e2) -> Integer.compare(e1.getValue().intValue(), e2.getValue().intValue()))
 				// Return the first bus id multiplied by it's wait time
-				.map(e -> Integer.valueOf(e.getKey().intValue() * e.getValue().intValue())).orElseThrow().intValue();
+				.map(e -> Integer.valueOf(e.getKey().intValue() * e.getValue().intValue())).orElseThrow().intValue());
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		// Only need the bus ids, can ignore the earliest departure time
 		String[] bus_departures = Files.lines(input).skip(1).findFirst().orElseThrow().split(",");
 
@@ -55,6 +55,6 @@ public class Day13 extends AocBase {
 			remainders.add(Integer.valueOf(bus_id - i));
 		}
 
-		return chineseRemainder(bus_ids, remainders);
+		return Long.toString(chineseRemainder(bus_ids, remainders));
 	}
 }

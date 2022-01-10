@@ -29,7 +29,7 @@ public class Day14 extends AocBase {
 	}
 
 	@Override
-	public long part1(final Path input) throws IOException {
+	public String part1(final Path input) throws IOException {
 		final Puzzle puzzle = loadData(input);
 
 		int num_steps = 10;
@@ -55,11 +55,11 @@ public class Day14 extends AocBase {
 				.orElseThrow().getValue().longValue();
 		Logger.debug("min: {}, max: {}", min, max);
 
-		return max - min;
+		return Long.toString(max - min);
 	}
 
 	@Override
-	public long part2(final Path input) throws IOException {
+	public String part2(final Path input) throws IOException {
 		final Puzzle puzzle = loadData(input);
 
 		// Exponential growth so can't repeat part1 brute force solution :-)
@@ -103,7 +103,7 @@ public class Day14 extends AocBase {
 				.max((e1, e2) -> Long.compare(e1.getValue().get(), e2.getValue().get())).orElseThrow().getValue().get();
 		Logger.debug("min: {}, max: {}", min, max);
 
-		return max - min;
+		return Long.toString(max - min);
 	}
 
 	private static void update(final Map<Character, AtomicLong> charCounts, final Map<String, AtomicLong> pairCounts,

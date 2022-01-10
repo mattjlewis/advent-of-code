@@ -3,6 +3,7 @@ package com.diozero.aoc.y2020;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -11,7 +12,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import com.diozero.aoc.AocBase;
 
@@ -21,18 +21,18 @@ public class Day7 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
+	public String part1(Path input) throws IOException {
 		List<Rule> rules = Files.lines(input).map(Rule::parse).toList();
 
-		return contains("shiny gold", rules, new HashSet<>());
+		return Integer.toString(contains("shiny gold", rules, new HashSet<>()));
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		Map<String, Map<String, Integer>> rules = Files.lines(input).map(Rule::parse)
 				.collect(Collectors.toMap(r -> r.colour(), r -> r.contents()));
 
-		return contents("shiny gold", rules);
+		return Integer.toString(contents("shiny gold", rules));
 	}
 
 	private static int contains(String colour, List<Rule> rules, Set<String> visited) {
@@ -72,7 +72,7 @@ public class Day7 extends AocBase {
 
 			Map<String, Integer> contents = new HashMap<>();
 			if (!matcher.group(2).equals("no other bags")) {
-				contents = Stream.of(matcher.group(2).split(", ")).map(s -> BAG_PATTERN.matcher(s))
+				contents = Arrays.stream(matcher.group(2).split(", ")).map(s -> BAG_PATTERN.matcher(s))
 						.filter(Matcher::matches)
 						.collect(Collectors.toMap(m -> m.group(2), m -> Integer.valueOf(m.group(1))));
 			}

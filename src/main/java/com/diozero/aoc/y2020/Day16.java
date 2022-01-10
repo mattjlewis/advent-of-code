@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -11,8 +12,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import com.diozero.aoc.AocBase;
 
@@ -22,16 +21,16 @@ public class Day16 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
+	public String part1(Path input) throws IOException {
 		final PuzzleInput puzzle_input = loadData(input);
 
 		// Sum the values of each invalid value in all nearby ticket
-		return puzzle_input.nearbyTickets().stream().flatMapToInt(t -> IntStream.of(t))
-				.filter(i -> !isValid(i, puzzle_input.fields())).sum();
+		return Integer.toString(puzzle_input.nearbyTickets().stream().flatMapToInt(t -> Arrays.stream(t))
+				.filter(i -> !isValid(i, puzzle_input.fields())).sum());
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		final PuzzleInput puzzle_input = loadData(input);
 
 		// First discard the invalid tickets
@@ -71,8 +70,9 @@ public class Day16 extends AocBase {
 
 		final int[] my_ticket = puzzle_input.myTicket();
 
-		return unique_matches.entrySet().stream().filter(e -> e.getKey().category().startsWith("departure"))
-				.mapToLong(e -> my_ticket[e.getValue().intValue()]).reduce(1, (a, b) -> a * b);
+		return Long
+				.toString(unique_matches.entrySet().stream().filter(e -> e.getKey().category().startsWith("departure"))
+						.mapToLong(e -> my_ticket[e.getValue().intValue()]).reduce(1, (a, b) -> a * b));
 	}
 
 	private static boolean matchesAll(int index, Field field, List<int[]> tickets) {
@@ -107,10 +107,10 @@ public class Day16 extends AocBase {
 				fields.add(Field.parse(line));
 				break;
 			case 1:
-				my_ticket = Stream.of(line.split(",")).mapToInt(Integer::parseInt).toArray();
+				my_ticket = Arrays.stream(line.split(",")).mapToInt(Integer::parseInt).toArray();
 				break;
 			case 2:
-				nearby_tickets.add(Stream.of(line.split(",")).mapToInt(Integer::parseInt).toArray());
+				nearby_tickets.add(Arrays.stream(line.split(",")).mapToInt(Integer::parseInt).toArray());
 				break;
 			default:
 				throw new IllegalArgumentException("Invalid input data, state: " + state);

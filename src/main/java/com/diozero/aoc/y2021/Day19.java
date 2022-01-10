@@ -192,19 +192,19 @@ public class Day19 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
+	public String part1(Path input) throws IOException {
 		final List<Scanner> scanners = loadData(input);
 		Logger.debug("scanners: {}", scanners);
 
-		return getBeacons(scanners).size();
+		return Integer.toString(getBeacons(scanners).size());
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		List<Point3D> scanner_locations = getScannerLocations(loadData(input));
 
-		return scanner_locations.stream()
-				.flatMapToInt(a -> scanner_locations.stream().mapToInt(b -> a.manhattanDistance(b))).max().getAsInt();
+		return Integer.toString(scanner_locations.stream()
+				.flatMapToInt(a -> scanner_locations.stream().mapToInt(b -> a.manhattanDistance(b))).max().getAsInt());
 	}
 
 	private static record Scanner(String id, List<Point3D> beacons, Point3D translation) {

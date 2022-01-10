@@ -12,12 +12,12 @@ public class Day5 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
-		return Files.lines(input).mapToInt(Day5::getSeatId).max().orElseThrow();
+	public String part1(Path input) throws IOException {
+		return Integer.toString(Files.lines(input).mapToInt(Day5::getSeatId).max().orElseThrow());
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		int[] populated_seat_ids = Files.lines(input).mapToInt(Day5::getSeatId).sorted().toArray();
 
 		int my_seat_id = -1;
@@ -29,7 +29,7 @@ public class Day5 extends AocBase {
 			}
 		}
 
-		return my_seat_id;
+		return Integer.toString(my_seat_id);
 	}
 
 	private static final int getSeatId(String line) {

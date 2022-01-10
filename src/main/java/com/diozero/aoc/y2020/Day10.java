@@ -16,7 +16,7 @@ public class Day10 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
+	public String part1(Path input) throws IOException {
 		// Use Collectors.toList as we need this list to be mutable
 		List<Integer> values = Files.lines(input).map(Integer::parseInt).sorted().collect(Collectors.toList());
 
@@ -39,15 +39,15 @@ public class Day10 extends AocBase {
 			joltage = next;
 		}
 
-		return count_1 * count_3;
+		return Long.toString(count_1 * count_3);
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		List<Integer> values = Files.lines(input).map(Integer::parseInt).sorted().collect(Collectors.toList());
 		values.add(0, Integer.valueOf(0));
 
-		return getArrangements(values, new HashMap<>(), Integer.valueOf(0));
+		return Long.toString(getArrangements(values, new HashMap<>(), Integer.valueOf(0)));
 	}
 
 	private static long getArrangements(List<Integer> values, Map<Integer, Long> cache, Integer index) {

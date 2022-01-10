@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.stream.Stream;
 
 import org.tinylog.Logger;
 
@@ -41,26 +41,26 @@ public class Day16 extends AocBase {
 
 	private Packet loadData(Path input) throws IOException {
 		final Queue<Integer> bytes = new LinkedList<>();
-		Stream.of(Files.lines(input).findFirst().orElseThrow().split("(?<=\\G.{2})"))
+		Arrays.stream(Files.lines(input).findFirst().orElseThrow().split("(?<=\\G.{2})"))
 				.forEach(b -> bytes.add(Integer.valueOf(b, 16)));
 
 		return readPacket(new BitStream(bytes));
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
+	public String part1(Path input) throws IOException {
 		Packet packet = loadData(input);
 		Logger.debug("root packet: {}", packet);
 
-		return packet.sumVersions();
+		return Long.toString(packet.sumVersions());
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		Packet packet = loadData(input);
 		Logger.debug("root packet: {}", packet);
 
-		return packet.calculateValue();
+		return Long.toString(packet.calculateValue());
 	}
 
 	private Packet readPacket(BitStream bs) {

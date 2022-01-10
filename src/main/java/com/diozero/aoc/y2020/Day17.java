@@ -18,7 +18,7 @@ public class Day17 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
+	public String part1(Path input) throws IOException {
 		List<Point3D> cubes = new ArrayList<>();
 		int y = 0;
 		for (String line : Files.readAllLines(input)) {
@@ -76,12 +76,12 @@ public class Day17 extends AocBase {
 			cubes = new_cubes;
 		}
 
-		return cubes.size();
+		return Integer.toString(cubes.size());
 
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		List<Point4D> cubes = new ArrayList<>();
 		int y = 0;
 		for (String line : Files.readAllLines(input)) {
@@ -150,6 +150,6 @@ public class Day17 extends AocBase {
 			Logger.debug("cubes.size(): {}", cubes.size());
 		}
 
-		return cubes.size();
+		return Integer.toString(cubes.size());
 	}
 }

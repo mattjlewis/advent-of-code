@@ -15,13 +15,13 @@ public class Day11 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
-		return getNumOccupied(loadData(input), Day11::part1OccupancyLogic);
+	public String part1(Path input) throws IOException {
+		return Long.toString(getNumOccupied(loadData(input), Day11::part1OccupancyLogic));
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
-		return getNumOccupied(loadData(input), Day11::part2OccupancyLogic);
+	public String part2(Path input) throws IOException {
+		return Long.toString(getNumOccupied(loadData(input), Day11::part2OccupancyLogic));
 	}
 
 	private static long getNumOccupied(Boolean[][] seats, OccupancyLogic occupancyLogic) {

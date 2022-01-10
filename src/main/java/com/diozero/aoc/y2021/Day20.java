@@ -19,25 +19,25 @@ public class Day20 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
+	public String part1(Path input) throws IOException {
 		Image image = loadData(input);
 		printImage(image);
 
 		image.enhance(2);
 		printImage(image);
 
-		return image.getPixels().size();
+		return Integer.toString(image.getPixels().size());
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		Image image = loadData(input);
 		printImage(image);
 
 		image.enhance(50);
 		printImage(image);
 
-		return image.getPixels().size();
+		return Integer.toString(image.getPixels().size());
 	}
 
 	private static void printImage(Image image) {

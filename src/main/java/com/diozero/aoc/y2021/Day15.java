@@ -15,7 +15,7 @@ public class Day15 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
+	public String part1(Path input) throws IOException {
 		int[][] matrix = AocBase.loadIntegerMatrix(input);
 
 		// Convert the integer matrix into a graph
@@ -40,11 +40,11 @@ public class Day15 extends AocBase {
 			System.out.format("%d (%d)%n", end_node.getId(), end_node.getDistance());
 		}
 
-		return end_node.getDistance();
+		return Integer.toString(end_node.getDistance());
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		int[][] matrix = AocBase.loadIntegerMatrix(input);
 		AocBase.printGrid(matrix);
 
@@ -107,7 +107,7 @@ public class Day15 extends AocBase {
 			System.out.format("%d (%d)%n", end_node.getId(), end_node.getDistance());
 		}
 
-		return end_node.getDistance();
+		return Integer.toString(end_node.getDistance());
 	}
 
 	private static void calculateDistanceBetweenNodes(Node[][] nodeMatrix, int[][] matrix) {

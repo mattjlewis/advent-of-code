@@ -15,7 +15,7 @@ public class Day2 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
+	public String part1(Path input) throws IOException {
 		final AtomicInteger horizontal = new AtomicInteger();
 		final AtomicInteger depth = new AtomicInteger();
 		Files.lines(input).map(Instruction::create).forEach(instruction -> {
@@ -29,11 +29,11 @@ public class Day2 extends AocBase {
 			}
 		});
 		Logger.debug("depth: {}, horizontal: {}, d*h={}", depth, horizontal, depth.get() * horizontal.get());
-		return depth.get() * horizontal.get();
+		return Integer.toString(depth.get() * horizontal.get());
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		final AtomicInteger horizontal = new AtomicInteger();
 		final AtomicInteger depth = new AtomicInteger();
 		final AtomicInteger aim = new AtomicInteger();
@@ -50,7 +50,7 @@ public class Day2 extends AocBase {
 		});
 		Logger.debug("depth: {}, horizontal: {}, aim={}, d*h={}", depth, horizontal, aim,
 				depth.get() * horizontal.get());
-		return depth.get() * horizontal.get();
+		return Integer.toString(depth.get() * horizontal.get());
 	}
 
 	public enum Movement {

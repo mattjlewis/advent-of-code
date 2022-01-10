@@ -23,7 +23,7 @@ public class Day14 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
+	public String part1(Path input) throws IOException {
 		final Map<Integer, Long> memory = new HashMap<>();
 
 		long and_mask = MAX_MEM_ADDR;
@@ -47,11 +47,11 @@ public class Day14 extends AocBase {
 			}
 		}
 
-		return memory.values().stream().mapToLong(Long::longValue).sum();
+		return Long.toString(memory.values().stream().mapToLong(Long::longValue).sum());
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		final Map<Long, Integer> memory = new HashMap<>();
 
 		String mask = "0".repeat(ADDRESS_LENGTH);
@@ -75,7 +75,7 @@ public class Day14 extends AocBase {
 			}
 		}
 
-		return memory.values().stream().mapToLong(Integer::longValue).sum();
+		return Long.toString(memory.values().stream().mapToLong(Integer::longValue).sum());
 	}
 
 	private static LongStream memoryLocations(String mask, long memoryLocation) {

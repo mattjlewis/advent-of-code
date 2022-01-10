@@ -154,7 +154,7 @@ public class Day18 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
+	public String part1(Path input) throws IOException {
 		List<Pair> pairs = loadData(input);
 
 		Logger.debug("Loaded Pairs:");
@@ -170,11 +170,11 @@ public class Day18 extends AocBase {
 			}
 		}
 
-		return pair.getMagnitude();
+		return Integer.toString(pair.getMagnitude());
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		List<Pair> pairs = loadData(input);
 
 		int max_mag = Integer.MIN_VALUE;
@@ -188,7 +188,7 @@ public class Day18 extends AocBase {
 			}
 		}
 
-		return max_mag;
+		return Integer.toString(max_mag);
 	}
 
 	private static class Pair {

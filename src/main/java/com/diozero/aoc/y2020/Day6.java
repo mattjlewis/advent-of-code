@@ -18,13 +18,13 @@ public class Day6 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
-		return loadData(input, false).stream().mapToInt(Set::size).sum();
+	public String part1(Path input) throws IOException {
+		return Integer.toString(loadData(input, false).stream().mapToInt(Set::size).sum());
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
-		return loadData(input, true).stream().mapToInt(Set::size).sum();
+	public String part2(Path input) throws IOException {
+		return Integer.toString(loadData(input, true).stream().mapToInt(Set::size).sum());
 	}
 
 	private static List<Set<Character>> loadData(Path input, boolean union) throws FileNotFoundException, IOException {

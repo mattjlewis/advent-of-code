@@ -13,12 +13,12 @@ public class Day1 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
+	public String part1(Path input) throws IOException {
 		final AtomicInteger count = new AtomicInteger();
 		final AtomicInteger last_depth = new AtomicInteger(Integer.MAX_VALUE);
 		Files.lines(input).mapToInt(Integer::valueOf).forEach(val -> update(val, count, last_depth));
 
-		return count.get();
+		return Integer.toString(count.get());
 	}
 
 	private static void update(int depth, AtomicInteger count, AtomicInteger lastDepth) {
@@ -30,7 +30,7 @@ public class Day1 extends AocBase {
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		int[] numbers = loadIntegerArray(input);
 		int part2 = 0;
 		for (int i = 1; i < numbers.length; i++) {
@@ -39,6 +39,6 @@ public class Day1 extends AocBase {
 				part2++;
 			}
 		}
-		return part2;
+		return Integer.toString(part2);
 	}
 }

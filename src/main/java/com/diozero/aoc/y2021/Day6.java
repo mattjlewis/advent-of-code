@@ -3,10 +3,10 @@ package com.diozero.aoc.y2021;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.tinylog.Logger;
 
@@ -18,9 +18,9 @@ public class Day6 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
+	public String part1(Path input) throws IOException {
 		// Can't use Stream.toList() as that returns an immutable list
-		final List<AtomicInteger> ages = Stream.of(Files.lines(input).findFirst().orElseThrow().split(","))
+		final List<AtomicInteger> ages = Arrays.stream(Files.lines(input).findFirst().orElseThrow().split(","))
 				.map(line -> new AtomicInteger(Integer.parseInt(line))).collect(Collectors.toList());
 
 		final int days = 80;
@@ -41,13 +41,13 @@ public class Day6 extends AocBase {
 			// System.out.format("After %3d day(s): %s%n", day, ages);
 		}
 
-		return ages.size();
+		return Integer.toString(ages.size());
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		final long[] count_at_age = new long[9];
-		Stream.of(Files.lines(input).findFirst().orElseThrow().split(",")).mapToInt(Integer::parseInt)
+		Arrays.stream(Files.lines(input).findFirst().orElseThrow().split(",")).mapToInt(Integer::parseInt)
 				.forEach(age -> count_at_age[age]++);
 
 		final int days = 256;
@@ -69,6 +69,6 @@ public class Day6 extends AocBase {
 			total += count_at_age[age];
 		}
 
-		return total;
+		return Long.toString(total);
 	}
 }

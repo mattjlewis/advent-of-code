@@ -1,7 +1,7 @@
 package com.diozero.aoc.util;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.IntStream;
 
 /**
  * <p>
@@ -26,7 +26,7 @@ public final class ChineseRemainderTheorem {
 	}
 
 	public static long chineseRemainder(int[] n, int[] a) {
-		long product = IntStream.of(n).mapToLong(i -> i).reduce(1, (i, j) -> i * j);
+		long product = Arrays.stream(n).mapToLong(i -> i).reduce(1, (i, j) -> i * j);
 
 		long sum = 0;
 		for (int i = 0; i < n.length; i++) {

@@ -11,7 +11,7 @@ public class Day9 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
+	public String part1(Path input) throws IOException {
 		long[] values = loadLongArray(input);
 
 		int preamble = 25;
@@ -19,11 +19,11 @@ public class Day9 extends AocBase {
 			preamble = 5;
 		}
 
-		return getInvalidNumber(values, preamble);
+		return Long.toString(getInvalidNumber(values, preamble));
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		long[] values = loadLongArray(input);
 
 		int preamble = 25;
@@ -57,7 +57,7 @@ public class Day9 extends AocBase {
 			max = Math.max(max, values[x]);
 		}
 
-		return min + max;
+		return Long.toString(min + max);
 	}
 
 	private static long getInvalidNumber(long[] values, int preamble) {

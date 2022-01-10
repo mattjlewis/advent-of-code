@@ -24,7 +24,7 @@ public class Day12 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
+	public String part1(Path input) throws IOException {
 		final Map<String, GraphNode> nodes = loadData(input);
 
 		final Deque<Deque<GraphNode>> search_space = new ArrayDeque<>();
@@ -52,11 +52,11 @@ public class Day12 extends AocBase {
 			}
 		}
 
-		return num_paths;
+		return Integer.toString(num_paths);
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		final Map<String, GraphNode> nodes = loadData(input);
 
 		final Deque<Deque<GraphNode>> search_space = new ArrayDeque<>();
@@ -98,7 +98,7 @@ public class Day12 extends AocBase {
 			}
 		}
 
-		return num_paths;
+		return Integer.toString(num_paths);
 	}
 
 	private static Map<String, GraphNode> loadData(Path input) throws IOException {

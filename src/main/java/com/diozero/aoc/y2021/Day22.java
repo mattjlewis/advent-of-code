@@ -27,25 +27,25 @@ public class Day22 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
+	public String part1(Path input) throws IOException {
 		List<Cuboid> cuboids = Files.lines(input).map(Day22::parseLine).toList();
 		Logger.debug("cuboids: {}", cuboids);
 
 		final BoundedReactorCore core = new BoundedReactorCore(new Cuboid(true, -50, 50, -50, 50, -50, 50));
 		cuboids.forEach(cuboid -> core.addOrRemove(cuboid));
 
-		return core.size();
+		return Long.toString(core.size());
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		List<Cuboid> cuboids = Files.lines(input).map(Day22::parseLine).toList();
 		Logger.debug("cuboids: {}", cuboids);
 
 		final UnboundedReactorCore core = new UnboundedReactorCore();
 		cuboids.forEach(core::addOrRemove);
 
-		return core.size();
+		return Long.toString(core.size());
 	}
 
 	private static Cuboid parseLine(String line) {

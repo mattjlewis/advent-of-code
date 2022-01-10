@@ -3,8 +3,7 @@ package com.diozero.aoc.y2021;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
+import java.util.Arrays;
 
 import org.tinylog.Logger;
 
@@ -16,26 +15,26 @@ public class Day7 extends AocBase {
 	}
 
 	private static int[] loadData(Path input) throws IOException {
-		return Stream.of(Files.lines(input).findFirst().map(line -> line.split(",")).orElseThrow())
+		return Arrays.stream(Files.lines(input).findFirst().map(line -> line.split(",")).orElseThrow())
 				.mapToInt(Integer::parseInt).sorted().toArray();
 	}
 
 	// distance: 333, fuel: 328262
 	@Override
-	public long part1(Path input) throws IOException {
+	public String part1(Path input) throws IOException {
 		final int[] positions = loadData(input);
 
 		// Get the median value
 		final int median = positions[positions.length / 2];
 
-		final int fuel = IntStream.of(positions).map(pos -> Math.abs(pos - median)).sum();
+		final int fuel = Arrays.stream(positions).map(pos -> Math.abs(pos - median)).sum();
 		Logger.debug("distance: {}, fuel: {}", median, fuel);
-		return fuel;
+		return Integer.toString(fuel);
 	}
 
 	// distance: 464, min fuel: 90040997
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		final int[] positions = loadData(input);
 
 		// Old school loop to get min, max, sum and mean of positions - avoiding
@@ -92,6 +91,6 @@ public class Day7 extends AocBase {
 		}
 
 		Logger.debug("distance: {}, min fuel: {}", distance, min_fuel);
-		return min_fuel;
+		return Integer.toString(min_fuel);
 	}
 }

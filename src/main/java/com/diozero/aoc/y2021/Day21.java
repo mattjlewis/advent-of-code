@@ -19,7 +19,7 @@ public class Day21 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
+	public String part1(Path input) throws IOException {
 		List<MutablePlayer> players = loadData(input);
 		Logger.debug("players: {}", players);
 
@@ -40,7 +40,7 @@ public class Day21 extends AocBase {
 
 		Logger.debug("players: {}, numRolls: {}", players, dice.getNumRolls());
 
-		return dice.getNumRolls() * players.get(1).getScore();
+		return Integer.toString(dice.getNumRolls() * players.get(1).getScore());
 	}
 
 	private static List<MutablePlayer> loadData(Path input) throws IOException {
@@ -59,41 +59,41 @@ public class Day21 extends AocBase {
 
 	private static abstract class Dice {
 		protected int sides;
-	
+
 		protected Dice(int sides) {
 			this.sides = sides;
 		}
-	
+
 		public abstract int roll();
-	
+
 		public abstract int roll(int times);
-	
+
 		public abstract int getNumRolls();
 	}
 
 	private static class DeterministicDice extends Dice {
 		private int numRolls = 0;
-	
+
 		public DeterministicDice(int sides) {
 			super(sides);
 		}
-	
+
 		@Override
 		public int roll() {
 			return (numRolls++ % sides) + 1;
 		}
-	
+
 		@Override
 		public int roll(int times) {
 			int val = 0;
-	
+
 			for (int i = 0; i < times; i++) {
 				val += roll();
 			}
-	
+
 			return val;
 		}
-	
+
 		@Override
 		public int getNumRolls() {
 			return numRolls;
@@ -104,30 +104,30 @@ public class Day21 extends AocBase {
 		private int id;
 		private int pos;
 		private int score;
-	
+
 		public MutablePlayer(int id, int pos) {
 			this.id = id;
 			this.pos = pos - 1;
 		}
-	
+
 		public int getId() {
 			return id;
 		}
-	
+
 		public int getPos() {
 			return pos;
 		}
-	
+
 		public int getScore() {
 			return score;
 		}
-	
+
 		public int move(int move) {
 			pos = (pos + move) % 10;
 			score += pos + 1;
 			return score;
 		}
-	
+
 		@Override
 		public String toString() {
 			return "MutablePlayer [id=" + id + ", pos=" + (pos + 1) + ", score=" + score + "]";
@@ -135,13 +135,13 @@ public class Day21 extends AocBase {
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		List<Player> players = loadData(input).stream().map(p -> new Player(p.getPos(), 0)).toList();
 		Logger.debug("players: {}", players);
 
 		long[] res = play(21, new State(0, 0, 0, players.get(0), players.get(1)), new HashMap<>());
 
-		return Math.max(res[0], res[1]);
+		return Long.toString(Math.max(res[0], res[1]));
 	}
 
 	// Return an array containing number of player 1 and 2 wins

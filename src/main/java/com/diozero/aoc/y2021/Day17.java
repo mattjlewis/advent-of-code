@@ -30,7 +30,7 @@ public class Day17 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
+	public String part1(Path input) throws IOException {
 		Area2D target = loadData(input);
 		Logger.debug("target: {}", target);
 
@@ -49,11 +49,11 @@ public class Day17 extends AocBase {
 			max_height += i;
 		}
 
-		return max_height;
+		return Integer.toString(max_height);
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		Area2D target = loadData(input);
 		Logger.debug("target: {}", target);
 
@@ -76,7 +76,7 @@ public class Day17 extends AocBase {
 			}
 		}
 
-		return hits;
+		return Integer.toString(hits);
 	}
 
 	public static record Area2D(Point2D topLeft, Point2D bottomRight) {

@@ -14,21 +14,22 @@ public class Day9 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
+	public String part1(Path input) throws IOException {
 		final int[][] heights = AocBase.loadIntegerMatrix(input);
-		return getLowPoints(heights).stream().mapToInt(point -> 1 + heights[point.y()][point.x()]).sum();
+		return Integer
+				.toString(getLowPoints(heights).stream().mapToInt(point -> 1 + heights[point.y()][point.x()]).sum());
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		final int[][] heights = AocBase.loadIntegerMatrix(input);
 
 		// Radiate out from each of the low points to determine the basin size
 		// Note that mapToInt negates the numbers to sort in reverse order
-		return getLowPoints(heights).stream()
+		return Integer.toString(getLowPoints(heights).stream()
 				.mapToInt(point -> -1 * getBasinSize(point.x(), point.y(), heights,
 						new boolean[heights.length][heights[0].length], 1))
-				.sorted().limit(3).map(size -> size * -1).reduce(1, (a, b) -> a * b);
+				.sorted().limit(3).map(size -> size * -1).reduce(1, (a, b) -> a * b));
 	}
 
 	private static List<Point2D> getLowPoints(int[][] heights) {

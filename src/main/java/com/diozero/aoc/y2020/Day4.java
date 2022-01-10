@@ -6,13 +6,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import com.diozero.aoc.AocBase;
 
@@ -22,13 +22,13 @@ public class Day4 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
-		return loadData(input, false).size();
+	public String part1(Path input) throws IOException {
+		return Integer.toString(loadData(input, false).size());
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
-		return loadData(input, true).size();
+	public String part2(Path input) throws IOException {
+		return Integer.toString(loadData(input, true).size());
 	}
 
 	private static List<Map<Field, String>> loadData(Path input, boolean validate)
@@ -54,7 +54,7 @@ public class Day4 extends AocBase {
 					passport = new HashMap<>();
 				} else {
 					try {
-						passport.putAll(Stream.of(line.split(" ")).map(fv -> fv.split(":"))
+						passport.putAll(Arrays.stream(line.split(" ")).map(fv -> fv.split(":"))
 								.collect(Collectors.toMap(fv -> Field.valueOf(fv[0]), fv -> fv[1])));
 					} catch (IllegalArgumentException e) {
 						// Ignore

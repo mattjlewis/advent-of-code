@@ -65,31 +65,31 @@ public class Day24 extends AocBase {
 	}
 
 	@Override
-	public long part1(final Path input) throws IOException {
+	public String part1(final Path input) throws IOException {
 		final byte[][] alu_variables = loadData(input);
 
 		// Find the largest valid input value
 		try {
 			execute(alu_variables, 0, 0, 0, false);
 		} catch (Result r) {
-			return r.getModelNumber();
+			return Long.toString(r.getModelNumber());
 		}
 
-		return -1;
+		return "";
 	}
 
 	@Override
-	public long part2(final Path input) throws IOException {
+	public String part2(final Path input) throws IOException {
 		final byte[][] alu_variables = loadData(input);
 
 		// Find the smallest valid input value
 		try {
 			execute(alu_variables, 0, 0, 0, true);
 		} catch (Result r) {
-			return r.getModelNumber();
+			return Long.toString(r.getModelNumber());
 		}
 
-		return -1;
+		return "";
 	}
 
 	private static void execute(final byte[][] aluVariables, final int n, final int z, final long modelNumber,

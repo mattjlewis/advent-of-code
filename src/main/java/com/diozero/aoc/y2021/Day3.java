@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.IntStream;
 
 import org.tinylog.Logger;
 
@@ -17,7 +16,7 @@ public class Day3 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
+	public String part1(Path input) throws IOException {
 		// Get the number of bits in a line
 		final int[] bit_counts = new int[Files.lines(input).findFirst().orElseThrow().length()];
 		final AtomicInteger num_lines = new AtomicInteger();
@@ -46,11 +45,11 @@ public class Day3 extends AocBase {
 
 		Logger.debug("numLines: {}, gamma: {}, epsilon: {}, power consumption: {}", num_lines.get(), gamma, epsilon,
 				gamma * epsilon);
-		return gamma * epsilon;
+		return Integer.toString(gamma * epsilon);
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		int num_bits = Files.lines(input).findFirst().orElseThrow().length();
 		int[] init_values = Files.lines(input).mapToInt(line -> Integer.parseInt(line, 2)).toArray();
 
@@ -67,7 +66,7 @@ public class Day3 extends AocBase {
 
 			// Filter values to only those with bit[i] equal to value
 			final int b = bit;
-			values = IntStream.of(values).filter(n -> ((n & (1 << b)) != 0) == value).toArray();
+			values = Arrays.stream(values).filter(n -> ((n & (1 << b)) != 0) == value).toArray();
 		}
 		int og_rating = values[0];
 
@@ -85,12 +84,12 @@ public class Day3 extends AocBase {
 
 			// Filter values to only those with bit[i] equal to value
 			final int b = bit;
-			values = IntStream.of(values).filter(n -> ((n & (1 << b)) != 0) == value).toArray();
+			values = Arrays.stream(values).filter(n -> ((n & (1 << b)) != 0) == value).toArray();
 		}
 		int co2s_rating = values[0];
 
 		Logger.debug("oxygen generator rating: {}, CO2 scrubber rating: {}, product: {}", og_rating, co2s_rating,
 				og_rating * co2s_rating);
-		return og_rating * co2s_rating;
+		return Integer.toString(og_rating * co2s_rating);
 	}
 }

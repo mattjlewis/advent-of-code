@@ -6,7 +6,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.tinylog.Logger;
 
@@ -18,7 +17,7 @@ public class Day4 extends AocBase {
 	}
 
 	private static BingoGame loadData(Path input) throws IOException {
-		final int[] numbers = Stream.of(Files.lines(input).findFirst().orElseThrow().split(","))
+		final int[] numbers = Arrays.stream(Files.lines(input).findFirst().orElseThrow().split(","))
 				.mapToInt(Integer::valueOf).toArray();
 		Logger.debug(Arrays.toString(numbers));
 
@@ -35,7 +34,7 @@ public class Day4 extends AocBase {
 				}
 				card = new BingoCard(new ArrayList<>(), new ArrayList<>());
 			} else {
-				card.addRow(Stream.of(card_lines[i].trim().split("\\s+")).mapToInt(Integer::parseInt).toArray());
+				card.addRow(Arrays.stream(card_lines[i].trim().split("\\s+")).mapToInt(Integer::parseInt).toArray());
 				added_to_list = false;
 			}
 		}
@@ -47,7 +46,7 @@ public class Day4 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
+	public String part1(Path input) throws IOException {
 		final BingoGame bg = loadData(input);
 
 		int winning_card_num = -1;
@@ -69,11 +68,11 @@ public class Day4 extends AocBase {
 		final BingoCard winning_card = bg.cards.get(winning_card_num);
 		Logger.debug("Final number: {}, Winning card sum: {}, Winning card score: {}", number, winning_card.getSum(),
 				winning_card.getSum() * number);
-		return winning_card.getSum() * number;
+		return Integer.toString(winning_card.getSum() * number);
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		final BingoGame bg = loadData(input);
 
 		int last_number = 0;
@@ -92,7 +91,7 @@ public class Day4 extends AocBase {
 		}
 		Logger.debug("last_number: {}, sum: {}, score: {}", last_number, last_winning_card.getSum(),
 				last_winning_card.getSum() * last_number);
-		return last_winning_card.getSum() * last_number;
+		return Integer.toString(last_winning_card.getSum() * last_number);
 	}
 
 	public static record BingoGame(int[] numbers, List<BingoCard> cards) {

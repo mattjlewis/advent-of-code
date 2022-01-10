@@ -15,17 +15,17 @@ public class Day2 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
+	public String part1(Path input) throws IOException {
 		List<PasswordRule> rules = Files.lines(input).map(PasswordRule::parse).toList();
 
-		return rules.stream().filter(PasswordRule::isValidSledRental).count();
+		return Long.toString(rules.stream().filter(PasswordRule::isValidSledRental).count());
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		List<PasswordRule> rules = Files.lines(input).map(PasswordRule::parse).toList();
 
-		return rules.stream().filter(PasswordRule::isValid).count();
+		return Long.toString(rules.stream().filter(PasswordRule::isValid).count());
 	}
 
 	private static record PasswordRule(int min, int max, char ch, String password) {

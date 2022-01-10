@@ -17,19 +17,19 @@ public class Day8 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
+	public String part1(Path input) throws IOException {
 		Instruction[] instructions = Files.lines(input).map(Instruction::parse).toArray(Instruction[]::new);
 
 		try {
-			return execute(instructions);
+			return Integer.toString(execute(instructions));
 		} catch (IllegalProgramException e) {
 			// Ignore
-			return e.acc();
+			return Integer.toString(e.acc());
 		}
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		Instruction[] orig_instructions = Files.lines(input).map(Instruction::parse).toArray(Instruction[]::new);
 
 		// First try changing each jmp instruction to nop
@@ -38,7 +38,7 @@ public class Day8 extends AocBase {
 		boolean iterate = true;
 		while (iterate) {
 			try {
-				return execute(instructions);
+				return Integer.toString(execute(instructions));
 			} catch (IllegalProgramException e) {
 				iterate = false;
 				for (int i = jmp_index; i < orig_instructions.length && !iterate; i++) {
@@ -60,7 +60,7 @@ public class Day8 extends AocBase {
 		iterate = true;
 		while (iterate) {
 			try {
-				return execute(instructions);
+				return Integer.toString(execute(instructions));
 			} catch (IllegalProgramException e) {
 				iterate = false;
 				for (int i = nop_index; i < orig_instructions.length && !iterate; i++) {
@@ -76,7 +76,7 @@ public class Day8 extends AocBase {
 			}
 		}
 
-		return 0;
+		return "";
 	}
 
 	private static int execute(Instruction[] instructions) throws IllegalProgramException {

@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.tinylog.Logger;
 
@@ -45,8 +44,9 @@ public class Day8 extends AocBase {
 		Map<String, Integer> patternToNumber;
 
 		public Line(String[] signalPatterns, String[] outputValues) {
-			this.signalPatterns = Stream.of(signalPatterns).map(Day8::sortCharactersInString).toArray(String[]::new);
-			this.outputValues = Stream.of(outputValues).map(Day8::sortCharactersInString).toArray(String[]::new);
+			this.signalPatterns = Arrays.stream(signalPatterns).map(Day8::sortCharactersInString)
+					.toArray(String[]::new);
+			this.outputValues = Arrays.stream(outputValues).map(Day8::sortCharactersInString).toArray(String[]::new);
 		}
 
 		@Override
@@ -67,20 +67,20 @@ public class Day8 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
-		return Files.lines(input).map(line -> line.split("\\|")[1].trim()).map(line -> line.split(" "))
-				.mapToLong(Day8::count1478).sum();
+	public String part1(Path input) throws IOException {
+		return Long.toString(Files.lines(input).map(line -> line.split("\\|")[1].trim()).map(line -> line.split(" "))
+				.mapToLong(Day8::count1478).sum());
 	}
 
 	public static long count1478(String[] values) {
-		return Stream.of(values).filter(value -> {
+		return Arrays.stream(values).filter(value -> {
 			int len = value.length();
 			return len == 2 || len == 4 || len == 3 || len == 7;
 		}).count();
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		final List<Line> lines = Files.lines(input).map(Day8::parseLine).collect(Collectors.toUnmodifiableList());
 
 		for (Line line : lines) {
@@ -225,7 +225,7 @@ public class Day8 extends AocBase {
 			sum += i;
 		}
 
-		return sum;
+		return Integer.toString(sum);
 	}
 
 	private static Set<Character> toSet(String s) {

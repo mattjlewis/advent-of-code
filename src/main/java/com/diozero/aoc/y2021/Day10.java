@@ -31,21 +31,21 @@ public class Day10 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
-		return Files.lines(input).map(Day10::findClosing)
+	public String part1(Path input) throws IOException {
+		return Integer.toString(Files.lines(input).map(Day10::findClosing)
 				.filter(result -> result.isIncomplete() && result.isCorrupted())
-				.mapToInt(result -> PART1_ERROR_SCORES.get(result.getOpenChar()).intValue()).sum();
+				.mapToInt(result -> PART1_ERROR_SCORES.get(result.getOpenChar()).intValue()).sum());
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		final long[] scores = Files.lines(input).map(Day10::findClosing)
 				.filter(result -> result.isIncomplete() && result.isUncorrupted())
 				.mapToLong(result -> result.getCloseCharStack().stream().mapToLong(ch -> 1 + CLOSE_CHARS.indexOf(ch))
 						.reduce(0, (a, b) -> 5 * a + b))
 				.sorted().toArray();
 		Logger.debug("Scores: " + Arrays.toString(scores));
-		return scores[scores.length / 2];
+		return Long.toString(scores[scores.length / 2]);
 	}
 
 	private static Result findClosing(String line) {

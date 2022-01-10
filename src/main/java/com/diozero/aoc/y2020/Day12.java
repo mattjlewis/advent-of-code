@@ -13,7 +13,7 @@ public class Day12 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
+	public String part1(Path input) throws IOException {
 		List<Instruction> instructions = Files.lines(input).map(Instruction::parse).toList();
 
 		// The ship starts 0, 0 facing east
@@ -64,11 +64,11 @@ public class Day12 extends AocBase {
 			}
 		}
 
-		return Math.abs(pos_x) + Math.abs(pos_y);
+		return Long.toString(Math.abs(pos_x) + Math.abs(pos_y));
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		List<Instruction> instructions = Files.lines(input).map(Instruction::parse).toList();
 
 		// The ship starts at 0, 0
@@ -137,7 +137,7 @@ public class Day12 extends AocBase {
 			}
 		}
 
-		return Math.abs(ship_x) + Math.abs(ship_y);
+		return Long.toString(Math.abs(ship_x) + Math.abs(ship_y));
 	}
 
 	private enum Action {

@@ -14,7 +14,7 @@ public class Day1 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
+	public String part1(Path input) throws IOException {
 		final int[] values = loadIntegerArray(input);
 		Logger.debug(Arrays.toString(values));
 
@@ -28,11 +28,11 @@ public class Day1 extends AocBase {
 			}
 		}
 
-		return numbers[0] * numbers[1];
+		return Long.toString(numbers[0] * numbers[1]);
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		final int[] values = loadIntegerArray(input);
 		Logger.debug(Arrays.toString(values));
 
@@ -48,6 +48,6 @@ public class Day1 extends AocBase {
 			}
 		}
 
-		return numbers[0] * numbers[1] * numbers[2];
+		return Long.toString(numbers[0] * numbers[1] * numbers[2]);
 	}
 }

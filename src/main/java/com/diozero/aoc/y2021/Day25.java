@@ -18,7 +18,7 @@ public class Day25 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
+	public String part1(Path input) throws IOException {
 		char[][] cucumbers = Files.lines(input).map(String::toCharArray).toArray(char[][]::new);
 		int width = cucumbers[0].length;
 		int height = cucumbers.length;
@@ -88,7 +88,7 @@ public class Day25 extends AocBase {
 			}
 		} while (moved);
 
-		return step;
+		return Integer.toString(step);
 	}
 
 	private static char[][] clone(char[][] chars) {
@@ -101,9 +101,8 @@ public class Day25 extends AocBase {
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
-		// TODO Auto-generated method stub
-		return 0;
+	public String part2(Path input) throws IOException {
+		return "";
 	}
 
 	private static void print(char[][] cucumbers) {

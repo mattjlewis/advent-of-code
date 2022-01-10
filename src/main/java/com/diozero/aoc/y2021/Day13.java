@@ -19,18 +19,19 @@ public class Day13 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
+	public String part1(Path input) throws IOException {
 		final Puzzle puzzle = loadData(input);
 
 		// Part 1 calculates the number of dots after one fold
-		return fold(puzzle.matrix(), Arrays.asList(puzzle.folds().get(0)));
+		return Integer.toString(fold(puzzle.matrix(), Arrays.asList(puzzle.folds().get(0))));
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		final Puzzle puzzle = loadData(input);
 
-		return fold(puzzle.matrix(), puzzle.folds());
+		// return "AHGCPGAU";
+		return Integer.toString(fold(puzzle.matrix(), puzzle.folds()));
 	}
 
 	private static int fold(final boolean[][] startMatrix, final List<Fold> folds) {

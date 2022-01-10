@@ -14,16 +14,16 @@ public class Day3 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
-		return getHits(loadData(input), 3, 1);
+	public String part1(Path input) throws IOException {
+		return Long.toString(getHits(loadData(input), 3, 1));
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		Boolean[][] trees = loadData(input);
 
-		return getHits(trees, 1, 1) * getHits(trees, 3, 1) * getHits(trees, 5, 1) * getHits(trees, 7, 1)
-				* getHits(trees, 1, 2);
+		return Long.toString(getHits(trees, 1, 1) * getHits(trees, 3, 1) * getHits(trees, 5, 1) * getHits(trees, 7, 1)
+				* getHits(trees, 1, 2));
 	}
 
 	private static void print(Boolean[][] trees, int sledX, int sledY) {

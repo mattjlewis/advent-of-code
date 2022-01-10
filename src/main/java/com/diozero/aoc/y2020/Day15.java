@@ -3,10 +3,10 @@ package com.diozero.aoc.y2020;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import com.diozero.aoc.AocBase;
 
@@ -16,17 +16,17 @@ public class Day15 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
-		final int[] starting_numbers = Stream.of(Files.lines(input).findFirst().orElseThrow().split(","))
+	public String part1(Path input) throws IOException {
+		final int[] starting_numbers = Arrays.stream(Files.lines(input).findFirst().orElseThrow().split(","))
 				.mapToInt(Integer::parseInt).toArray();
-		return computeNth(starting_numbers, 2020);
+		return Integer.toString(computeNth(starting_numbers, 2020));
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
-		final int[] starting_numbers = Stream.of(Files.lines(input).findFirst().orElseThrow().split(","))
+	public String part2(Path input) throws IOException {
+		final int[] starting_numbers = Arrays.stream(Files.lines(input).findFirst().orElseThrow().split(","))
 				.mapToInt(Integer::parseInt).toArray();
-		return computeNth(starting_numbers, 30_000_000);
+		return Integer.toString(computeNth(starting_numbers, 30_000_000));
 	}
 
 	private static final int computeNth(final int[] startingNumbers, final int iterations) {

@@ -13,7 +13,7 @@ public class Day11 extends AocBase {
 	}
 
 	@Override
-	public long part1(Path input) throws IOException {
+	public String part1(Path input) throws IOException {
 		final int[][] energy_levels = AocBase.loadIntegerMatrix(input);
 
 		final int steps = 100;
@@ -24,11 +24,11 @@ public class Day11 extends AocBase {
 			printGrid(i + 1, energy_levels);
 		}
 
-		return num_flashes;
+		return Integer.toString(num_flashes);
 	}
 
 	@Override
-	public long part2(Path input) throws IOException {
+	public String part2(Path input) throws IOException {
 		final int[][] energy_levels = AocBase.loadIntegerMatrix(input);
 
 		final int grid_size = energy_levels.length * energy_levels[0].length;
@@ -43,7 +43,7 @@ public class Day11 extends AocBase {
 			}
 		}
 
-		return step;
+		return Integer.toString(step);
 	}
 
 	private static int incrementGrid(int[][] energyLevels) {
