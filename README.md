@@ -3,8 +3,9 @@ Java solutions for the [Advent of Code](https://adventofcode.com/) daily challen
 
 Goals:
 
-* Readability
+* The code is readable and logical, includes meaningful comments and debug statements, and is easy to comprehend
 * Efficiency in terms of execution time and memory allocation
 * Learning, in particular modern Java features and algorithms
+* No external dependencies other than a logging framework (tinylog)
 
 Warning - includes answers to enable self verification!

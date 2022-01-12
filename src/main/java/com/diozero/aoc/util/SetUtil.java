@@ -25,8 +25,4 @@ public final class SetUtil {
 		intersection.retainAll(b);
 		return intersection;
 	}
-
-	public static <T> Set<T> clone(Set<T> set) {
-		return new HashSet<>(set);
-	}
 }

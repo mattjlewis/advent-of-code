@@ -86,7 +86,7 @@ public abstract class AocBase {
 		if (answers == null || answers.length < part) {
 			System.out.format("%d %s part %d: %s. Duration: %dms%n", year, day, part, result, duration);
 		} else {
-			if (result.equals(answers[part - 1])) {
+			if (result != null && result.equals(answers[part - 1])) {
 				System.out.format("%d %s part %d - Correct answer: %s. Duration: %dms%n", year, day, part, result,
 						duration);
 			} else {
