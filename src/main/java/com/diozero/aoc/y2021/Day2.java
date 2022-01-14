@@ -60,7 +60,7 @@ public class Day2 extends AocBase {
 	public static record Instruction(Movement movement, int amount) {
 		public static Instruction create(String line) {
 			String[] parts = line.split(" ");
-			var movement = Movement.valueOf(parts[0].toUpperCase());
+			Movement movement = Movement.valueOf(parts[0].toUpperCase());
 			int amount = Integer.parseInt(parts[1]);
 			if (movement == Movement.UP) {
 				amount *= -1;

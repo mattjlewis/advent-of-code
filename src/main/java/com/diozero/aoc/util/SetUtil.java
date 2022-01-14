@@ -25,4 +25,16 @@ public final class SetUtil {
 		intersection.retainAll(b);
 		return intersection;
 	}
+
+	public static <T> long intersectionCount(final Set<T> a, final Set<T> b) {
+		return a.stream().filter(b::contains).count();
+	}
+
+	public static <T> void addOrRemove(Set<T> set, T e) {
+		if (set.contains(e)) {
+			set.remove(e);
+		} else {
+			set.add(e);
+		}
+	}
 }
