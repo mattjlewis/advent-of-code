@@ -4,21 +4,26 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
 
-public class Day5 extends AocBase {
+public class Day5 extends Day {
 	public static void main(String[] args) {
 		new Day5().run();
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
+	public String name() {
+		return "Binary Boarding";
+	}
+
+	@Override
+	public String part1(final Path input) throws IOException {
 		return Integer.toString(Files.lines(input).mapToInt(Day5::getSeatId).max().orElseThrow());
 	}
 
 	@Override
-	public String part2(Path input) throws IOException {
-		int[] populated_seat_ids = Files.lines(input).mapToInt(Day5::getSeatId).sorted().toArray();
+	public String part2(final Path input) throws IOException {
+		final int[] populated_seat_ids = Files.lines(input).mapToInt(Day5::getSeatId).sorted().toArray();
 
 		int my_seat_id = -1;
 		// Find the gap in seat ids
@@ -32,8 +37,8 @@ public class Day5 extends AocBase {
 		return Integer.toString(my_seat_id);
 	}
 
-	private static final int getSeatId(String line) {
-		char[] chars = line.toCharArray();
+	private static final int getSeatId(final String line) {
+		final char[] chars = line.toCharArray();
 
 		// Process the F and Bs to get the row number
 		int start = 0;

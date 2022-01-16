@@ -10,24 +10,30 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
 
-public class Day6 extends AocBase {
+public class Day6 extends Day {
 	public static void main(String[] args) {
 		new Day6().run();
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
+	public String name() {
+		return "Custom Customs";
+	}
+
+	@Override
+	public String part1(final Path input) throws IOException {
 		return Integer.toString(loadData(input, false).stream().mapToInt(Set::size).sum());
 	}
 
 	@Override
-	public String part2(Path input) throws IOException {
+	public String part2(final Path input) throws IOException {
 		return Integer.toString(loadData(input, true).stream().mapToInt(Set::size).sum());
 	}
 
-	private static List<Set<Character>> loadData(Path input, boolean union) throws FileNotFoundException, IOException {
+	private static List<Set<Character>> loadData(final Path input, final boolean union)
+			throws FileNotFoundException, IOException {
 		final List<Set<Character>> group_answers = new ArrayList<>();
 		try (BufferedReader br = new BufferedReader(new FileReader(input.toFile()))) {
 			Set<Character> answers = null;

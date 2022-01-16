@@ -13,9 +13,9 @@ import java.util.stream.Collectors;
 
 import org.tinylog.Logger;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
 
-public class Day12 extends AocBase {
+public class Day12 extends Day {
 	private static final String START_NAME = "start";
 	private static final String END_NAME = "end";
 
@@ -24,7 +24,12 @@ public class Day12 extends AocBase {
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
+	public String name() {
+		return "Passage Pathing";
+	}
+
+	@Override
+	public String part1(final Path input) throws IOException {
 		final Map<String, GraphNode> nodes = loadData(input);
 
 		final Deque<Deque<GraphNode>> search_space = new ArrayDeque<>();
@@ -56,7 +61,7 @@ public class Day12 extends AocBase {
 	}
 
 	@Override
-	public String part2(Path input) throws IOException {
+	public String part2(final Path input) throws IOException {
 		final Map<String, GraphNode> nodes = loadData(input);
 
 		final Deque<Deque<GraphNode>> search_space = new ArrayDeque<>();
@@ -101,7 +106,7 @@ public class Day12 extends AocBase {
 		return Integer.toString(num_paths);
 	}
 
-	private static Map<String, GraphNode> loadData(Path input) throws IOException {
+	private static Map<String, GraphNode> loadData(final Path input) throws IOException {
 		final Map<String, GraphNode> nodes = new HashMap<>();
 		// Load all nodes
 		Files.lines(input).forEach(line -> processLine(line.split("-"), nodes));
@@ -109,12 +114,12 @@ public class Day12 extends AocBase {
 		return nodes;
 	}
 
-	private static void processLine(String[] nodeNames, Map<String, GraphNode> nodes) {
+	private static void processLine(final String[] nodeNames, final Map<String, GraphNode> nodes) {
 		nodes.computeIfAbsent(nodeNames[0], node_name -> new GraphNode(node_name)).addNeighbour(nodeNames[1]);
 		nodes.computeIfAbsent(nodeNames[1], node_name -> new GraphNode(node_name)).addNeighbour(nodeNames[0]);
 	}
 
-	private static Deque<GraphNode> joinAsNewPath(Deque<GraphNode> path, GraphNode node) {
+	private static Deque<GraphNode> joinAsNewPath(final Deque<GraphNode> path, final GraphNode node) {
 		// Create a new path containing all of the nodes in path ...
 		final Deque<GraphNode> new_path = new ArrayDeque<>(path);
 		// ... and add node to the end of the path

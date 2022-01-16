@@ -6,15 +6,21 @@ import java.nio.file.Path;
 
 import org.tinylog.Logger;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
+import com.diozero.aoc.util.ArrayUtil;
 
-public class Day25 extends AocBase {
+public class Day25 extends Day {
 	private static final char EAST = '>';
 	private static final char SOUTH = 'v';
 	private static final char SPACE = '.';
 
 	public static void main(String[] args) {
 		new Day25().run();
+	}
+
+	@Override
+	public String name() {
+		return "Sea Cucumber";
 	}
 
 	@Override
@@ -25,7 +31,7 @@ public class Day25 extends AocBase {
 
 		if (Logger.isDebugEnabled()) {
 			System.out.println("Initial state:");
-			print(cucumbers);
+			ArrayUtil.print(cucumbers);
 			System.out.println();
 		}
 
@@ -41,7 +47,7 @@ public class Day25 extends AocBase {
 		int step = 0;
 		do {
 			moved = false;
-			char[][] new_cucumbers = clone(cucumbers);
+			char[][] new_cucumbers = ArrayUtil.clone(cucumbers);
 
 			// First move the east facing sea cucumbers
 			for (int y = 0; y < height; y++) {
@@ -60,7 +66,7 @@ public class Day25 extends AocBase {
 			}
 
 			cucumbers = new_cucumbers;
-			new_cucumbers = clone(cucumbers);
+			new_cucumbers = ArrayUtil.clone(cucumbers);
 
 			// Then move the south facing sea cucumbers
 			for (int x = 0; x < width; x++) {
@@ -83,7 +89,7 @@ public class Day25 extends AocBase {
 
 			if (Logger.isDebugEnabled()) {
 				System.out.println("After " + step + " step" + (step > 1 ? "s" : "") + ":");
-				print(cucumbers);
+				ArrayUtil.print(cucumbers);
 				System.out.println();
 			}
 		} while (moved);
@@ -91,26 +97,8 @@ public class Day25 extends AocBase {
 		return Integer.toString(step);
 	}
 
-	private static char[][] clone(char[][] chars) {
-		char[][] clone = new char[chars.length][chars[0].length];
-		for (int y = 0; y < chars.length; y++) {
-			System.arraycopy(chars[y], 0, clone[y], 0, chars.length);
-		}
-
-		return clone;
-	}
-
 	@Override
 	public String part2(Path input) throws IOException {
 		return "";
-	}
-
-	private static void print(char[][] cucumbers) {
-		for (int y = 0; y < cucumbers.length; y++) {
-			for (int x = 0; x < cucumbers[0].length; x++) {
-				System.out.print(cucumbers[y][x]);
-			}
-			System.out.println();
-		}
 	}
 }

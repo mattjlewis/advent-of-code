@@ -5,18 +5,24 @@ import java.nio.file.Path;
 
 import org.tinylog.Logger;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
 import com.diozero.aoc.util.Dijkstra;
 import com.diozero.aoc.util.Node;
+import com.diozero.aoc.util.TextParser;
 
-public class Day15 extends AocBase {
+public class Day15 extends Day {
 	public static void main(String[] args) {
 		new Day15().run();
 	}
 
 	@Override
+	public String name() {
+		return "Chiton";
+	}
+
+	@Override
 	public String part1(Path input) throws IOException {
-		int[][] matrix = AocBase.loadIntegerMatrix(input);
+		int[][] matrix = TextParser.loadIntMatrix(input);
 
 		// Convert the integer matrix into a graph
 		Node[][] node_matrix = new Node[matrix.length][matrix[0].length];
@@ -45,8 +51,8 @@ public class Day15 extends AocBase {
 
 	@Override
 	public String part2(Path input) throws IOException {
-		int[][] matrix = AocBase.loadIntegerMatrix(input);
-		AocBase.printGrid(matrix);
+		int[][] matrix = TextParser.loadIntMatrix(input);
+		Day.printGrid(matrix);
 
 		// Expand the matrix - this could be optimised...
 		int expansion = 5;
@@ -83,7 +89,7 @@ public class Day15 extends AocBase {
 			}
 		}
 		matrix = new_matrix;
-		AocBase.printGrid(matrix);
+		Day.printGrid(matrix);
 
 		// Convert the integer matrix into a graph
 		Node[][] node_matrix = new Node[matrix.length][matrix.length];

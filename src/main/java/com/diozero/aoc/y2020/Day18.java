@@ -5,28 +5,33 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
 
-public class Day18 extends AocBase {
+public class Day18 extends Day {
 	public static void main(String[] args) {
 		new Day18().run();
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
+	public String name() {
+		return "Operation Order";
+	}
+
+	@Override
+	public String part1(final Path input) throws IOException {
 		// Operators have the same precedence, evaluate left-to-right
 		return Long.toString(Files.lines(input)
 				.mapToLong(line -> evaluate(line.replace(" ", ""), new AtomicInteger(), false)).sum());
 	}
 
 	@Override
-	public String part2(Path input) throws IOException {
+	public String part2(final Path input) throws IOException {
 		// Addition is evaluated before multiplication
 		return Long.toString(
 				Files.lines(input).mapToLong(line -> evaluate(line.replace(" ", ""), new AtomicInteger(), true)).sum());
 	}
 
-	private static long evaluate(String line, AtomicInteger pos, boolean additionPrecedence) {
+	private static long evaluate(final String line, final AtomicInteger pos, final boolean additionPrecedence) {
 		/*-
 		 * Grammar:
 		 * Expression := Term [+|- Term]*
@@ -66,8 +71,8 @@ public class Day18 extends AocBase {
 		return val;
 	}
 
-	private static long parseTerm(String line, AtomicInteger pos, boolean additionPrecedence) {
-		char ch = line.charAt(pos.getAndIncrement());
+	private static long parseTerm(final String line, final AtomicInteger pos, final boolean additionPrecedence) {
+		final char ch = line.charAt(pos.getAndIncrement());
 		if (ch == '(') {
 			return evaluate(line, pos, additionPrecedence);
 		}

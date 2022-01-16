@@ -7,15 +7,20 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.tinylog.Logger;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
 
-public class Day2 extends AocBase {
+public class Day2 extends Day {
 	public static void main(String[] args) {
 		new Day2().run();
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
+	public String name() {
+		return "Dive!";
+	}
+
+	@Override
+	public String part1(final Path input) throws IOException {
 		final AtomicInteger horizontal = new AtomicInteger();
 		final AtomicInteger depth = new AtomicInteger();
 		Files.lines(input).map(Instruction::create).forEach(instruction -> {
@@ -28,12 +33,14 @@ public class Day2 extends AocBase {
 				break;
 			}
 		});
+
 		Logger.debug("depth: {}, horizontal: {}, d*h={}", depth, horizontal, depth.get() * horizontal.get());
+
 		return Integer.toString(depth.get() * horizontal.get());
 	}
 
 	@Override
-	public String part2(Path input) throws IOException {
+	public String part2(final Path input) throws IOException {
 		final AtomicInteger horizontal = new AtomicInteger();
 		final AtomicInteger depth = new AtomicInteger();
 		final AtomicInteger aim = new AtomicInteger();
@@ -48,8 +55,10 @@ public class Day2 extends AocBase {
 				break;
 			}
 		});
+
 		Logger.debug("depth: {}, horizontal: {}, aim={}, d*h={}", depth, horizontal, aim,
 				depth.get() * horizontal.get());
+
 		return Integer.toString(depth.get() * horizontal.get());
 	}
 
@@ -58,13 +67,14 @@ public class Day2 extends AocBase {
 	}
 
 	public static record Instruction(Movement movement, int amount) {
-		public static Instruction create(String line) {
-			String[] parts = line.split(" ");
-			Movement movement = Movement.valueOf(parts[0].toUpperCase());
+		public static Instruction create(final String line) {
+			final String[] parts = line.split(" ");
+			final Movement movement = Movement.valueOf(parts[0].toUpperCase());
 			int amount = Integer.parseInt(parts[1]);
 			if (movement == Movement.UP) {
 				amount *= -1;
 			}
+
 			return new Instruction(movement, amount);
 		}
 	}

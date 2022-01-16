@@ -12,18 +12,18 @@ import java.util.Map;
 
 import org.tinylog.Logger;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
 
-public class Day10 extends AocBase {
+public class Day10 extends Day {
 	private static final List<Character> OPEN_CHARS = Arrays.asList('(', '[', '{', '<');
 	private static final List<Character> CLOSE_CHARS = Arrays.asList(')', ']', '}', '>');
 	private static final Map<Character, Integer> PART1_ERROR_SCORES;
 	static {
 		PART1_ERROR_SCORES = new HashMap<>();
-		PART1_ERROR_SCORES.put(')', 3);
-		PART1_ERROR_SCORES.put(']', 57);
-		PART1_ERROR_SCORES.put('}', 1197);
-		PART1_ERROR_SCORES.put('>', 25137);
+		PART1_ERROR_SCORES.put(Character.valueOf(')'), Integer.valueOf(3));
+		PART1_ERROR_SCORES.put(Character.valueOf(']'), Integer.valueOf(57));
+		PART1_ERROR_SCORES.put(Character.valueOf('}'), Integer.valueOf(1197));
+		PART1_ERROR_SCORES.put(Character.valueOf('>'), Integer.valueOf(25137));
 	}
 
 	public static void main(String[] args) {
@@ -31,14 +31,19 @@ public class Day10 extends AocBase {
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
+	public String name() {
+		return "Syntax Scoring";
+	}
+
+	@Override
+	public String part1(final Path input) throws IOException {
 		return Integer.toString(Files.lines(input).map(Day10::findClosing)
 				.filter(result -> result.isIncomplete() && result.isCorrupted())
 				.mapToInt(result -> PART1_ERROR_SCORES.get(result.getOpenChar()).intValue()).sum());
 	}
 
 	@Override
-	public String part2(Path input) throws IOException {
+	public String part2(final Path input) throws IOException {
 		final long[] scores = Files.lines(input).map(Day10::findClosing)
 				.filter(result -> result.isIncomplete() && result.isUncorrupted())
 				.mapToLong(result -> result.getCloseCharStack().stream().mapToLong(ch -> 1 + CLOSE_CHARS.indexOf(ch))

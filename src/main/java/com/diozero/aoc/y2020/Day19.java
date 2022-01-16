@@ -14,15 +14,20 @@ import java.util.stream.IntStream;
 
 import org.tinylog.Logger;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
 
-public class Day19 extends AocBase {
+public class Day19 extends Day {
 	public static void main(String[] args) {
 		new Day19().run();
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
+	public String name() {
+		return "Monster Messages";
+	}
+
+	@Override
+	public String part1(final Path input) throws IOException {
 		final PuzzleInput puzzle_input = PuzzleInput.parse(input);
 
 		final Pattern p = Pattern
@@ -32,7 +37,7 @@ public class Day19 extends AocBase {
 	}
 
 	@Override
-	public String part2(Path input) throws IOException {
+	public String part2(final Path input) throws IOException {
 		final PuzzleInput puzzle_input = PuzzleInput.parse(input);
 
 		/*-
@@ -52,7 +57,7 @@ public class Day19 extends AocBase {
 	}
 
 	private static record PuzzleInput(Map<Integer, Rule> rules, List<String> values) {
-		public static PuzzleInput parse(Path input) throws IOException {
+		public static PuzzleInput parse(final Path input) throws IOException {
 			final Map<Integer, Rule> rules = new HashMap<>();
 			final List<String> values = new ArrayList<>();
 
@@ -78,7 +83,7 @@ public class Day19 extends AocBase {
 	}
 
 	private static record Rule(Integer index, Optional<String> literal, Optional<List<List<Integer>>> subRules) {
-		public static Rule parse(String line) {
+		public static Rule parse(final String line) {
 			String[] parts = line.split(": ");
 			Integer index = Integer.valueOf(parts[0]);
 			if (parts[1].charAt(0) == '"') {
@@ -89,11 +94,11 @@ public class Day19 extends AocBase {
 					.map(s -> Arrays.stream(s.trim().split(" ")).map(Integer::valueOf).toList()).toList()));
 		}
 
-		public String buildRegex(Map<Integer, Rule> rules) {
+		public String buildRegex(final Map<Integer, Rule> rules) {
 			return buildRegex(rules, new HashMap<>());
 		}
 
-		private String buildRegex(Map<Integer, Rule> rules, Map<Integer, String> regexCache) {
+		private String buildRegex(final Map<Integer, Rule> rules, final Map<Integer, String> regexCache) {
 			if (literal.isPresent()) {
 				return literal.get();
 			}

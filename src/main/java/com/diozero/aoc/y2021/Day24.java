@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
 
 /*-
  * Maximum: 99,394,899,891,971
@@ -35,33 +35,14 @@ import com.diozero.aoc.AocBase;
  * E.g. Max row 4, prev z = 10,755; 10,755 % 26 = 17; 17 + -8 = 9 == Input (9)
  * E.g. Wrong row 12, prev z = 10,384; 10,384 % 26 = 10; 10 + -1 = 9 != Input (8)
  */
-public class Day24 extends AocBase {
+public class Day24 extends Day {
 	public static void main(String[] args) {
 		new Day24().run();
 	}
 
-	private static byte[][] loadData(final Path input) throws IOException {
-		final List<Instruction> alu = Files.lines(input).map(Instruction::parse).toList();
-
-		/*
-		 * The ALU has 14 repeating blocks each with 18 instructions, one block for each
-		 * of the 14 model number digits. Only the Z variable carries over between
-		 * instruction blocks; W, X, and Y all get reset.
-		 *
-		 * Note the only difference between ALU blocks is the literal values on lines 5,
-		 * 6 and 16.
-		 */
-		final List<List<Instruction>> alu_blocks = new ArrayList<>();
-		for (int i = 0; i < 14; i++) {
-			alu_blocks.add(alu.subList(i * 18, (i + 1) * 18));
-		}
-
-		// Only the literal values in instructions 4, 5 and 15 are required from each
-		// ALU block
-		byte[][] alu_variables = alu_blocks.stream().map(block -> new byte[] { block.get(4).valB.byteValue(),
-				block.get(5).valB.byteValue(), block.get(15).valB.byteValue() }).toArray(byte[][]::new);
-
-		return alu_variables;
+	@Override
+	public String name() {
+		return "Arithmetic Logic Unit";
 	}
 
 	@Override
@@ -90,6 +71,30 @@ public class Day24 extends AocBase {
 		}
 
 		return "";
+	}
+
+	private static byte[][] loadData(final Path input) throws IOException {
+		final List<Instruction> alu = Files.lines(input).map(Instruction::parse).toList();
+
+		/*
+		 * The ALU has 14 repeating blocks each with 18 instructions, one block for each
+		 * of the 14 model number digits. Only the Z variable carries over between
+		 * instruction blocks; W, X, and Y all get reset.
+		 *
+		 * Note the only difference between ALU blocks is the literal values on lines 5,
+		 * 6 and 16.
+		 */
+		final List<List<Instruction>> alu_blocks = new ArrayList<>();
+		for (int i = 0; i < 14; i++) {
+			alu_blocks.add(alu.subList(i * 18, (i + 1) * 18));
+		}
+
+		// Only the literal values in instructions 4, 5 and 15 are required from each
+		// ALU block
+		byte[][] alu_variables = alu_blocks.stream().map(block -> new byte[] { block.get(4).valB.byteValue(),
+				block.get(5).valB.byteValue(), block.get(15).valB.byteValue() }).toArray(byte[][]::new);
+
+		return alu_variables;
 	}
 
 	private static void execute(final byte[][] aluVariables, final int n, final int z, final long modelNumber,

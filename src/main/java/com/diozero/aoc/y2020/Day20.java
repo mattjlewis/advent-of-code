@@ -15,9 +15,9 @@ import java.util.regex.Pattern;
 
 import org.tinylog.Logger;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
 
-public class Day20 extends AocBase {
+public class Day20 extends Day {
 	private static final char PIXEL = '#';
 	private static final char BLANK = '.';
 	private static final char SEA_HORSE = 'O';
@@ -27,14 +27,19 @@ public class Day20 extends AocBase {
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
+	public String name() {
+		return "Jurassic Jigsaw";
+	}
+
+	@Override
+	public String part1(final Path input) throws IOException {
 		// Multiply the id of each corner
 		return Long.toString(loadData(input).stream().filter(tile -> tile.neighbours().size() == 2).mapToLong(Tile::id)
 				.reduce(1, (a, b) -> a * b));
 	}
 
 	@Override
-	public String part2(Path input) throws IOException {
+	public String part2(final Path input) throws IOException {
 		// Load the list of unaligned tiles inc information on neighbouring tiles
 		final List<Tile> unaligned_tiles_with_neighbours = loadData(input);
 
@@ -65,8 +70,8 @@ public class Day20 extends AocBase {
 		return Integer.toString(countOccurrences(image, PIXEL));
 	}
 
-	private static List<Tile> loadData(Path input) throws FileNotFoundException, IOException {
-		List<Tile> tiles = new ArrayList<>();
+	private static List<Tile> loadData(final Path input) throws FileNotFoundException, IOException {
+		final List<Tile> tiles = new ArrayList<>();
 		try (BufferedReader br = new BufferedReader(new FileReader(input.toFile()))) {
 			Pattern pattern = Pattern.compile("Tile (\\d+):");
 			int tile_number = -1;
@@ -112,7 +117,7 @@ public class Day20 extends AocBase {
 		return tiles;
 	}
 
-	private static void populateNeighbours(List<Tile> tiles) {
+	private static void populateNeighbours(final List<Tile> tiles) {
 		for (Tile tile : tiles) {
 			// A tile can have a maximum of 4 neighbours
 			if (tile.neighbours().size() == 4) {
@@ -125,7 +130,7 @@ public class Day20 extends AocBase {
 					continue;
 				}
 
-				int[] tile_edge = tile.getEdge(edge);
+				final int[] tile_edge = tile.getEdge(edge);
 
 				for (Tile other_tile : tiles) {
 					if (tile == other_tile) {
@@ -133,7 +138,7 @@ public class Day20 extends AocBase {
 					}
 
 					for (Tile.Edge other_edge : Tile.Edge.values()) {
-						int[] other_tile_edge = other_tile.getEdge(other_edge);
+						final int[] other_tile_edge = other_tile.getEdge(other_edge);
 						if (Arrays.equals(tile_edge, other_tile_edge)
 								|| Arrays.equals(tile_edge, reverse(other_tile_edge))) {
 							tile.setNeighbour(edge, other_tile);
@@ -145,11 +150,11 @@ public class Day20 extends AocBase {
 		}
 	}
 
-	private static int[] extractImageData(String line) {
+	private static int[] extractImageData(final String line) {
 		return line.chars().toArray();
 	}
 
-	private static Tile getTopLeftCorner(List<Tile> unalignedTilesWithNeighbours) {
+	private static Tile getTopLeftCorner(final List<Tile> unalignedTilesWithNeighbours) {
 		// Start with the first corner tile and align so that it is top-left
 		final Tile start_corner = unalignedTilesWithNeighbours.stream().filter(tile -> tile.neighbours().size() == 2)
 				.findFirst().orElseThrow();
@@ -168,8 +173,8 @@ public class Day20 extends AocBase {
 		return start_corner;
 	}
 
-	private static int[] reverse(int[] array) {
-		int[] reversed = new int[array.length];
+	private static int[] reverse(final int[] array) {
+		final int[] reversed = new int[array.length];
 
 		for (int i = 0; i < reversed.length; i++) {
 			reversed[i] = array[array.length - i - 1];
@@ -178,10 +183,10 @@ public class Day20 extends AocBase {
 		return reversed;
 	}
 
-	private static Tile[][] alignTiles(Tile topLeftCorner, List<Tile> unalignedTilesWithNeighbours) {
-		int size = (int) Math.sqrt(unalignedTilesWithNeighbours.size());
+	private static Tile[][] alignTiles(final Tile topLeftCorner, final List<Tile> unalignedTilesWithNeighbours) {
+		final int size = (int) Math.sqrt(unalignedTilesWithNeighbours.size());
 
-		Tile[][] aligned_tile_grid = new Tile[size][size];
+		final Tile[][] aligned_tile_grid = new Tile[size][size];
 		Tile tile;
 		for (int y = 0; y < size; y++) {
 			if (y == 0) {
@@ -207,11 +212,13 @@ public class Day20 extends AocBase {
 		return aligned_tile_grid;
 	}
 
-	private static int[][] extractImage(Tile[][] alignedTileGrid) {
+	private static int[][] extractImage(final Tile[][] alignedTileGrid) {
 		// Join into one big grid by removing the borders on each tile
-		int tile_width = alignedTileGrid[0][0].data.length - 2;
-		int tile_height = alignedTileGrid[0][0].data[0].length - 2;
-		int[][] image = new int[alignedTileGrid.length * tile_height][alignedTileGrid[0].length * tile_width];
+		final int tile_width = alignedTileGrid[0][0].data.length - 2;
+		final int tile_height = alignedTileGrid[0][0].data[0].length - 2;
+
+		final int[][] image = new int[alignedTileGrid.length * tile_height][alignedTileGrid[0].length * tile_width];
+
 		for (int tile_y = 0; tile_y < alignedTileGrid.length; tile_y++) {
 			for (int tile_x = 0; tile_x < alignedTileGrid[tile_y].length; tile_x++) {
 				int[][] tile_data = alignedTileGrid[tile_y][tile_x].data;
@@ -226,29 +233,18 @@ public class Day20 extends AocBase {
 		return image;
 	}
 
-	private static List<Tile> getOrientations(int[][] image) {
+	private static List<Tile> getOrientations(final int[][] image) {
 		// Calculate every possible orientation of image (8)
-		Tile orig = new Tile(0, image);
+		final Tile orig = new Tile(0, image);
+		final List<Tile> orientations = new ArrayList<>();
 
-		List<Tile> orientations = new ArrayList<>();
-
-		boolean flip_horiz = true;
-		for (int i = 0; i < Tile.Edge.values().length; i++) {
+		int i = 0;
+		for (Tile.Transformation transformation : Tile.ORIENTATIONS) {
 			// Hack - relies on the transformation operations duplicating the image data
-			Tile variation = new Tile(2 * i, orig.data);
+			Tile variation = new Tile(i++, orig.data);
 			orientations.add(variation);
 
-			if (flip_horiz) {
-				orig.flipHorizontalAxis();
-			} else {
-				orig.flipVerticalAxis();
-			}
-			flip_horiz = !flip_horiz;
-
-			variation = new Tile(2 * i + 1, orig.data);
-			orientations.add(variation);
-
-			orig.rotateClockwise90();
+			transformation.transform(orig);
 		}
 
 		return orientations;
@@ -262,7 +258,7 @@ public class Day20 extends AocBase {
 	 * @param sourceImage the image to look in
 	 * @return number of occurrences of tile in image
 	 */
-	private static void markOccurrences(Tile tile, int[][] sourceImage) {
+	private static void markOccurrences(final Tile tile, final int[][] sourceImage) {
 		for (int y = 0; y < sourceImage.length - tile.data.length; y++) {
 			for (int x = 0; x < sourceImage[0].length - tile.data[0].length; x++) {
 				if (containsImage(sourceImage, x, y, tile.data)) {
@@ -272,7 +268,8 @@ public class Day20 extends AocBase {
 		}
 	}
 
-	private static boolean containsImage(int[][] sourceImage, int startX, int startY, int[][] image) {
+	private static boolean containsImage(final int[][] sourceImage, final int startX, final int startY,
+			final int[][] image) {
 		for (int y = 0; y < image.length; y++) {
 			for (int x = 0; x < image[0].length; x++) {
 				// If the image pixel is set then the sourceImage pixel must also be set
@@ -285,7 +282,8 @@ public class Day20 extends AocBase {
 		return true;
 	}
 
-	private static void markOccurrence(int[][] image, int[][] sourceImage, int startX, int startY) {
+	private static void markOccurrence(final int[][] image, final int[][] sourceImage, final int startX,
+			final int startY) {
 		for (int y = 0; y < image.length; y++) {
 			for (int x = 0; x < image[0].length; x++) {
 				if (image[y][x] == PIXEL) {
@@ -295,7 +293,7 @@ public class Day20 extends AocBase {
 		}
 	}
 
-	private static int countOccurrences(int[][] image, char ch) {
+	private static int countOccurrences(final int[][] image, final char ch) {
 		int count = 0;
 		for (int y = 0; y < image.length; y++) {
 			for (int x = 0; x < image[y].length; x++) {
@@ -308,7 +306,7 @@ public class Day20 extends AocBase {
 		return count;
 	}
 
-	private static void print(int[][] data) {
+	private static void print(final int[][] data) {
 		for (int y = 0; y < data.length; y++) {
 			System.out.println(Tile.toString(data[y]));
 		}
@@ -319,11 +317,41 @@ public class Day20 extends AocBase {
 			TOP, RIGHT, BOTTOM, LEFT;
 		}
 
+		enum Transformation {
+			R_90, FLIP_H, FLIP_V;
+
+			public void transform(Tile tile) {
+				switch (this) {
+				case R_90:
+					tile.rotateClockwise90();
+					break;
+				case FLIP_H:
+					tile.flipHorizontalAxis();
+					break;
+				case FLIP_V:
+					tile.flipVerticalAxis();
+					break;
+				default:
+					throw new IllegalArgumentException("Illegal transformation " + this);
+				}
+			}
+		}
+
+		/*-
+		 * Start -> FlipH -> R 90  -> FlipV -> R 90  -> FlipH -> R 90  -> FlipV -> R 90 (start)
+		 * 1 2 3    7 8 9    1 4 7    7 4 1    9 8 7    3 2 1    9 6 3    3 6 9    1 2 3
+		 * 4 5 6 -> 4 5 6 -> 2 5 8 -> 8 5 2 -> 6 5 4 -> 6 5 4 -> 8 5 2 -> 2 5 8 -> 4 5 6
+		 * 7 8 9    1 2 3    3 6 9    9 6 3    3 2 1    9 8 7    7 4 1    1 4 7    7 8 9
+		 */
+		private static List<Transformation> ORIENTATIONS = List.of(Transformation.FLIP_H, Transformation.R_90,
+				Transformation.FLIP_V, Transformation.R_90, Transformation.FLIP_H, Transformation.R_90,
+				Transformation.FLIP_V, Transformation.R_90);
+
 		private final int id;
 		private final Map<Edge, Tile> neighbours;
 		private int[][] data;
 
-		public Tile(int id, int[][] data) {
+		public Tile(final int id, final int[][] data) {
 			this.id = id;
 			neighbours = new HashMap<>();
 			this.data = data;
@@ -337,11 +365,11 @@ public class Day20 extends AocBase {
 			return neighbours;
 		}
 
-		public void setNeighbour(Edge edge, Tile tile) {
+		public void setNeighbour(final Edge edge, final Tile tile) {
 			neighbours.put(edge, tile);
 		}
 
-		public int[] getEdge(Edge edge) {
+		public int[] getEdge(final Edge edge) {
 			return switch (edge) {
 			case TOP -> data[0];
 			case RIGHT -> getLeftOrRightEdge(false);
@@ -351,7 +379,7 @@ public class Day20 extends AocBase {
 			};
 		}
 
-		private int[] getLeftOrRightEdge(boolean left) {
+		private int[] getLeftOrRightEdge(final boolean left) {
 			int[] b = new int[data.length];
 			int x = left ? 0 : data[0].length - 1;
 			for (int y = 0; y < b.length; y++) {
@@ -361,32 +389,12 @@ public class Day20 extends AocBase {
 			return b;
 		}
 
-		public Tile alignTo(int[] targetEdge, Edge edge) {
-			/*-
-			 * TOP                        RIGHT             BOTTOM            LEFT
-			 * Start -> FlipH -> R 90  -> FlipV -> R 90  -> FlipH -> R 90  -> FlipV -> R 90
-			 * 1 2 3    7 8 9    1 4 7    7 4 1    9 8 7    3 2 1    9 6 3    3 6 9    1 2 3
-			 * 4 5 6 -> 4 5 6 -> 2 5 8 -> 8 5 2 -> 6 5 4 -> 6 5 4 -> 8 5 2 -> 2 5 8 -> 4 5 6
-			 * 7 8 9    1 2 3    3 6 9    9 6 3    3 2 1    9 8 7    7 4 1    1 4 7    7 8 9
-			 */
-			boolean flip_horiz = true;
-			for (int i = 0; i < Edge.values().length; i++) {
+		public Tile alignTo(final int[] targetEdge, final Edge edge) {
+			for (Transformation transformation : ORIENTATIONS) {
 				if (Arrays.equals(targetEdge, getEdge(edge))) {
 					return this;
 				}
-
-				if (flip_horiz) {
-					flipHorizontalAxis();
-				} else {
-					flipVerticalAxis();
-				}
-				flip_horiz = !flip_horiz;
-
-				if (Arrays.equals(targetEdge, getEdge(edge))) {
-					return this;
-				}
-
-				rotateClockwise90();
+				transformation.transform(this);
 			}
 
 			Logger.warn("Unable to align {} edge {} to {}", this, edge, toString(targetEdge));
@@ -400,7 +408,7 @@ public class Day20 extends AocBase {
 		 * 7 8 9    1 2 3
 		 */
 		public void flipHorizontalAxis() {
-			int[][] new_data = new int[data.length][data[0].length];
+			final int[][] new_data = new int[data.length][data[0].length];
 			for (int y = 0; y < data.length; y++) {
 				for (int x = 0; x < data[y].length; x++) {
 					new_data[data.length - 1 - y][x] = data[y][x];
@@ -425,7 +433,7 @@ public class Day20 extends AocBase {
 		 * 7 8 9    9 8 7
 		 */
 		public void flipVerticalAxis() {
-			int[][] new_data = new int[data.length][data[0].length];
+			final int[][] new_data = new int[data.length][data[0].length];
 			for (int y = 0; y < data.length; y++) {
 				for (int x = 0; x < data[y].length; x++) {
 					new_data[y][data[0].length - 1 - x] = data[y][x];
@@ -434,8 +442,8 @@ public class Day20 extends AocBase {
 			data = new_data;
 
 			// Swap left and right neighbours
-			Tile left = neighbours.remove(Edge.LEFT);
-			Tile right = neighbours.remove(Edge.RIGHT);
+			final Tile left = neighbours.remove(Edge.LEFT);
+			final Tile right = neighbours.remove(Edge.RIGHT);
 			if (left != null) {
 				neighbours.put(Edge.RIGHT, left);
 			}
@@ -444,7 +452,7 @@ public class Day20 extends AocBase {
 			}
 		}
 
-		public void rotateClockwise90(int count) {
+		public void rotateClockwise90(final int count) {
 			for (int i = 0; i < count; i++) {
 				rotateClockwise90();
 			}
@@ -456,7 +464,7 @@ public class Day20 extends AocBase {
 		 * 7 8 9    9 6 3 (0,2) -> (0,0); (1,2) -> (0,1); (2,2) -> (0,2)
 		 */
 		public void rotateClockwise90() {
-			int[][] new_data = new int[data[0].length][data.length];
+			final int[][] new_data = new int[data[0].length][data.length];
 			for (int y = 0; y < data.length; y++) {
 				for (int x = 0; x < data[y].length; x++) {
 					new_data[x][data.length - 1 - y] = data[y][x];
@@ -465,10 +473,10 @@ public class Day20 extends AocBase {
 			data = new_data;
 
 			// Update all neighbours
-			Tile top = neighbours.remove(Edge.TOP);
-			Tile right = neighbours.remove(Edge.RIGHT);
-			Tile left = neighbours.remove(Edge.LEFT);
-			Tile bottom = neighbours.remove(Edge.BOTTOM);
+			final Tile top = neighbours.remove(Edge.TOP);
+			final Tile right = neighbours.remove(Edge.RIGHT);
+			final Tile left = neighbours.remove(Edge.LEFT);
+			final Tile bottom = neighbours.remove(Edge.BOTTOM);
 
 			if (top != null) {
 				neighbours.put(Edge.RIGHT, top);

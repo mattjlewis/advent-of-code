@@ -16,15 +16,20 @@ import java.util.stream.Collectors;
 
 import org.tinylog.Logger;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
 
-public class Day21 extends AocBase {
+public class Day21 extends Day {
 	public static void main(String[] args) {
 		new Day21().run();
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
+	public String name() {
+		return "Allergen Assessment";
+	}
+
+	@Override
+	public String part1(final Path input) throws IOException {
 		final PuzzleInput puzzle_input = PuzzleInput.loadData(input);
 
 		// Count the number of times any of these ingredients appear in any ingredients
@@ -33,7 +38,7 @@ public class Day21 extends AocBase {
 	}
 
 	@Override
-	public String part2(Path input) throws IOException {
+	public String part2(final Path input) throws IOException {
 		final PuzzleInput puzzle_input = PuzzleInput.loadData(input);
 
 		// Remove all of the inert ingredients
@@ -66,14 +71,12 @@ public class Day21 extends AocBase {
 	private static record Food(Set<String> ingredients, Set<String> allergens) {
 		private static final Pattern PATTERN = Pattern.compile("(.*) \\(contains (.*)\\)");
 
-		public static Food parse(String line) {
+		public static Food parse(final String line) {
 			Matcher m = PATTERN.matcher(line);
 			if (!m.matches()) {
 				throw new IllegalArgumentException("Line '" + line + "' doesn't match pattern " + PATTERN.pattern());
 			}
 
-			// Arrays.stream().toSet() rather than Set.of() so that it can be mutated in
-			// part 2
 			return new Food(Arrays.stream(m.group(1).split(" ")).collect(Collectors.toSet()),
 					Set.of(m.group(2).split(", ")));
 		}
@@ -81,13 +84,13 @@ public class Day21 extends AocBase {
 
 	private static record PuzzleInput(List<Food> foods, Set<String> allergens, Set<String> ingredients,
 			Set<String> inertIngredients) {
-		public static PuzzleInput loadData(Path input) throws IOException {
-			List<Food> foods = Files.lines(input).map(Food::parse).toList();
+		public static PuzzleInput loadData(final Path input) throws IOException {
+			final List<Food> foods = Files.lines(input).map(Food::parse).toList();
 
 			// Don't need .distinct() as Set itself is distinct
-			Set<String> allergens = foods.stream().flatMap(food -> food.allergens().stream())
+			final Set<String> allergens = foods.stream().flatMap(food -> food.allergens().stream())
 					.collect(Collectors.toSet());
-			Set<String> ingredients = foods.stream().flatMap(food -> food.ingredients().stream())
+			final Set<String> ingredients = foods.stream().flatMap(food -> food.ingredients().stream())
 					.collect(Collectors.toSet());
 
 			final Set<String> inert_ingredients = new HashSet<>();

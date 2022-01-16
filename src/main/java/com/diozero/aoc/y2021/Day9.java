@@ -5,24 +5,30 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
 import com.diozero.aoc.util.Point2D;
+import com.diozero.aoc.util.TextParser;
 
-public class Day9 extends AocBase {
+public class Day9 extends Day {
 	public static void main(String[] args) {
 		new Day9().run();
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
-		final int[][] heights = AocBase.loadIntegerMatrix(input);
+	public String name() {
+		return "Smoke Basin";
+	}
+
+	@Override
+	public String part1(final Path input) throws IOException {
+		final int[][] heights = TextParser.loadIntMatrix(input);
 		return Integer
 				.toString(getLowPoints(heights).stream().mapToInt(point -> 1 + heights[point.y()][point.x()]).sum());
 	}
 
 	@Override
-	public String part2(Path input) throws IOException {
-		final int[][] heights = AocBase.loadIntegerMatrix(input);
+	public String part2(final Path input) throws IOException {
+		final int[][] heights = TextParser.loadIntMatrix(input);
 
 		// Radiate out from each of the low points to determine the basin size
 		// Note that mapToInt negates the numbers to sort in reverse order
@@ -32,7 +38,7 @@ public class Day9 extends AocBase {
 				.sorted().limit(3).map(size -> size * -1).reduce(1, (a, b) -> a * b));
 	}
 
-	private static List<Point2D> getLowPoints(int[][] heights) {
+	private static List<Point2D> getLowPoints(final int[][] heights) {
 		final List<Point2D> low_points = new ArrayList<>();
 
 		for (int y = 0; y < heights.length; y++) {

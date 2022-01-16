@@ -11,11 +11,16 @@ import java.util.regex.Pattern;
 
 import org.tinylog.Logger;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
 
-public class Day21 extends AocBase {
+public class Day21 extends Day {
 	public static void main(String[] args) {
 		new Day21().run();
+	}
+
+	@Override
+	public String name() {
+		return "Dirac Dice";
 	}
 
 	@Override
@@ -41,6 +46,16 @@ public class Day21 extends AocBase {
 		Logger.debug("players: {}, numRolls: {}", players, dice.getNumRolls());
 
 		return Integer.toString(dice.getNumRolls() * players.get(1).getScore());
+	}
+
+	@Override
+	public String part2(Path input) throws IOException {
+		List<Player> players = loadData(input).stream().map(p -> new Player(p.getPos(), 0)).toList();
+		Logger.debug("players: {}", players);
+
+		long[] res = play(21, new State(0, 0, 0, players.get(0), players.get(1)), new HashMap<>());
+
+		return Long.toString(Math.max(res[0], res[1]));
 	}
 
 	private static List<MutablePlayer> loadData(Path input) throws IOException {
@@ -134,16 +149,6 @@ public class Day21 extends AocBase {
 		}
 	}
 
-	@Override
-	public String part2(Path input) throws IOException {
-		List<Player> players = loadData(input).stream().map(p -> new Player(p.getPos(), 0)).toList();
-		Logger.debug("players: {}", players);
-
-		long[] res = play(21, new State(0, 0, 0, players.get(0), players.get(1)), new HashMap<>());
-
-		return Long.toString(Math.max(res[0], res[1]));
-	}
-
 	// Return an array containing number of player 1 and 2 wins
 	private static long[] play(int maxScore, State state, Map<State, long[]> cache) {
 		long[] wins = cache.get(state);
@@ -199,7 +204,7 @@ public class Day21 extends AocBase {
 			Player new_p1 = this.p1;
 			Player new_p2 = this.p2;
 
-			// IMove the player on the third roll
+			// Move the player on the third roll
 			if (totalRolls % 3 == 2) {
 				final int move = currentRoll + prevRoll + prevRoll2;
 				if (playerTurn() == 0) {

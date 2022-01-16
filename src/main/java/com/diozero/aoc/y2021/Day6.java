@@ -1,28 +1,34 @@
 package com.diozero.aoc.y2021;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.tinylog.Logger;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
+import com.diozero.aoc.util.TextParser;
 
-public class Day6 extends AocBase {
+public class Day6 extends Day {
 	public static void main(String[] args) {
 		new Day6().run();
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
-		// Can't use Stream.toList() as that returns an immutable list
-		final List<AtomicInteger> ages = Arrays.stream(Files.lines(input).findFirst().orElseThrow().split(","))
-				.map(line -> new AtomicInteger(Integer.parseInt(line))).collect(Collectors.toList());
+	public String name() {
+		return "Lanternfish";
+	}
 
+	@Override
+	public String part1(final Path input) throws IOException {
+		// Can't use Stream.toList() as that returns an immutable list
+		final List<AtomicInteger> ages = IntStream.of(TextParser.loadFirstLineAsCsvIntArray(input))
+				.mapToObj(AtomicInteger::new).collect(Collectors.toList());
+
+		// Note that this solution doesn't scale to the number of days in part 2
 		final int days = 80;
 		for (int day = 1; day <= days; day++) {
 			int num_to_add = 0;
@@ -38,17 +44,15 @@ public class Day6 extends AocBase {
 				ages.add(new AtomicInteger(8));
 			}
 			Logger.debug("Day: {}", day);
-			// System.out.format("After %3d day(s): %s%n", day, ages);
 		}
 
 		return Integer.toString(ages.size());
 	}
 
 	@Override
-	public String part2(Path input) throws IOException {
+	public String part2(final Path input) throws IOException {
 		final long[] count_at_age = new long[9];
-		Arrays.stream(Files.lines(input).findFirst().orElseThrow().split(",")).mapToInt(Integer::parseInt)
-				.forEach(age -> count_at_age[age]++);
+		IntStream.of(TextParser.loadFirstLineAsCsvIntArray(input)).forEach(age -> count_at_age[age]++);
 
 		final int days = 256;
 		for (int day = 1; day <= days; day++) {

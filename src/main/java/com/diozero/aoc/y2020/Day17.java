@@ -8,17 +8,22 @@ import java.util.List;
 
 import org.tinylog.Logger;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
 import com.diozero.aoc.util.Point3D;
 import com.diozero.aoc.util.Point4D;
 
-public class Day17 extends AocBase {
+public class Day17 extends Day {
 	public static void main(String[] args) {
 		new Day17().run();
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
+	public String name() {
+		return "Conway Cubes";
+	}
+
+	@Override
+	public String part1(final Path input) throws IOException {
 		List<Point3D> cubes = new ArrayList<>();
 		int y = 0;
 		for (String line : Files.readAllLines(input)) {

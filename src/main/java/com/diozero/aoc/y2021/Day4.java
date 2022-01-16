@@ -9,44 +9,21 @@ import java.util.List;
 
 import org.tinylog.Logger;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
+import com.diozero.aoc.util.TextParser;
 
-public class Day4 extends AocBase {
+public class Day4 extends Day {
 	public static void main(String[] args) {
 		new Day4().run();
 	}
 
-	private static BingoGame loadData(Path input) throws IOException {
-		final int[] numbers = Arrays.stream(Files.lines(input).findFirst().orElseThrow().split(","))
-				.mapToInt(Integer::valueOf).toArray();
-		Logger.debug(Arrays.toString(numbers));
-
-		final String[] card_lines = Files.lines(input).skip(1).toList().toArray(new String[0]);
-
-		final List<BingoCard> cards = new ArrayList<>();
-		BingoCard card = null;
-		boolean added_to_list = false;
-		for (int i = 0; i < card_lines.length; i++) {
-			if (card_lines[i].trim().isEmpty()) {
-				if (card != null) {
-					cards.add(card);
-					added_to_list = true;
-				}
-				card = new BingoCard(new ArrayList<>(), new ArrayList<>());
-			} else {
-				card.addRow(Arrays.stream(card_lines[i].trim().split("\\s+")).mapToInt(Integer::parseInt).toArray());
-				added_to_list = false;
-			}
-		}
-		if (!added_to_list) {
-			cards.add(card);
-		}
-
-		return new BingoGame(numbers, cards);
+	@Override
+	public String name() {
+		return "Giant Squid";
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
+	public String part1(final Path input) throws IOException {
 		final BingoGame bg = loadData(input);
 
 		int winning_card_num = -1;
@@ -72,7 +49,7 @@ public class Day4 extends AocBase {
 	}
 
 	@Override
-	public String part2(Path input) throws IOException {
+	public String part2(final Path input) throws IOException {
 		final BingoGame bg = loadData(input);
 
 		int last_number = 0;
@@ -94,13 +71,40 @@ public class Day4 extends AocBase {
 		return Integer.toString(last_winning_card.getSum() * last_number);
 	}
 
+	private static BingoGame loadData(Path input) throws IOException {
+		final int[] numbers = TextParser.loadFirstLineAsCsvIntArray(input);
+
+		final String[] card_lines = Files.lines(input).skip(1).toList().toArray(new String[0]);
+
+		final List<BingoCard> cards = new ArrayList<>();
+		BingoCard card = null;
+		boolean added_to_list = false;
+		for (int i = 0; i < card_lines.length; i++) {
+			if (card_lines[i].trim().isEmpty()) {
+				if (card != null) {
+					cards.add(card);
+					added_to_list = true;
+				}
+				card = new BingoCard(new ArrayList<>(), new ArrayList<>());
+			} else {
+				card.addRow(Arrays.stream(card_lines[i].trim().split("\\s+")).mapToInt(Integer::parseInt).toArray());
+				added_to_list = false;
+			}
+		}
+		if (!added_to_list) {
+			cards.add(card);
+		}
+
+		return new BingoGame(numbers, cards);
+	}
+
 	public static record BingoGame(int[] numbers, List<BingoCard> cards) {
 		//
 	}
 
 	public static record BingoCard(List<List<Integer>> rows, List<List<Integer>> columns) {
 		public void addRow(int[] numbers) {
-			List<Integer> row = new ArrayList<>();
+			final List<Integer> row = new ArrayList<>();
 			for (int i = 0; i < numbers.length; i++) {
 				row.add(Integer.valueOf(numbers[i]));
 
@@ -116,7 +120,7 @@ public class Day4 extends AocBase {
 			rows.add(row);
 		}
 
-		public void remove(int number) {
+		public void remove(final int number) {
 			for (List<Integer> row : rows) {
 				row.remove(Integer.valueOf(number));
 			}

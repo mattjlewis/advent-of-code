@@ -16,28 +16,42 @@ import java.util.stream.Collectors;
 
 import org.tinylog.Logger;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
 import com.diozero.aoc.util.Point3D;
 
 /**
  * Did not enjoy this one!
  */
-public class Day19 extends AocBase {
+public class Day19 extends Day {
 	public static void main(String[] args) {
-		Point3D p1 = new Point3D(0, 2, 0);
-		Point3D p2 = new Point3D(-5, 0, 0);
-		Point3D delta = p2.delta(p1);
-		Logger.info("p1: {}, p2: {}, delta: {}", p1, p2, delta);
-		Point3D p3 = p2.translate(delta);
-		Logger.info("p3: {}", p3);
-
 		new Day19().run();
 	}
 
-	private static List<Scanner> loadData(Path input) throws IOException {
-		Pattern scanner_pattern = Pattern.compile("--- scanner (\\d+) ---");
+	@Override
+	public String name() {
+		return "Beacon Scanner";
+	}
 
-		List<Scanner> scanners = new ArrayList<>();
+	@Override
+	public String part1(final Path input) throws IOException {
+		final List<Scanner> scanners = loadData(input);
+		Logger.debug("scanners: {}", scanners);
+
+		return Integer.toString(getBeacons(scanners).size());
+	}
+
+	@Override
+	public String part2(final Path input) throws IOException {
+		final List<Point3D> scanner_locations = getScannerLocations(loadData(input));
+
+		return Integer.toString(scanner_locations.stream()
+				.flatMapToInt(a -> scanner_locations.stream().mapToInt(b -> a.manhattanDistance(b))).max().getAsInt());
+	}
+
+	private static List<Scanner> loadData(final Path input) throws IOException {
+		final Pattern scanner_pattern = Pattern.compile("--- scanner (\\d+) ---");
+
+		final List<Scanner> scanners = new ArrayList<>();
 
 		try (BufferedReader br = new BufferedReader(new FileReader(input.toFile()))) {
 			int scanner_id = -1;
@@ -113,7 +127,7 @@ public class Day19 extends AocBase {
 	}
 
 	private static List<Point3D> getBeacons(final List<Scanner> scanners) {
-		int min_match_count = Math.min(scanners.get(0).beacons().size(), 12);
+		final int min_match_count = Math.min(scanners.get(0).beacons().size(), 12);
 
 		do {
 			a: for (int i = 0; i < scanners.size() - 1; i++) {
@@ -153,13 +167,13 @@ public class Day19 extends AocBase {
 	}
 
 	private static List<Point3D> getScannerLocations(final List<Scanner> scanners) {
-		int min_match_count = Math.min(scanners.get(0).beacons().size(), 12);
+		final int min_match_count = Math.min(scanners.get(0).beacons().size(), 12);
 
-		List<Scanner> to_align = new ArrayList<>(scanners);
-		List<Scanner> aligned = new ArrayList<>();
+		final List<Scanner> to_align = new ArrayList<>(scanners);
+		final List<Scanner> aligned = new ArrayList<>();
 
 		// Use scanner0 as the alignment reference
-		Scanner scanner0 = to_align.remove(0);
+		final Scanner scanner0 = to_align.remove(0);
 		aligned.add(new Scanner(scanner0.id(), scanner0.beacons(), new Point3D(0, 0, 0)));
 
 		// Loop until all scanners aligned
@@ -189,22 +203,6 @@ public class Day19 extends AocBase {
 		Logger.debug("translations: {}", translations);
 
 		return translations;
-	}
-
-	@Override
-	public String part1(Path input) throws IOException {
-		final List<Scanner> scanners = loadData(input);
-		Logger.debug("scanners: {}", scanners);
-
-		return Integer.toString(getBeacons(scanners).size());
-	}
-
-	@Override
-	public String part2(Path input) throws IOException {
-		List<Point3D> scanner_locations = getScannerLocations(loadData(input));
-
-		return Integer.toString(scanner_locations.stream()
-				.flatMapToInt(a -> scanner_locations.stream().mapToInt(b -> a.manhattanDistance(b))).max().getAsInt());
 	}
 
 	private static record Scanner(String id, List<Point3D> beacons, Point3D translation) {

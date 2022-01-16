@@ -1,7 +1,6 @@
 package com.diozero.aoc.y2020;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
@@ -9,25 +8,31 @@ import java.util.Map;
 
 import org.tinylog.Logger;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
 import com.diozero.aoc.util.CircularLinkedList;
 import com.diozero.aoc.util.CircularLinkedList.Node;
+import com.diozero.aoc.util.TextParser;
 
-public class Day23 extends AocBase {
+public class Day23 extends Day {
 	public static void main(String[] args) {
 		new Day23().run();
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
-		CircularLinkedList<Integer> cups = loadData(input);
+	public String name() {
+		return "Crab Cups";
+	}
+
+	@Override
+	public String part1(final Path input) throws IOException {
+		final CircularLinkedList<Integer> cups = loadData(input);
 		final Map<Integer, Node<Integer>> cups_map = new HashMap<>();
 		cups.traverse(node -> cups_map.put(node.value(), node));
 
 		moveCups(cups, cups_map, 100);
 
-		StringBuffer buffer = new StringBuffer();
-		Node<Integer> start = cups.get(Integer.valueOf(1));
+		final StringBuffer buffer = new StringBuffer();
+		final Node<Integer> start = cups.get(Integer.valueOf(1));
 		for (Node<Integer> cup = start.next(); !cup.value().equals(start.value()); cup = cup.next()) {
 			buffer.append(cup.value());
 		}
@@ -36,8 +41,8 @@ public class Day23 extends AocBase {
 	}
 
 	@Override
-	public String part2(Path input) throws IOException {
-		CircularLinkedList<Integer> cups = loadData(input);
+	public String part2(final Path input) throws IOException {
+		final CircularLinkedList<Integer> cups = loadData(input);
 
 		final Map<Integer, Node<Integer>> cups_map = new HashMap<>();
 		cups.traverse(node -> cups_map.put(node.value(), node));
@@ -46,20 +51,15 @@ public class Day23 extends AocBase {
 			cups_map.put(value, cups.add(value));
 		}
 
-		long start_ms = System.currentTimeMillis();
-
 		moveCups(cups, cups_map, 10_000_000);
 
-		long duration_ms = System.currentTimeMillis() - start_ms;
-		System.out.format("Took %,dms%n", duration_ms);
-
-		Node<Integer> cup = cups.get(Integer.valueOf(1)).next();
+		final Node<Integer> cup = cups.get(Integer.valueOf(1)).next();
 		return Long.toString(cup.value().intValue() * cup.next().value().longValue());
 	}
 
-	private static void moveCups(CircularLinkedList<Integer> cups, final Map<Integer, Node<Integer>> cupsMap,
-			int moves) {
-		int max_val = cupsMap.size();
+	private static void moveCups(final CircularLinkedList<Integer> cups, final Map<Integer, Node<Integer>> cupsMap,
+			final int moves) {
+		final int max_val = cupsMap.size();
 
 		Node<Integer> current_cup = cups.head();
 		for (int move = 1; move <= moves; move++) {
@@ -112,12 +112,11 @@ public class Day23 extends AocBase {
 		Logger.debug("cups: {}", getCupsString(cups, current_cup.value()));
 	}
 
-	private static CircularLinkedList<Integer> loadData(Path input) throws IOException {
-		return new CircularLinkedList<>(Files.lines(input).findFirst()
-				.map(l -> l.chars().mapToObj(ch -> Integer.valueOf(ch - 48)).toList()).orElseThrow());
+	private static CircularLinkedList<Integer> loadData(final Path input) throws IOException {
+		return new CircularLinkedList<>(TextParser.loadFirstLineAsIntegerList(input));
 	}
 
-	private static String getCupsString(CircularLinkedList<Integer> cups, Integer currentCup) {
+	private static String getCupsString(final CircularLinkedList<Integer> cups, final Integer currentCup) {
 		return String.join(" ", cups.toList().stream().map(i -> i.equals(currentCup) ? "(" + i + ")" : i.toString())
 				.toArray(String[]::new));
 	}

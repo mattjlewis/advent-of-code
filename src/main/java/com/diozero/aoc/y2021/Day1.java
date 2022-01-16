@@ -5,15 +5,21 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
+import com.diozero.aoc.util.TextParser;
 
-public class Day1 extends AocBase {
+public class Day1 extends Day {
 	public static void main(String[] args) {
 		new Day1().run();
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
+	public String name() {
+		return "Sonar Sweep";
+	}
+
+	@Override
+	public String part1(final Path input) throws IOException {
 		final AtomicInteger count = new AtomicInteger();
 		final AtomicInteger last_depth = new AtomicInteger(Integer.MAX_VALUE);
 		Files.lines(input).mapToInt(Integer::valueOf).forEach(val -> update(val, count, last_depth));
@@ -30,8 +36,8 @@ public class Day1 extends AocBase {
 	}
 
 	@Override
-	public String part2(Path input) throws IOException {
-		int[] numbers = loadIntegerArray(input);
+	public String part2(final Path input) throws IOException {
+		final int[] numbers = TextParser.loadIntArray(input);
 		int part2 = 0;
 		for (int i = 1; i < numbers.length; i++) {
 			// (t[0] + t[1] + t[2]) < (t[1] + t[2] + t[3]) = t[0] < t[3]

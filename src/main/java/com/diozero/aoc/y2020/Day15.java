@@ -8,22 +8,27 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
 
-public class Day15 extends AocBase {
+public class Day15 extends Day {
 	public static void main(String[] args) {
 		new Day15().run();
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
+	public String name() {
+		return "Rambunctious Recitation";
+	}
+
+	@Override
+	public String part1(final Path input) throws IOException {
 		final int[] starting_numbers = Arrays.stream(Files.lines(input).findFirst().orElseThrow().split(","))
 				.mapToInt(Integer::parseInt).toArray();
 		return Integer.toString(computeNth(starting_numbers, 2020));
 	}
 
 	@Override
-	public String part2(Path input) throws IOException {
+	public String part2(final Path input) throws IOException {
 		final int[] starting_numbers = Arrays.stream(Files.lines(input).findFirst().orElseThrow().split(","))
 				.mapToInt(Integer::parseInt).toArray();
 		return Integer.toString(computeNth(starting_numbers, 30_000_000));

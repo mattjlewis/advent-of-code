@@ -12,11 +12,11 @@ import java.util.stream.Collectors;
 
 import org.tinylog.Logger;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
 import com.diozero.aoc.util.Point2D;
 import com.diozero.aoc.util.SetUtil;
 
-public class Day24 extends AocBase {
+public class Day24 extends Day {
 	private static final Pattern PATTERN = Pattern.compile("(se|sw|ne|nw|e|w)");
 
 	public static void main(String[] args) {
@@ -24,12 +24,17 @@ public class Day24 extends AocBase {
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
+	public String name() {
+		return "Lobby Layout";
+	}
+
+	@Override
+	public String part1(final Path input) throws IOException {
 		return Long.toString(loadData(input).size());
 	}
 
 	@Override
-	public String part2(Path input) throws IOException {
+	public String part2(final Path input) throws IOException {
 		Set<Point2D> black_tiles = loadData(input);
 
 		final Set<Point2D> checked_white_tiles = new HashSet<>();
@@ -39,7 +44,7 @@ public class Day24 extends AocBase {
 			for (Point2D tile : black_tiles) {
 				final Set<Point2D> adjacent_tile_positions = HexagonalDirection.getAdjacentPositions(tile);
 
-				long black_adjacent_black = SetUtil.intersectionCount(adjacent_tile_positions, black_tiles);
+				final long black_adjacent_black = SetUtil.intersectionCount(adjacent_tile_positions, black_tiles);
 				if (black_adjacent_black != 0 && black_adjacent_black <= 2) {
 					/*
 					 * Any black tile with zero or more than 2 black tiles immediately adjacent to
@@ -79,14 +84,14 @@ public class Day24 extends AocBase {
 		return Long.toString(black_tiles.size());
 	}
 
-	private static Set<Point2D> loadData(Path input) throws IOException {
+	private static Set<Point2D> loadData(final Path input) throws IOException {
 		final Set<Point2D> black_tiles = new HashSet<>();
 		Files.lines(input).map(Day24::parseDeltas).map(Point2D::sum)
 				.forEach(tile -> SetUtil.addOrRemove(black_tiles, tile));
 		return black_tiles;
 	}
 
-	private static List<Point2D> parseDeltas(String line) {
+	private static List<Point2D> parseDeltas(final String line) {
 		return PATTERN.matcher(line).results().map(mr -> HexagonalDirection.valueOf(mr.group(1)).delta).toList();
 	}
 

@@ -8,15 +8,20 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.tinylog.Logger;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
 
-public class Day3 extends AocBase {
+public class Day3 extends Day {
 	public static void main(String[] args) {
 		new Day3().run();
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
+	public String name() {
+		return "Binary Diagnostic";
+	}
+
+	@Override
+	public String part1(final Path input) throws IOException {
 		// Get the number of bits in a line
 		final int[] bit_counts = new int[Files.lines(input).findFirst().orElseThrow().length()];
 		final AtomicInteger num_lines = new AtomicInteger();
@@ -26,10 +31,9 @@ public class Day3 extends AocBase {
 
 		// Count the number of 1s in each position in all lines
 		Files.lines(input).forEach(line -> {
-			char[] chars = line.toCharArray();
-			for (int i = 0; i < chars.length; i++) {
-				if (chars[i] == '1') {
-					bit_counts[chars.length - i - 1]++;
+			for (int i = 0; i < line.length(); i++) {
+				if (line.charAt(i) == '1') {
+					bit_counts[line.length() - i - 1]++;
 				}
 			}
 			num_lines.incrementAndGet();
@@ -41,7 +45,7 @@ public class Day3 extends AocBase {
 			Logger.debug("bits[{}]: {} ({})", i, bit_counts[i], (bit_counts[i] > num_lines.get() / 2) ? 1 : 0);
 			gamma |= (bit_counts[i] > num_lines.get() / 2) ? (1 << i) : 0;
 		}
-		int epsilon = ~gamma & ((1 << bit_counts.length) - 1);
+		final int epsilon = ~gamma & ((1 << bit_counts.length) - 1);
 
 		Logger.debug("numLines: {}, gamma: {}, epsilon: {}, power consumption: {}", num_lines.get(), gamma, epsilon,
 				gamma * epsilon);
@@ -49,9 +53,9 @@ public class Day3 extends AocBase {
 	}
 
 	@Override
-	public String part2(Path input) throws IOException {
-		int num_bits = Files.lines(input).findFirst().orElseThrow().length();
-		int[] init_values = Files.lines(input).mapToInt(line -> Integer.parseInt(line, 2)).toArray();
+	public String part2(final Path input) throws IOException {
+		final int num_bits = Files.lines(input).findFirst().orElseThrow().length();
+		final int[] init_values = Files.lines(input).mapToInt(line -> Integer.parseInt(line, 2)).toArray();
 
 		int[] values = init_values;
 		for (int bit = num_bits - 1; bit >= 0 && values.length > 1; bit--) {
@@ -68,7 +72,7 @@ public class Day3 extends AocBase {
 			final int b = bit;
 			values = Arrays.stream(values).filter(n -> ((n & (1 << b)) != 0) == value).toArray();
 		}
-		int og_rating = values[0];
+		final int og_rating = values[0];
 
 		values = init_values;
 		for (int bit = num_bits - 1; bit >= 0 && values.length > 1; bit--) {
@@ -86,7 +90,7 @@ public class Day3 extends AocBase {
 			final int b = bit;
 			values = Arrays.stream(values).filter(n -> ((n & (1 << b)) != 0) == value).toArray();
 		}
-		int co2s_rating = values[0];
+		final int co2s_rating = values[0];
 
 		Logger.debug("oxygen generator rating: {}, CO2 scrubber rating: {}, product: {}", og_rating, co2s_rating,
 				og_rating * co2s_rating);

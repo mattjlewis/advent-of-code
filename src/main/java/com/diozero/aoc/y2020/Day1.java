@@ -6,16 +6,22 @@ import java.util.Arrays;
 
 import org.tinylog.Logger;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
+import com.diozero.aoc.util.TextParser;
 
-public class Day1 extends AocBase {
+public class Day1 extends Day {
 	public static void main(String[] args) {
 		new Day1().run();
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
-		final int[] values = loadIntegerArray(input);
+	public String name() {
+		return "Report Repair";
+	}
+
+	@Override
+	public String part1(final Path input) throws IOException {
+		final int[] values = TextParser.loadIntArray(input);
 		Logger.debug(Arrays.toString(values));
 
 		final int target = 2020;
@@ -32,8 +38,8 @@ public class Day1 extends AocBase {
 	}
 
 	@Override
-	public String part2(Path input) throws IOException {
-		final int[] values = loadIntegerArray(input);
+	public String part2(final Path input) throws IOException {
+		final int[] values = TextParser.loadIntArray(input);
 		Logger.debug(Arrays.toString(values));
 
 		final int target = 2020;

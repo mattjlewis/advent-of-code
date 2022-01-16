@@ -13,21 +13,26 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.tinylog.Logger;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
 
-public class Day22 extends AocBase {
+public class Day22 extends Day {
 	public static void main(String[] args) {
 		new Day22().run();
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
-		List<Deque<Integer>> players = loadData(input);
+	public String name() {
+		return "Crab Combat";
+	}
 
-		Deque<Integer> player1 = players.get(0);
-		Deque<Integer> player2 = players.get(1);
+	@Override
+	public String part1(final Path input) throws IOException {
+		final List<Deque<Integer>> players = loadData(input);
 
-		int winning_player_no = playGame(player1, player2, false);
+		final Deque<Integer> player1 = players.get(0);
+		final Deque<Integer> player2 = players.get(1);
+
+		final int winning_player_no = playGame(player1, player2, false);
 
 		Logger.debug("== Post-game results ==");
 		Logger.debug("Player 1's deck: {}", player1);
@@ -37,11 +42,11 @@ public class Day22 extends AocBase {
 	}
 
 	@Override
-	public String part2(Path input) throws IOException {
-		List<Deque<Integer>> players = loadData(input);
+	public String part2(final Path input) throws IOException {
+		final List<Deque<Integer>> players = loadData(input);
 
-		Deque<Integer> player1 = players.get(0);
-		Deque<Integer> player2 = players.get(1);
+		final Deque<Integer> player1 = players.get(0);
+		final Deque<Integer> player2 = players.get(1);
 
 		int winning_player_no = 0;
 		while (!player1.isEmpty() && !player2.isEmpty()) {
@@ -55,13 +60,13 @@ public class Day22 extends AocBase {
 		return Integer.toString(calculateDeckId(players.get(winning_player_no)));
 	}
 
-	private static int playGame(Deque<Integer> player1, Deque<Integer> player2, boolean recursive) {
+	private static int playGame(final Deque<Integer> player1, final Deque<Integer> player2, final boolean recursive) {
 		if (recursive) {
 			Logger.debug("=== New Game ===");
 		}
 
-		Set<Integer> p1_previous_rounds = new HashSet<>();
-		Set<Integer> p2_previous_rounds = new HashSet<>();
+		final Set<Integer> p1_previous_rounds = new HashSet<>();
+		final Set<Integer> p2_previous_rounds = new HashSet<>();
 
 		int round = 1;
 		int winning_player_no;
@@ -136,21 +141,21 @@ public class Day22 extends AocBase {
 		return winning_player_no;
 	}
 
-	private static int calculateDeckId(Deque<Integer> deck) {
+	private static int calculateDeckId(final Deque<Integer> deck) {
 		final AtomicInteger index = new AtomicInteger(deck.size());
 		return deck.stream().mapToInt(i -> i.intValue() * index.getAndDecrement()).sum();
 	}
 
-	private static <T> Deque<T> copy(Deque<T> deque, int maxSize) {
-		Deque<T> copy = new ArrayDeque<>(deque);
+	private static <T> Deque<T> copy(final Deque<T> deque, final int maxSize) {
+		final Deque<T> copy = new ArrayDeque<>(deque);
 		for (int i = maxSize; i < deque.size(); i++) {
 			copy.removeLast();
 		}
 		return copy;
 	}
 
-	private static List<Deque<Integer>> loadData(Path input) throws IOException {
-		List<Deque<Integer>> decks = new ArrayList<>();
+	private static List<Deque<Integer>> loadData(final Path input) throws IOException {
+		final List<Deque<Integer>> decks = new ArrayList<>();
 
 		Deque<Integer> deck = new ArrayDeque<>();
 		decks.add(deck);

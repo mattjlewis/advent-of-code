@@ -1,28 +1,27 @@
 package com.diozero.aoc.y2021;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 
 import org.tinylog.Logger;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
+import com.diozero.aoc.util.TextParser;
 
-public class Day7 extends AocBase {
+public class Day7 extends Day {
 	public static void main(String[] args) {
 		new Day7().run();
 	}
 
-	private static int[] loadData(Path input) throws IOException {
-		return Arrays.stream(Files.lines(input).findFirst().map(line -> line.split(",")).orElseThrow())
-				.mapToInt(Integer::parseInt).sorted().toArray();
+	@Override
+	public String name() {
+		return "The Treachery of Whales";
 	}
 
-	// distance: 333, fuel: 328262
 	@Override
-	public String part1(Path input) throws IOException {
-		final int[] positions = loadData(input);
+	public String part1(final Path input) throws IOException {
+		final int[] positions = TextParser.loadFirstLineAsCsvIntArray(input, true);
 
 		// Get the median value
 		final int median = positions[positions.length / 2];
@@ -32,10 +31,9 @@ public class Day7 extends AocBase {
 		return Integer.toString(fuel);
 	}
 
-	// distance: 464, min fuel: 90040997
 	@Override
-	public String part2(Path input) throws IOException {
-		final int[] positions = loadData(input);
+	public String part2(final Path input) throws IOException {
+		final int[] positions = TextParser.loadFirstLineAsCsvIntArray(input, true);
 
 		// Old school loop to get min, max, sum and mean of positions - avoiding
 		// multiple streams

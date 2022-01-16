@@ -7,23 +7,28 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
 
-public class Day2 extends AocBase {
+public class Day2 extends Day {
 	public static void main(String[] args) {
 		new Day2().run();
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
-		List<PasswordRule> rules = Files.lines(input).map(PasswordRule::parse).toList();
+	public String name() {
+		return "Password Philosophy";
+	}
+
+	@Override
+	public String part1(final Path input) throws IOException {
+		final List<PasswordRule> rules = Files.lines(input).map(PasswordRule::parse).toList();
 
 		return Long.toString(rules.stream().filter(PasswordRule::isValidSledRental).count());
 	}
 
 	@Override
-	public String part2(Path input) throws IOException {
-		List<PasswordRule> rules = Files.lines(input).map(PasswordRule::parse).toList();
+	public String part2(final Path input) throws IOException {
+		final List<PasswordRule> rules = Files.lines(input).map(PasswordRule::parse).toList();
 
 		return Long.toString(rules.stream().filter(PasswordRule::isValid).count());
 	}

@@ -1,24 +1,31 @@
 package com.diozero.aoc.y2020;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 
-import com.diozero.aoc.AocBase;
+import org.tinylog.Logger;
 
-public class Day25 extends AocBase {
+import com.diozero.aoc.Day;
+import com.diozero.aoc.util.TextParser;
+
+public class Day25 extends Day {
 	public static void main(String[] args) {
 		new Day25().run();
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
-		long[] public_keys = Files.lines(input).mapToLong(Long::parseLong).toArray();
+	public String name() {
+		return "Combo Breaker";
+	}
 
-		long card_pk = public_keys[0];
-		long door_pk = public_keys[1];
+	@Override
+	public String part1(final Path input) throws IOException {
+		final long[] public_keys = TextParser.loadLongArray(input);
 
-		System.out.println("door_pk: " + card_pk);
+		final long card_pk = public_keys[0];
+		final long door_pk = public_keys[1];
+
+		Logger.debug("door_pk: {}", card_pk);
 
 		final int div = 20201227;
 
@@ -37,7 +44,7 @@ public class Day25 extends AocBase {
 
 			loop_size++;
 		}
-		System.out.println("card loop_size: " + loop_size);
+		Logger.debug("card loop_size: {}", loop_size);
 
 		subject_number = door_pk;
 		value = 1;

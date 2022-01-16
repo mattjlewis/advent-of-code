@@ -10,17 +10,23 @@ import java.util.Set;
 
 import org.tinylog.Logger;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
 import com.diozero.aoc.util.Point2D;
+import com.diozero.aoc.util.TextParser;
 
-public class Day20 extends AocBase {
+public class Day20 extends Day {
 	public static void main(String[] args) {
 		new Day20().run();
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
-		Image image = loadData(input);
+	public String name() {
+		return "Trench Map";
+	}
+
+	@Override
+	public String part1(final Path input) throws IOException {
+		final Image image = loadData(input);
 		printImage(image);
 
 		image.enhance(2);
@@ -31,7 +37,7 @@ public class Day20 extends AocBase {
 
 	@Override
 	public String part2(Path input) throws IOException {
-		Image image = loadData(input);
+		final Image image = loadData(input);
 		printImage(image);
 
 		image.enhance(50);
@@ -60,11 +66,11 @@ public class Day20 extends AocBase {
 	}
 
 	/**
-	 * A class rather than a record so that it can be mutable
+	 * A class rather than a record so that it can be mutated
 	 */
 	private static class Image {
 		public static Image create(String algorithmLine, List<String> imageRows) {
-			boolean[] algorithm = extractAlgorithmBits(algorithmLine);
+			boolean[] algorithm = TextParser.toBooleanArray(algorithmLine, '#');
 
 			Set<Point2D> pixels = new HashSet<>();
 			for (int y = 0; y < imageRows.size(); y++) {
@@ -77,16 +83,6 @@ public class Day20 extends AocBase {
 			}
 
 			return new Image(algorithm, pixels);
-		}
-
-		private static boolean[] extractAlgorithmBits(String line) {
-			final char[] chars = line.toCharArray();
-			final boolean[] data = new boolean[chars.length];
-			for (int i = 0; i < data.length; i++) {
-				data[i] = chars[i] == '#' ? true : false;
-			}
-
-			return data;
 		}
 
 		private final boolean[] algorithm;

@@ -13,15 +13,21 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
+import com.diozero.aoc.util.Range;
 
-public class Day16 extends AocBase {
+public class Day16 extends Day {
 	public static void main(String[] args) {
 		new Day16().run();
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
+	public String name() {
+		return "Ticket Translation";
+	}
+
+	@Override
+	public String part1(final Path input) throws IOException {
 		final PuzzleInput puzzle_input = loadData(input);
 
 		// Sum the values of each invalid value in all nearby ticket
@@ -30,7 +36,7 @@ public class Day16 extends AocBase {
 	}
 
 	@Override
-	public String part2(Path input) throws IOException {
+	public String part2(final Path input) throws IOException {
 		final PuzzleInput puzzle_input = loadData(input);
 
 		// First discard the invalid tickets
@@ -52,7 +58,6 @@ public class Day16 extends AocBase {
 		final Map<Field, Integer> unique_matches = new HashMap<>();
 		// Loop until all unique matching field values have been resolved
 		while (!matches.isEmpty()) {
-
 			for (Iterator<Entry<Integer, List<Field>>> it = matches.entrySet().iterator(); it.hasNext();) {
 				Entry<Integer, List<Field>> match = it.next();
 				List<Field> fields = match.getValue();
@@ -75,7 +80,7 @@ public class Day16 extends AocBase {
 						.mapToLong(e -> my_ticket[e.getValue().intValue()]).reduce(1, (a, b) -> a * b));
 	}
 
-	private static boolean matchesAll(int index, Field field, List<int[]> tickets) {
+	private static boolean matchesAll(final int index, final Field field, final List<int[]> tickets) {
 		boolean match = true;
 		for (int[] ticket : tickets) {
 			if (!field.matches(ticket[index])) {
@@ -86,10 +91,10 @@ public class Day16 extends AocBase {
 		return match;
 	}
 
-	private static PuzzleInput loadData(Path input) throws IOException {
-		List<Field> fields = new ArrayList<>();
+	private static PuzzleInput loadData(final Path input) throws IOException {
+		final List<Field> fields = new ArrayList<>();
 		int[] my_ticket = {};
-		List<int[]> nearby_tickets = new ArrayList<>();
+		final List<int[]> nearby_tickets = new ArrayList<>();
 
 		int state = 0;
 		for (String line : Files.readAllLines(input)) {
@@ -120,7 +125,7 @@ public class Day16 extends AocBase {
 		return new PuzzleInput(fields, my_ticket, nearby_tickets);
 	}
 
-	private static boolean isValid(int[] ticketValues, List<Field> fields) {
+	private static boolean isValid(final int[] ticketValues, final List<Field> fields) {
 		// Each ticket value must match at least one field
 		for (int value : ticketValues) {
 			if (!isValid(value, fields)) {
@@ -131,7 +136,7 @@ public class Day16 extends AocBase {
 		return true;
 	}
 
-	private static boolean isValid(int ticketValue, List<Field> fields) {
+	private static boolean isValid(final int ticketValue, final List<Field> fields) {
 		// Must match at least one field
 		for (Field field : fields) {
 			if (field.matches(ticketValue)) {
@@ -149,8 +154,8 @@ public class Day16 extends AocBase {
 	private static record Field(String category, List<Range> ranges) {
 		private static final Pattern PATTERN = Pattern.compile("(.*): (\\w+)-(\\w+) or (\\w+)-(\\w+)");
 
-		public static Field parse(String line) {
-			Matcher m = PATTERN.matcher(line);
+		public static Field parse(final String line) {
+			final Matcher m = PATTERN.matcher(line);
 			if (!m.matches()) {
 				throw new IllegalArgumentException("Line '" + line + "' does not match pattern " + PATTERN.pattern());
 			}
@@ -159,10 +164,10 @@ public class Day16 extends AocBase {
 					new Range(Integer.parseInt(m.group(4)), Integer.parseInt(m.group(5)))));
 		}
 
-		public boolean matches(int ticketValue) {
+		public boolean matches(final int ticketValue) {
 			// Return true if the ticketValue matches at least one field
 			for (Range r : ranges) {
-				if (r.matches(ticketValue)) {
+				if (r.contains(ticketValue)) {
 					return true;
 				}
 			}
@@ -173,17 +178,6 @@ public class Day16 extends AocBase {
 		@Override
 		public String toString() {
 			return category + ": " + ranges;
-		}
-	}
-
-	private static record Range(int start, int end) {
-		public boolean matches(int ticketValue) {
-			return ticketValue >= start && ticketValue <= end;
-		}
-
-		@Override
-		public String toString() {
-			return start + ".." + end;
 		}
 	}
 }

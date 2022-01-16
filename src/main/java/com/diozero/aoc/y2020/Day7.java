@@ -13,29 +13,34 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
 
-public class Day7 extends AocBase {
+public class Day7 extends Day {
 	public static void main(String[] args) {
 		new Day7().run();
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
-		List<Rule> rules = Files.lines(input).map(Rule::parse).toList();
+	public String name() {
+		return "Handy Haversacks";
+	}
+
+	@Override
+	public String part1(final Path input) throws IOException {
+		final List<Rule> rules = Files.lines(input).map(Rule::parse).toList();
 
 		return Integer.toString(contains("shiny gold", rules, new HashSet<>()));
 	}
 
 	@Override
-	public String part2(Path input) throws IOException {
-		Map<String, Map<String, Integer>> rules = Files.lines(input).map(Rule::parse)
+	public String part2(final Path input) throws IOException {
+		final Map<String, Map<String, Integer>> rules = Files.lines(input).map(Rule::parse)
 				.collect(Collectors.toMap(r -> r.colour(), r -> r.contents()));
 
 		return Integer.toString(contents("shiny gold", rules));
 	}
 
-	private static int contains(String colour, List<Rule> rules, Set<String> visited) {
+	private static int contains(final String colour, final List<Rule> rules, final Set<String> visited) {
 		visited.add(colour);
 
 		int count = 0;
@@ -49,7 +54,7 @@ public class Day7 extends AocBase {
 		return count;
 	}
 
-	private static int contents(String colour, Map<String, Map<String, Integer>> rules) {
+	private static int contents(final String colour, final Map<String, Map<String, Integer>> rules) {
 		int count = 0;
 
 		for (Map.Entry<String, Integer> rule : rules.get(colour).entrySet()) {
@@ -63,7 +68,7 @@ public class Day7 extends AocBase {
 		private static final Pattern PATTERN = Pattern.compile("(.*) bags contain (.*)\\.");
 		private static final Pattern BAG_PATTERN = Pattern.compile("(\\d+) (.*) bags?");
 
-		public static Rule parse(String line) {
+		public static Rule parse(final String line) {
 			Matcher matcher = PATTERN.matcher(line);
 			if (!matcher.matches()) {
 				throw new IllegalArgumentException("Line '" + line + "' doesn't match pattern " + PATTERN.pattern());

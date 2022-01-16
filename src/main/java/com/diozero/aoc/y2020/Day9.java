@@ -3,16 +3,22 @@ package com.diozero.aoc.y2020;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
+import com.diozero.aoc.util.TextParser;
 
-public class Day9 extends AocBase {
+public class Day9 extends Day {
 	public static void main(String[] args) {
 		new Day9().run();
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
-		long[] values = loadLongArray(input);
+	public String name() {
+		return "Encoding Error";
+	}
+
+	@Override
+	public String part1(final Path input) throws IOException {
+		final long[] values = TextParser.loadLongArray(input);
 
 		int preamble = 25;
 		if (input.toString().contains("samples")) {
@@ -23,15 +29,15 @@ public class Day9 extends AocBase {
 	}
 
 	@Override
-	public String part2(Path input) throws IOException {
-		long[] values = loadLongArray(input);
+	public String part2(final Path input) throws IOException {
+		final long[] values = TextParser.loadLongArray(input);
 
 		int preamble = 25;
 		if (input.toString().contains("samples")) {
 			preamble = 5;
 		}
 
-		long invalid_number = getInvalidNumber(values, preamble);
+		final long invalid_number = getInvalidNumber(values, preamble);
 		int invalid_number_index;
 		for (invalid_number_index = 0; invalid_number_index < values.length
 				&& values[invalid_number_index] != invalid_number; invalid_number_index++) {

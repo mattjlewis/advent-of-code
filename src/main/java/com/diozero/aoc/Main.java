@@ -1,32 +1,28 @@
 package com.diozero.aoc;
 
-import java.util.stream.IntStream;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
+import org.tinylog.Logger;
 
 public class Main {
 	public static void main(String[] args) {
-		String[] years = { "2020", "2021" };
-		for (String year : years) {
-			try {
-				Main main = (Main) Class.forName(Main.class.getPackageName() + ".y" + year + ".Main" + year)
-						.getDeclaredConstructor().newInstance();
-				main.run();
-			} catch (Exception e) {
-				// Ignore
-			}
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(
+				Main.class.getClassLoader().getResourceAsStream(Main.class.getPackageName().replaceAll("[.]", "/"))))) {
+			br.lines().filter(s -> !s.endsWith(".class")).filter(s -> s.startsWith("y"))
+					.mapToInt(s -> Integer.parseInt(s.substring(1))).mapToObj(Main::instantiateYear).forEach(Year::run);
+		} catch (Exception e) {
+			Logger.error(e, "Error: {}", e);
 		}
 	}
 
-	public final AocBase instantiateDay(int day) {
+	static Year instantiateYear(int year) {
 		try {
-			return (AocBase) Class.forName(getClass().getPackageName() + ".Day" + day).getDeclaredConstructor()
-					.newInstance();
+			return (Year) Class.forName(Main.class.getPackageName() + ".y" + year + ".Year" + year)
+					.getDeclaredConstructor().newInstance();
 		} catch (Exception e) {
-			// Ignore
+			Logger.error(e, "Error: {}", e);
 		}
 		return null;
-	}
-
-	public final void run() {
-		IntStream.range(1, 24).mapToObj(this::instantiateDay).filter(day -> day != null).forEach(AocBase::run);
 	}
 }

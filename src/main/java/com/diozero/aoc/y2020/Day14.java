@@ -9,9 +9,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.LongStream;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
 
-public class Day14 extends AocBase {
+public class Day14 extends Day {
 	private static final Pattern MASK_PATTERN = Pattern.compile("mask = (.*)");
 	private static final Pattern MEM_PATTERN = Pattern.compile("mem\\[(\\w+)\\] = (\\w+)");
 	private static final int ADDRESS_LENGTH = 36;
@@ -23,14 +23,19 @@ public class Day14 extends AocBase {
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
+	public String name() {
+		return "Docking Data";
+	}
+
+	@Override
+	public String part1(final Path input) throws IOException {
 		final Map<Integer, Long> memory = new HashMap<>();
 
 		long and_mask = MAX_MEM_ADDR;
 		long or_mask = 0;
 		for (String line : Files.readAllLines(input)) {
 			if (line.startsWith("mask")) {
-				Matcher m = MASK_PATTERN.matcher(line);
+				final Matcher m = MASK_PATTERN.matcher(line);
 				if (!m.matches()) {
 					throw new IllegalArgumentException("Invalid mask line '" + line + "'");
 				}
@@ -38,7 +43,7 @@ public class Day14 extends AocBase {
 				and_mask = Long.parseLong(mask.replace('X', '1'), 2);
 				or_mask = Long.parseLong(mask.replace('X', '0'), 2);
 			} else {
-				Matcher m = MEM_PATTERN.matcher(line);
+				final Matcher m = MEM_PATTERN.matcher(line);
 				if (!m.matches()) {
 					throw new IllegalArgumentException("Invalid memory line '" + line + "'");
 				}
@@ -51,7 +56,7 @@ public class Day14 extends AocBase {
 	}
 
 	@Override
-	public String part2(Path input) throws IOException {
+	public String part2(final Path input) throws IOException {
 		final Map<Long, Integer> memory = new HashMap<>();
 
 		String mask = "0".repeat(ADDRESS_LENGTH);
@@ -78,7 +83,7 @@ public class Day14 extends AocBase {
 		return Long.toString(memory.values().stream().mapToLong(Integer::longValue).sum());
 	}
 
-	private static LongStream memoryLocations(String mask, long memoryLocation) {
+	private static LongStream memoryLocations(final String mask, final long memoryLocation) {
 		int x_index = mask.indexOf('X');
 
 		if (x_index == -1) {

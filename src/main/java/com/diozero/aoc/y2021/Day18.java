@@ -9,9 +9,9 @@ import java.util.UUID;
 
 import org.tinylog.Logger;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
 
-public class Day18 extends AocBase {
+public class Day18 extends Day {
 	public static void main(String[] args) {
 		Pair pair = loadPairs("[[[[0,7],4],[[7,8],[0,[6,7]]]],[1,1]]");
 		assert (pair.canExplode());
@@ -78,6 +78,49 @@ public class Day18 extends AocBase {
 		new Day18().run();
 	}
 
+	@Override
+	public String name() {
+		return "Snailfish";
+	}
+
+	@Override
+	public String part1(final Path input) throws IOException {
+		final List<Pair> pairs = loadData(input);
+
+		Logger.debug("Loaded Pairs:");
+		pairs.forEach(pair -> Logger.debug("canExplode: {}, canSplit: {}, pair: {}", pair.canExplode(), pair.canSplit(),
+				pair));
+
+		Pair pair = null;
+		for (Pair p : pairs) {
+			if (pair == null) {
+				pair = p;
+			} else {
+				pair = Pair.addAndReduce(pair, p);
+			}
+		}
+
+		return Integer.toString(pair.getMagnitude());
+	}
+
+	@Override
+	public String part2(final Path input) throws IOException {
+		final List<Pair> pairs = loadData(input);
+
+		int max_mag = Integer.MIN_VALUE;
+
+		for (int i = 0; i < pairs.size() - 1; i++) {
+			for (int j = i + 1; j < pairs.size(); j++) {
+				Pair p1 = pairs.get(i);
+				Pair p2 = pairs.get(j);
+				max_mag = Math.max(max_mag, Pair.addAndReduce(p1, p2).getMagnitude());
+				max_mag = Math.max(max_mag, Pair.addAndReduce(p2, p1).getMagnitude());
+			}
+		}
+
+		return Integer.toString(max_mag);
+	}
+
 	/**
 	 * Examples:
 	 *
@@ -93,11 +136,11 @@ public class Day18 extends AocBase {
 	 *
 	 * @param input input data
 	 */
-	private static List<Pair> loadData(Path input) throws IOException {
+	private static List<Pair> loadData(final Path input) throws IOException {
 		return Files.lines(input).map(Day18::loadPairs).toList();
 	}
 
-	private static Pair loadPairs(String line) {
+	private static Pair loadPairs(final String line) {
 		PrimitiveIterator.OfInt it = line.chars().iterator();
 
 		char ch = (char) it.nextInt();
@@ -108,8 +151,8 @@ public class Day18 extends AocBase {
 		return loadPairs(null, it);
 	}
 
-	private static Pair loadPairs(Pair parent, PrimitiveIterator.OfInt it) {
-		Pair pair = new Pair(parent);
+	private static Pair loadPairs(final Pair parent, final PrimitiveIterator.OfInt it) {
+		final Pair pair = new Pair(parent);
 
 		Value value;
 		char ch = (char) it.nextInt();
@@ -151,44 +194,6 @@ public class Day18 extends AocBase {
 		}
 
 		return pair;
-	}
-
-	@Override
-	public String part1(Path input) throws IOException {
-		List<Pair> pairs = loadData(input);
-
-		Logger.debug("Loaded Pairs:");
-		pairs.forEach(pair -> Logger.debug("canExplode: {}, canSplit: {}, pair: {}", pair.canExplode(), pair.canSplit(),
-				pair));
-
-		Pair pair = null;
-		for (Pair p : pairs) {
-			if (pair == null) {
-				pair = p;
-			} else {
-				pair = Pair.addAndReduce(pair, p);
-			}
-		}
-
-		return Integer.toString(pair.getMagnitude());
-	}
-
-	@Override
-	public String part2(Path input) throws IOException {
-		List<Pair> pairs = loadData(input);
-
-		int max_mag = Integer.MIN_VALUE;
-
-		for (int i = 0; i < pairs.size() - 1; i++) {
-			for (int j = i + 1; j < pairs.size(); j++) {
-				Pair p1 = pairs.get(i);
-				Pair p2 = pairs.get(j);
-				max_mag = Math.max(max_mag, Pair.addAndReduce(p1, p2).getMagnitude());
-				max_mag = Math.max(max_mag, Pair.addAndReduce(p2, p1).getMagnitude());
-			}
-		}
-
-		return Integer.toString(max_mag);
 	}
 
 	private static class Pair {

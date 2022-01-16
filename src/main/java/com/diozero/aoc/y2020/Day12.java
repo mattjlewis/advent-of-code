@@ -5,16 +5,21 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
 
-public class Day12 extends AocBase {
+public class Day12 extends Day {
 	public static void main(String[] args) {
 		new Day12().run();
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
-		List<Instruction> instructions = Files.lines(input).map(Instruction::parse).toList();
+	public String name() {
+		return "Rain Risk";
+	}
+
+	@Override
+	public String part1(final Path input) throws IOException {
+		final List<Instruction> instructions = Files.lines(input).map(Instruction::parse).toList();
 
 		// The ship starts 0, 0 facing east
 		int direction = 90;
@@ -68,8 +73,8 @@ public class Day12 extends AocBase {
 	}
 
 	@Override
-	public String part2(Path input) throws IOException {
-		List<Instruction> instructions = Files.lines(input).map(Instruction::parse).toList();
+	public String part2(final Path input) throws IOException {
+		final List<Instruction> instructions = Files.lines(input).map(Instruction::parse).toList();
 
 		// The ship starts at 0, 0
 		int ship_x = 0;
@@ -145,7 +150,7 @@ public class Day12 extends AocBase {
 	}
 
 	private static record Instruction(Action action, int amount) {
-		public static Instruction parse(String line) {
+		public static Instruction parse(final String line) {
 			return new Instruction(Action.valueOf(line.substring(0, 1)), Integer.parseInt(line.substring(1)));
 		}
 	}

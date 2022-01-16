@@ -12,7 +12,9 @@ import java.util.stream.Collectors;
 
 import org.tinylog.Logger;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
+import com.diozero.aoc.util.SetUtil;
+import com.diozero.aoc.util.StringUtil;
 
 /*-
  *   0:      1:      2:      3:      4:
@@ -33,64 +35,34 @@ import com.diozero.aoc.AocBase;
  * .    f  e    f  .    f  e    f  .    f
  *  gggg    gggg    ....    gggg    gggg
  */
-public class Day8 extends AocBase {
+public class Day8 extends Day {
 	public static void main(String[] args) {
 		new Day8().run();
 	}
 
-	private static class Line {
-		final String[] signalPatterns;
-		final String[] outputValues;
-		Map<String, Integer> patternToNumber;
-
-		public Line(String[] signalPatterns, String[] outputValues) {
-			this.signalPatterns = Arrays.stream(signalPatterns).map(Day8::sortCharactersInString)
-					.toArray(String[]::new);
-			this.outputValues = Arrays.stream(outputValues).map(Day8::sortCharactersInString).toArray(String[]::new);
-		}
-
-		@Override
-		public String toString() {
-			return "Line [signalPatterns=" + Arrays.toString(signalPatterns) + ", outputValues="
-					+ Arrays.toString(outputValues) + "]";
-		}
-	}
-
-	private static Line parseLine(String line) {
-		final String[] parts = line.split("\\|");
-		return new Line(parts[0].trim().split(" "), parts[1].trim().split(" "));
-	}
-
-	public static String sortCharactersInString(String s) {
-		return s.chars().sorted().collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-				.toString();
+	@Override
+	public String name() {
+		return "Seven Segment Search";
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
+	public String part1(final Path input) throws IOException {
 		return Long.toString(Files.lines(input).map(line -> line.split("\\|")[1].trim()).map(line -> line.split(" "))
 				.mapToLong(Day8::count1478).sum());
 	}
 
-	public static long count1478(String[] values) {
-		return Arrays.stream(values).filter(value -> {
-			int len = value.length();
-			return len == 2 || len == 4 || len == 3 || len == 7;
-		}).count();
-	}
-
 	@Override
-	public String part2(Path input) throws IOException {
+	public String part2(final Path input) throws IOException {
 		final List<Line> lines = Files.lines(input).map(Day8::parseLine).collect(Collectors.toUnmodifiableList());
 
 		for (Line line : lines) {
 			// Get all unique values
-			Map<String, Integer> pattern_to_number = new HashMap<>();
-			Map<Integer, String> number_to_pattern = new HashMap<>();
+			final Map<String, Integer> pattern_to_number = new HashMap<>();
+			final Map<Integer, String> number_to_pattern = new HashMap<>();
 
 			for (String pattern : line.signalPatterns) {
 				if (!pattern_to_number.containsKey(pattern)) {
-					Integer number = getUniqueNumber(pattern);
+					final Integer number = getUniqueNumber(pattern);
 					pattern_to_number.put(pattern, number);
 					if (number != null) {
 						number_to_pattern.put(number, pattern);
@@ -132,8 +104,9 @@ public class Day8 extends AocBase {
 
 			// Nine is the the only segment with 1 additional segment after joining abcdf
 			// (g)
-			String abcdf = sortCharactersInString(a + cf.stream().map(String::valueOf).collect(Collectors.joining())
-					+ bd.stream().map(String::valueOf).collect(Collectors.joining()));
+			String abcdf = StringUtil
+					.sortCharactersInString(a + cf.stream().map(String::valueOf).collect(Collectors.joining())
+							+ bd.stream().map(String::valueOf).collect(Collectors.joining()));
 
 			Set<Character> abcdf_set = toSet(abcdf);
 			Character g = null;
@@ -164,7 +137,7 @@ public class Day8 extends AocBase {
 			for (String segment : pattern_to_number.entrySet().stream().filter(entry -> entry.getValue() == null)
 					.filter(entry -> entry.getKey().length() == 6).map(Map.Entry::getKey)
 					.collect(Collectors.toUnmodifiableList())) {
-				Set<Character> diff = distinct(bd, toSet(segment));
+				Set<Character> diff = SetUtil.distinct(bd, toSet(segment));
 				if (diff.size() == 1) {
 					zero = segment;
 					pattern_to_number.put(zero, Integer.valueOf(0));
@@ -181,26 +154,26 @@ public class Day8 extends AocBase {
 			Logger.debug("6 is {}", six);
 
 			// Difference between 6 and 8 is c
-			Character c = distinct(eight, six).stream().findFirst().orElseThrow();
+			Character c = distinct(eight, toSet(six)).stream().findFirst().orElseThrow();
 			Logger.debug("c: {}", c);
-			Character b = distinct(bd, Set.of(d)).stream().findFirst().orElseThrow();
+			Character b = SetUtil.distinct(bd, Set.of(d)).stream().findFirst().orElseThrow();
 			Logger.debug("b: {}", b);
-			Character f = distinct(cf, Set.of(c)).stream().findFirst().orElseThrow();
+			Character f = SetUtil.distinct(cf, Set.of(c)).stream().findFirst().orElseThrow();
 			Logger.debug("f: {}", f);
 
 			// Now know: a, b, c, d, e, f, g
 
-			two = sortCharactersInString("" + a + c + d + e + g);
+			two = StringUtil.sortCharactersInString("" + a + c + d + e + g);
 			pattern_to_number.put(two, Integer.valueOf(2));
 			number_to_pattern.put(Integer.valueOf(2), two);
 			Logger.debug("two is {}", two);
 
-			three = sortCharactersInString("" + a + c + d + f + g);
+			three = StringUtil.sortCharactersInString("" + a + c + d + f + g);
 			pattern_to_number.put(three, Integer.valueOf(3));
 			number_to_pattern.put(Integer.valueOf(3), three);
 			Logger.debug("three is {}", three);
 
-			five = sortCharactersInString("" + a + b + d + f + g);
+			five = StringUtil.sortCharactersInString("" + a + b + d + f + g);
 			pattern_to_number.put(five, Integer.valueOf(5));
 			number_to_pattern.put(Integer.valueOf(5), five);
 			Logger.debug("five is {}", five);
@@ -228,24 +201,28 @@ public class Day8 extends AocBase {
 		return Integer.toString(sum);
 	}
 
-	private static Set<Character> toSet(String s) {
+	private static Line parseLine(final String line) {
+		final String[] parts = line.split("\\|");
+		return new Line(parts[0].trim().split(" "), parts[1].trim().split(" "));
+	}
+
+	private static long count1478(final String[] values) {
+		return Arrays.stream(values).filter(value -> {
+			int len = value.length();
+			return len == 2 || len == 4 || len == 3 || len == 7;
+		}).count();
+	}
+
+	private static Set<Character> toSet(final String s) {
 		return s.chars().mapToObj(c -> Character.valueOf((char) c)).collect(Collectors.toUnmodifiableSet());
 	}
 
-	private static Set<Character> distinct(String s1, String s2) {
-		return distinct(s1, toSet(s2));
-	}
-
-	private static Set<Character> distinct(String s, Set<Character> chars) {
+	public static Set<Character> distinct(String s, Set<Character> chars) {
 		return s.chars().mapToObj(c -> Character.valueOf((char) c)).filter(c -> !chars.contains(c))
 				.collect(Collectors.toUnmodifiableSet());
 	}
 
-	private static Set<Character> distinct(Set<Character> s, Set<Character> chars) {
-		return s.stream().filter(c -> !chars.contains(c)).collect(Collectors.toUnmodifiableSet());
-	}
-
-	private static Integer getUniqueNumber(String pattern) {
+	private static Integer getUniqueNumber(final String pattern) {
 		switch (pattern.length()) {
 		case 2:
 			return Integer.valueOf(1);
@@ -257,6 +234,28 @@ public class Day8 extends AocBase {
 			return Integer.valueOf(8);
 		default:
 			return null;
+		}
+	}
+
+	/*
+	 * Class rather than record simply to allow patternToNumber to be calculated
+	 */
+	private static class Line {
+		final String[] signalPatterns;
+		final String[] outputValues;
+		Map<String, Integer> patternToNumber;
+
+		public Line(String[] signalPatterns, String[] outputValues) {
+			this.signalPatterns = Arrays.stream(signalPatterns).map(StringUtil::sortCharactersInString)
+					.toArray(String[]::new);
+			this.outputValues = Arrays.stream(outputValues).map(StringUtil::sortCharactersInString)
+					.toArray(String[]::new);
+		}
+
+		@Override
+		public String toString() {
+			return "Line [signalPatterns=" + Arrays.toString(signalPatterns) + ", outputValues="
+					+ Arrays.toString(outputValues) + "]";
 		}
 	}
 }

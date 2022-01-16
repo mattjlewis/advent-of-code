@@ -10,16 +10,22 @@ import java.util.List;
 
 import org.tinylog.Logger;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
+import com.diozero.aoc.util.ArrayUtil;
 import com.diozero.aoc.util.Point2D;
 
-public class Day13 extends AocBase {
+public class Day13 extends Day {
 	public static void main(String[] args) {
 		new Day13().run();
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
+	public String name() {
+		return "Transparent Origami";
+	}
+
+	@Override
+	public String part1(final Path input) throws IOException {
 		final Puzzle puzzle = loadData(input);
 
 		// Part 1 calculates the number of dots after one fold
@@ -27,11 +33,45 @@ public class Day13 extends AocBase {
 	}
 
 	@Override
-	public String part2(Path input) throws IOException {
+	public String part2(final Path input) throws IOException {
 		final Puzzle puzzle = loadData(input);
 
 		// return "AHGCPGAU";
 		return Integer.toString(fold(puzzle.matrix(), puzzle.folds()));
+	}
+
+	private static Puzzle loadData(final Path input) throws IOException {
+		final Iterator<String> it = Files.lines(input).iterator();
+		boolean process_points = true;
+		final List<Point2D> dots = new ArrayList<>();
+		final List<Fold> folds = new ArrayList<>();
+		int max_x = Integer.MIN_VALUE;
+		int max_y = Integer.MIN_VALUE;
+		while (it.hasNext()) {
+			String line = it.next();
+			if (line.trim().isEmpty()) {
+				process_points = false;
+				continue;
+			}
+			if (process_points) {
+				String[] x_y_parts = line.split(",");
+				Point2D point = new Point2D(Integer.parseInt(x_y_parts[0]), Integer.parseInt(x_y_parts[1]));
+				dots.add(point);
+				max_x = Math.max(point.x(), max_x);
+				max_y = Math.max(point.y(), max_y);
+			} else {
+				String[] parts = line.split("=");
+				folds.add(new Fold(Axis.valueOf(parts[0].split(" ")[2].toUpperCase()), Integer.parseInt(parts[1])));
+			}
+		}
+		Logger.debug("dimensions: {}x{}", max_x + 1, max_y + 1);
+		Logger.debug("dots: " + dots);
+
+		// FIXME Optimise by working from the collection of points
+		final boolean[][] matrix = new boolean[max_y + 1][max_x + 1];
+		dots.forEach(dot -> matrix[dot.y()][dot.x()] = true);
+
+		return new Puzzle(matrix, folds);
 	}
 
 	private static int fold(final boolean[][] startMatrix, final List<Fold> folds) {
@@ -79,14 +119,14 @@ public class Day13 extends AocBase {
 
 			if (Logger.isDebugEnabled() && matrix.length < 20) {
 				System.out.println();
-				printMatrix(matrix);
+				ArrayUtil.print(matrix, '█', ' ');
 			}
 		}
 
 		if (matrix.length < 50 && matrix[0].length < 50) {
 			// Part 2 should print "AHGCPGAU" (40x6 matrix)
 			System.out.println();
-			printMatrix(matrix);
+			ArrayUtil.print(matrix, '█', ' ');
 			System.out.println();
 		}
 
@@ -100,49 +140,6 @@ public class Day13 extends AocBase {
 		}
 
 		return count;
-	}
-
-	private static Puzzle loadData(Path input) throws IOException {
-		final Iterator<String> it = Files.lines(input).iterator();
-		boolean process_points = true;
-		final List<Point2D> dots = new ArrayList<>();
-		final List<Fold> folds = new ArrayList<>();
-		int max_x = Integer.MIN_VALUE;
-		int max_y = Integer.MIN_VALUE;
-		while (it.hasNext()) {
-			String line = it.next();
-			if (line.trim().isEmpty()) {
-				process_points = false;
-				continue;
-			}
-			if (process_points) {
-				String[] x_y_parts = line.split(",");
-				Point2D point = new Point2D(Integer.parseInt(x_y_parts[0]), Integer.parseInt(x_y_parts[1]));
-				dots.add(point);
-				max_x = Math.max(point.x(), max_x);
-				max_y = Math.max(point.y(), max_y);
-			} else {
-				String[] parts = line.split("=");
-				folds.add(new Fold(Axis.valueOf(parts[0].split(" ")[2].toUpperCase()), Integer.parseInt(parts[1])));
-			}
-		}
-		Logger.debug("dimensions: {}x{}", max_x + 1, max_y + 1);
-		Logger.debug("dots: " + dots);
-
-		// FIXME Optimise by working from the collection of points
-		final boolean[][] matrix = new boolean[max_y + 1][max_x + 1];
-		dots.forEach(dot -> matrix[dot.y()][dot.x()] = true);
-
-		return new Puzzle(matrix, folds);
-	}
-
-	private static void printMatrix(boolean[][] matrix) {
-		for (int y = 0; y < matrix.length; y++) {
-			for (int x = 0; x < matrix[y].length; x++) {
-				System.out.print(matrix[y][x] ? "█" : " ");
-			}
-			System.out.println();
-		}
 	}
 
 	private static record Puzzle(boolean[][] matrix, List<Fold> folds) {

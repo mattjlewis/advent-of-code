@@ -10,22 +10,16 @@ import java.util.stream.Collectors;
 
 import org.tinylog.Logger;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
 
-public class Day14 extends AocBase {
+public class Day14 extends Day {
 	public static void main(String[] args) {
 		new Day14().run();
 	}
 
-	private static Puzzle loadData(Path input) throws IOException {
-		String text = Files.lines(input).findFirst().orElseThrow().trim();
-
-		Map<String, Rule> rules = Files.lines(input).skip(2).map(line -> line.split(" -> "))
-				.collect(Collectors.toUnmodifiableMap(rule -> rule[0],
-						rule -> Rule.create(rule[0], Character.valueOf(rule[1].charAt(0)))));
-		Logger.debug("rules: {}", rules);
-
-		return new Puzzle(text, rules);
+	@Override
+	public String name() {
+		return "Extended Polymerization";
 	}
 
 	@Override
@@ -104,6 +98,17 @@ public class Day14 extends AocBase {
 		Logger.debug("min: {}, max: {}", min, max);
 
 		return Long.toString(max - min);
+	}
+
+	private static Puzzle loadData(final Path input) throws IOException {
+		String text = Files.lines(input).findFirst().orElseThrow().trim();
+
+		Map<String, Rule> rules = Files.lines(input).skip(2).map(line -> line.split(" -> "))
+				.collect(Collectors.toUnmodifiableMap(rule -> rule[0],
+						rule -> Rule.create(rule[0], Character.valueOf(rule[1].charAt(0)))));
+		Logger.debug("rules: {}", rules);
+
+		return new Puzzle(text, rules);
 	}
 
 	private static void update(final Map<Character, AtomicLong> charCounts, final Map<String, AtomicLong> pairCounts,

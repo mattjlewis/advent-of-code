@@ -11,7 +11,7 @@ import java.util.Queue;
 
 import org.tinylog.Logger;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
 
 /*-
  * 8A,       00,       4A,       80,       1A,       80,       02,       F4,       78
@@ -27,28 +27,18 @@ import com.diozero.aoc.AocBase;
  * 110 100 01111 000
  * Version: 6, type: 4 (literal), value: 15
  */
-public class Day16 extends AocBase {
+public class Day16 extends Day {
 	public static void main(String[] args) {
-		/*-
-		for (int i = 0; i < 15; i++) {
-			System.setProperty("sample", i == 0 ? "" : Integer.toString(i));
-			new Day16().run();
-		}
-		System.getProperties().remove("sample");
-		*/
 		new Day16().run();
 	}
 
-	private Packet loadData(Path input) throws IOException {
-		final Queue<Integer> bytes = new LinkedList<>();
-		Arrays.stream(Files.lines(input).findFirst().orElseThrow().split("(?<=\\G.{2})"))
-				.forEach(b -> bytes.add(Integer.valueOf(b, 16)));
-
-		return readPacket(new BitStream(bytes));
+	@Override
+	public String name() {
+		return "Packet Decoder";
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
+	public String part1(final Path input) throws IOException {
 		Packet packet = loadData(input);
 		Logger.debug("root packet: {}", packet);
 
@@ -56,14 +46,22 @@ public class Day16 extends AocBase {
 	}
 
 	@Override
-	public String part2(Path input) throws IOException {
+	public String part2(final Path input) throws IOException {
 		Packet packet = loadData(input);
 		Logger.debug("root packet: {}", packet);
 
 		return Long.toString(packet.calculateValue());
 	}
 
-	private Packet readPacket(BitStream bs) {
+	private Packet loadData(final Path input) throws IOException {
+		final Queue<Integer> bytes = new LinkedList<>();
+		Arrays.stream(Files.lines(input).findFirst().orElseThrow().split("(?<=\\G.{2})"))
+				.forEach(b -> bytes.add(Integer.valueOf(b, 16)));
+
+		return readPacket(new BitStream(bytes));
+	}
+
+	private Packet readPacket(final BitStream bs) {
 		// Get the packet version
 		int version = bs.readBits(3);
 		Logger.debug("version: {}", version);

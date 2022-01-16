@@ -1,52 +1,62 @@
 package com.diozero.aoc.y2020;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
 
 import org.tinylog.Logger;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
+import com.diozero.aoc.util.ArrayUtil;
+import com.diozero.aoc.util.TextParser;
 
-public class Day11 extends AocBase {
+public class Day11 extends Day {
+	private static final char SEAT = 'L';
+	private static final char BLANK = '.';
+	private static final char OCCUPIED = '#';
+
 	public static void main(String[] args) {
 		new Day11().run();
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
-		return Long.toString(getNumOccupied(loadData(input), Day11::part1OccupancyLogic));
+	public String name() {
+		return "Seating System";
 	}
 
 	@Override
-	public String part2(Path input) throws IOException {
-		return Long.toString(getNumOccupied(loadData(input), Day11::part2OccupancyLogic));
+	public String part1(final Path input) throws IOException {
+		return Long.toString(getNumOccupied(TextParser.loadBooleanArray(input, SEAT), Day11::part1OccupancyLogic));
 	}
 
-	private static long getNumOccupied(Boolean[][] seats, OccupancyLogic occupancyLogic) {
-		int width = seats[0].length;
-		int height = seats.length;
+	@Override
+	public String part2(final Path input) throws IOException {
+		return Long.toString(getNumOccupied(TextParser.loadBooleanArray(input, SEAT), Day11::part2OccupancyLogic));
+	}
+
+	private static long getNumOccupied(final boolean[][] seats, final OccupancyLogic occupancyLogic) {
+		final int width = seats[0].length;
+		final int height = seats.length;
 
 		// After step 1 all seats become occupied
-		Boolean[][] occupancy = clone(seats);
+		boolean[][] occupancy = ArrayUtil.clone(seats);
 		int step = 1;
 		boolean move = true;
 
 		while (move) {
-			Boolean[][] new_occupancy = new Boolean[height][width];
+			boolean[][] new_occupancy = new boolean[height][width];
 			move = false;
 
 			for (int y = 0; y < height; y++) {
 				for (int x = 0; x < width; x++) {
-					if (!seats[y][x].booleanValue()) {
-						new_occupancy[y][x] = Boolean.FALSE;
+					if (!seats[y][x]) {
+						new_occupancy[y][x] = false;
 						continue;
 					}
 
 					Optional<Boolean> result = occupancyLogic.seatChange(seats, occupancy, x, y);
 					if (result.isPresent()) {
-						new_occupancy[y][x] = result.get();
+						new_occupancy[y][x] = result.get().booleanValue();
 						move = true;
 					} else {
 						new_occupancy[y][x] = occupancy[y][x];
@@ -66,7 +76,7 @@ public class Day11 extends AocBase {
 		int num_occupied = 0;
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				if (occupancy[y][x].booleanValue()) {
+				if (occupancy[y][x]) {
 					num_occupied++;
 				}
 			}
@@ -78,26 +88,27 @@ public class Day11 extends AocBase {
 	/*
 	 * Works on the number of immediately adjacent occupied seats.
 	 */
-	private static Optional<Boolean> part1OccupancyLogic(Boolean[][] seats, Boolean[][] occupancy, int x, int y) {
+	private static Optional<Boolean> part1OccupancyLogic(final boolean[][] seats, final boolean[][] occupancy,
+			final int x, final int y) {
 		int num_occupied = 0;
 		for (int yy = Math.max(0, y - 1); yy <= Math.min(seats.length - 1, y + 1); yy++) {
 			for (int xx = Math.max(0, x - 1); xx <= Math.min(seats[0].length - 1, x + 1); xx++) {
 				if (yy == y && xx == x) {
 					continue;
 				}
-				if (seats[yy][xx].booleanValue() && occupancy[yy][xx].booleanValue()) {
+				if (seats[yy][xx] && occupancy[yy][xx]) {
 					num_occupied++;
 				}
 			}
 		}
 
 		// Empty seats that have no adjacent occupied seats become occupied.
-		if (!occupancy[y][x].booleanValue() && num_occupied == 0) {
+		if (!occupancy[y][x] && num_occupied == 0) {
 			return Optional.of(Boolean.TRUE);
 		}
 
 		// Occupied seats that have four or more adjacent occupied seats become empty.
-		if (occupancy[y][x].booleanValue() && num_occupied >= 4) {
+		if (occupancy[y][x] && num_occupied >= 4) {
 			return Optional.of(Boolean.FALSE);
 		}
 
@@ -108,7 +119,8 @@ public class Day11 extends AocBase {
 	/*
 	 * Works on the number of visible occupied seats.
 	 */
-	private static Optional<Boolean> part2OccupancyLogic(Boolean[][] seats, Boolean[][] occupancy, int x, int y) {
+	private static Optional<Boolean> part2OccupancyLogic(final boolean[][] seats, final boolean[][] occupancy,
+			final int x, final int y) {
 		int num_occupied = 0;
 
 		// Go in each direction
@@ -117,12 +129,12 @@ public class Day11 extends AocBase {
 		}
 
 		// Empty seats that have no visible occupied seats become occupied.
-		if (!occupancy[y][x].booleanValue() && num_occupied == 0) {
+		if (!occupancy[y][x] && num_occupied == 0) {
 			return Optional.of(Boolean.TRUE);
 		}
 
 		// Occupied seats that see at least five visible occupied seats become empty.
-		if (occupancy[y][x].booleanValue() && num_occupied >= 5) {
+		if (occupancy[y][x] && num_occupied >= 5) {
 			return Optional.of(Boolean.FALSE);
 		}
 
@@ -130,13 +142,13 @@ public class Day11 extends AocBase {
 		return Optional.empty();
 	}
 
-	private static boolean hasVisibleOccupiedSeats(Boolean[][] seats, Boolean[][] occupancy, int x, int y,
-			Direction direction) {
+	private static boolean hasVisibleOccupiedSeats(final boolean[][] seats, final boolean[][] occupancy, final int x,
+			final int y, final Direction direction) {
 		int xx = x + direction.dx();
 		int yy = y + direction.dy();
 		while (xx >= 0 && xx < seats[0].length && yy >= 0 && yy < seats.length) {
-			if (seats[yy][xx].booleanValue()) {
-				return occupancy[yy][xx].booleanValue();
+			if (seats[yy][xx]) {
+				return occupancy[yy][xx];
 			}
 
 			xx += direction.dx();
@@ -146,27 +158,11 @@ public class Day11 extends AocBase {
 		return false;
 	}
 
-	private static Boolean[][] loadData(Path input) throws IOException {
-		return Files.lines(input)
-				.map(line -> line.chars().mapToObj(ch -> Boolean.valueOf(ch == 'L')).toArray(Boolean[]::new))
-				.toArray(Boolean[][]::new);
-	}
-
-	private static Boolean[][] clone(Boolean[][] array) {
-		Boolean[][] new_array = new Boolean[array.length][array[0].length];
-
-		for (int y = 0; y < array.length; y++) {
-			System.arraycopy(array[y], 0, new_array[y], 0, new_array[y].length);
-		}
-
-		return new_array;
-	}
-
-	private static void print(Boolean[][] seats, Boolean[][] occupied, int step) {
+	private static void print(final boolean[][] seats, final boolean[][] occupied, final int step) {
 		System.out.println("After step " + step + ":");
 		for (int y = 0; y < occupied.length; y++) {
 			for (int x = 0; x < occupied[y].length; x++) {
-				System.out.print(occupied[y][x].booleanValue() ? '#' : seats[y][x].booleanValue() ? 'L' : '.');
+				System.out.print(occupied[y][x] ? OCCUPIED : seats[y][x] ? SEAT : BLANK);
 			}
 			System.out.println();
 		}
@@ -185,15 +181,15 @@ public class Day11 extends AocBase {
 		 * @return True if the seat should become occupied, false if it should become
 		 *         vacant, empty if no change
 		 */
-		Optional<Boolean> seatChange(Boolean[][] seats, Boolean[][] occupancy, int x, int y);
+		Optional<Boolean> seatChange(final boolean[][] seats, final boolean[][] occupancy, final int x, final int y);
 	}
 
 	private enum Direction {
 		UP(0, -1), UP_RIGHT(1, -1), RIGHT(1, 0), DOWN_RIGHT(1, 1), DOWN(0, 1), DOWN_LEFT(-1, 1), LEFT(-1, 0),
 		UP_LEFT(-1, -1);
 
-		private int dx;
-		private int dy;
+		private final int dx;
+		private final int dy;
 
 		Direction(int dx, int dy) {
 			this.dx = dx;

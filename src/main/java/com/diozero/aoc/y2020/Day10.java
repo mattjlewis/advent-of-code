@@ -8,19 +8,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
 
-public class Day10 extends AocBase {
+public class Day10 extends Day {
 	public static void main(String[] args) {
 		new Day10().run();
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
-		// Use Collectors.toList as we need this list to be mutable
-		List<Integer> values = Files.lines(input).map(Integer::parseInt).sorted().collect(Collectors.toList());
+	public String name() {
+		return "Adapter Array";
+	}
 
-		int final_joltage = values.stream().mapToInt(Integer::intValue).max().orElseThrow() + 3;
+	@Override
+	public String part1(final Path input) throws IOException {
+		// Use Collectors.toList as we need this list to be mutable
+		final List<Integer> values = Files.lines(input).map(Integer::parseInt).sorted().collect(Collectors.toList());
+
+		final int final_joltage = values.stream().mapToInt(Integer::intValue).max().orElseThrow() + 3;
 		values.add(Integer.valueOf(final_joltage));
 
 		int count_1 = 0;
@@ -43,14 +48,14 @@ public class Day10 extends AocBase {
 	}
 
 	@Override
-	public String part2(Path input) throws IOException {
-		List<Integer> values = Files.lines(input).map(Integer::parseInt).sorted().collect(Collectors.toList());
+	public String part2(final Path input) throws IOException {
+		final List<Integer> values = Files.lines(input).map(Integer::parseInt).sorted().collect(Collectors.toList());
 		values.add(0, Integer.valueOf(0));
 
 		return Long.toString(getArrangements(values, new HashMap<>(), Integer.valueOf(0)));
 	}
 
-	private static long getArrangements(List<Integer> values, Map<Integer, Long> cache, Integer index) {
+	private static long getArrangements(final List<Integer> values, final Map<Integer, Long> cache, Integer index) {
 		if (index.intValue() == values.size() - 1) {
 			return 1;
 		}

@@ -9,16 +9,21 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.diozero.aoc.AocBase;
+import com.diozero.aoc.Day;
 
-public class Day8 extends AocBase {
+public class Day8 extends Day {
 	public static void main(String[] args) {
 		new Day8().run();
 	}
 
 	@Override
-	public String part1(Path input) throws IOException {
-		Instruction[] instructions = Files.lines(input).map(Instruction::parse).toArray(Instruction[]::new);
+	public String name() {
+		return "Handheld Halting";
+	}
+
+	@Override
+	public String part1(final Path input) throws IOException {
+		final Instruction[] instructions = Files.lines(input).map(Instruction::parse).toArray(Instruction[]::new);
 
 		try {
 			return Integer.toString(execute(instructions));
@@ -29,8 +34,8 @@ public class Day8 extends AocBase {
 	}
 
 	@Override
-	public String part2(Path input) throws IOException {
-		Instruction[] orig_instructions = Files.lines(input).map(Instruction::parse).toArray(Instruction[]::new);
+	public String part2(final Path input) throws IOException {
+		final Instruction[] orig_instructions = Files.lines(input).map(Instruction::parse).toArray(Instruction[]::new);
 
 		// First try changing each jmp instruction to nop
 		Instruction[] instructions = orig_instructions;
@@ -41,13 +46,15 @@ public class Day8 extends AocBase {
 				return Integer.toString(execute(instructions));
 			} catch (IllegalProgramException e) {
 				iterate = false;
+
 				for (int i = jmp_index; i < orig_instructions.length && !iterate; i++) {
 					if (instructions[i].op() == Operation.jmp) {
 						// TODO Optimise by simply swapping the instruction rather than cloning the
-						// entire program
+						// entire program - would also need to revert
 						instructions = orig_instructions.clone();
 						instructions[i] = new Instruction(Operation.nop, instructions[i].argument());
 						jmp_index = i + 1;
+
 						iterate = true;
 					}
 				}
@@ -63,13 +70,15 @@ public class Day8 extends AocBase {
 				return Integer.toString(execute(instructions));
 			} catch (IllegalProgramException e) {
 				iterate = false;
+
 				for (int i = nop_index; i < orig_instructions.length && !iterate; i++) {
 					if (instructions[i].op() == Operation.nop) {
 						// TODO Optimise by simply swapping the instruction rather than cloning the
-						// entire program
+						// entire program - would also need to revert
 						instructions = orig_instructions.clone();
 						instructions[i] = new Instruction(Operation.jmp, instructions[i].argument());
 						nop_index = i + 1;
+
 						iterate = true;
 					}
 				}
@@ -79,7 +88,7 @@ public class Day8 extends AocBase {
 		return "";
 	}
 
-	private static int execute(Instruction[] instructions) throws IllegalProgramException {
+	private static int execute(final Instruction[] instructions) throws IllegalProgramException {
 		// Map instruction program counter to number of times it has been executed
 		Map<Integer, AtomicInteger> execution_count = new HashMap<>();
 		int acc = 0;
@@ -123,7 +132,7 @@ public class Day8 extends AocBase {
 	private static record Instruction(Operation op, int argument) {
 		private static final Pattern PATTERN = Pattern.compile("(acc|jmp|nop) ([+|-]\\d+)");
 
-		public static Instruction parse(String line) {
+		public static Instruction parse(final String line) {
 			Matcher m = PATTERN.matcher(line);
 			if (!m.matches()) {
 				throw new IllegalArgumentException("Line '" + line + "' does not match pattern " + PATTERN.pattern());
@@ -136,7 +145,7 @@ public class Day8 extends AocBase {
 	private static class IllegalProgramException extends Exception {
 		private static final long serialVersionUID = -7536926360866863689L;
 
-		private int acc;
+		private final int acc;
 
 		public IllegalProgramException(String message, int acc) {
 			super(message);
