@@ -1,4 +1,4 @@
-package com.diozero.aoc.util;
+package com.diozero.aoc.algorithm.dijkstra;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Node {
-	// Optimise equals for day 15
+	// Optimise equals for day 15 by changing String name to int id
 	private final int id;
 	private List<Node> shortestPath = new LinkedList<>();
 	private int distance = Integer.MAX_VALUE;

@@ -1,4 +1,4 @@
-package com.diozero.aoc.util;
+package com.diozero.aoc.geometry;
 
 public class Projectile {
 	private int posX;

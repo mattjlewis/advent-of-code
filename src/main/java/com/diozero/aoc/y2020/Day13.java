@@ -1,6 +1,6 @@
 package com.diozero.aoc.y2020;
 
-import static com.diozero.aoc.util.ChineseRemainderTheorem.chineseRemainder;
+import static com.diozero.aoc.algorithm.ChineseRemainderTheorem.chineseRemainder;
 
 import java.io.IOException;
 import java.nio.file.Files;

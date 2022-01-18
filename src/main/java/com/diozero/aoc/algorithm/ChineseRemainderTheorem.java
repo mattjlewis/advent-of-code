@@ -1,4 +1,4 @@
-package com.diozero.aoc.util;
+package com.diozero.aoc.algorithm;
 
 import java.util.Arrays;
 import java.util.List;

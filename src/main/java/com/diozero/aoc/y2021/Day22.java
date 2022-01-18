@@ -13,8 +13,8 @@ import java.util.regex.Pattern;
 import org.tinylog.Logger;
 
 import com.diozero.aoc.Day;
-import com.diozero.aoc.util.Cuboid;
-import com.diozero.aoc.util.Point3D;
+import com.diozero.aoc.geometry.Cuboid;
+import com.diozero.aoc.geometry.Point3D;
 
 public class Day22 extends Day {
 	// Example: "on x=-34984..-26543,y=51648..78707,z=2562..28760"
@@ -38,7 +38,7 @@ public class Day22 extends Day {
 		final BoundedReactorCore core = new BoundedReactorCore(new Cuboid(true, -50, 50, -50, 50, -50, 50));
 		cuboids.forEach(cuboid -> core.addOrRemove(cuboid));
 
-		return Long.toString(core.size());
+		return Long.toString(core.totalVolume());
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class Day22 extends Day {
 		final UnboundedReactorCore core = new UnboundedReactorCore();
 		cuboids.forEach(core::addOrRemove);
 
-		return Long.toString(core.size());
+		return Long.toString(core.totalVolume());
 	}
 
 	@Override
@@ -327,14 +327,14 @@ public class Day22 extends Day {
 			Logger.debug("unitCubes.size(): {}", unitCubes.size());
 		}
 
-		public long size() {
+		public long totalVolume() {
 			return unitCubes.size();
 		}
 	}
 
 	private static class UnboundedReactorCore {
 		// List of distinct cuboids that do not intersect
-		private Set<Cuboid> cuboids = new HashSet<>();
+		private final Set<Cuboid> cuboids = new HashSet<>();
 
 		public void addOrRemove(final Cuboid cuboid) {
 			// If off, remove any cuboids that are entirely contained within this cuboid
@@ -373,15 +373,16 @@ public class Day22 extends Day {
 				// Find the first intersecting cuboid
 				List<Cuboid> intersecting_cuboids = cuboids.stream().filter(c -> c.intersects(cuboid)).toList();
 				// Remove this cuboid from each of the intersecting cuboids
-				// Note that it is safe to do add all here as we have only removed
+				// Note that it is safe to do addAll() here as we have only removed
 				intersecting_cuboids.forEach(intersecting_cuboid -> {
 					cuboids.remove(intersecting_cuboid);
-					cuboids.addAll(intersecting_cuboid.remove(cuboid));
+					// cuboids.addAll(intersecting_cuboid.remove(cuboid));
+					intersecting_cuboid.extract(cuboid).forEach(cuboids::add);
 				});
 			}
 		}
 
-		public long size() {
+		public long totalVolume() {
 			return cuboids.stream().mapToLong(Cuboid::volume).sum();
 		}
 	}

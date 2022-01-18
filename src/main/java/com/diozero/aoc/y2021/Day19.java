@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 import org.tinylog.Logger;
 
 import com.diozero.aoc.Day;
-import com.diozero.aoc.util.Point3D;
+import com.diozero.aoc.geometry.Point3D;
 
 /**
  * Did not enjoy this one!

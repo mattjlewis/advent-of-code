@@ -11,7 +11,7 @@ import java.util.Set;
 import org.tinylog.Logger;
 
 import com.diozero.aoc.Day;
-import com.diozero.aoc.util.Point2D;
+import com.diozero.aoc.geometry.Point2D;
 import com.diozero.aoc.util.TextParser;
 
 public class Day20 extends Day {

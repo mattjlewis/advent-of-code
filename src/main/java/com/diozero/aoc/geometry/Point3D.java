@@ -1,4 +1,4 @@
-package com.diozero.aoc.util;
+package com.diozero.aoc.geometry;
 
 import java.util.ArrayList;
 import java.util.List;

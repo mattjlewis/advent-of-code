@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 import org.tinylog.Logger;
 
 import com.diozero.aoc.Day;
-import com.diozero.aoc.util.Point2D;
+import com.diozero.aoc.geometry.Point2D;
 import com.diozero.aoc.util.SetUtil;
 
 public class Day24 extends Day {

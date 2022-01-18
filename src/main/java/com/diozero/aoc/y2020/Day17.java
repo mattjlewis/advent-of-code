@@ -9,8 +9,8 @@ import java.util.List;
 import org.tinylog.Logger;
 
 import com.diozero.aoc.Day;
-import com.diozero.aoc.util.Point3D;
-import com.diozero.aoc.util.Point4D;
+import com.diozero.aoc.geometry.Point3D;
+import com.diozero.aoc.geometry.Point4D;
 
 public class Day17 extends Day {
 	public static void main(String[] args) {

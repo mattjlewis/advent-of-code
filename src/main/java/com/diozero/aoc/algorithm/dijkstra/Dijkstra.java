@@ -1,4 +1,4 @@
-package com.diozero.aoc.util;
+package com.diozero.aoc.algorithm.dijkstra;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -34,6 +34,16 @@ public class Dijkstra {
 		}
 	}
 
+	private static void calculateMinimumDistance(Node evaluationNode, int edgeWeight, Node sourceNode) {
+		int source_distance = sourceNode.getDistance();
+		if (source_distance + edgeWeight < evaluationNode.getDistance()) {
+			evaluationNode.setDistance(source_distance + edgeWeight);
+			LinkedList<Node> shortest_path = new LinkedList<>(sourceNode.getShortestPath());
+			shortest_path.add(sourceNode);
+			evaluationNode.setShortestPath(shortest_path);
+		}
+	}
+
 	private static Node getLowestDistanceNode(Set<Node> unsettledNodes) {
 		Node lowest_distance_node = null;
 		int lowest_distance = Integer.MAX_VALUE;
@@ -45,15 +55,5 @@ public class Dijkstra {
 			}
 		}
 		return lowest_distance_node;
-	}
-
-	private static void calculateMinimumDistance(Node evaluationNode, int edgeWeight, Node sourceNode) {
-		int source_distance = sourceNode.getDistance();
-		if (source_distance + edgeWeight < evaluationNode.getDistance()) {
-			evaluationNode.setDistance(source_distance + edgeWeight);
-			LinkedList<Node> shortest_path = new LinkedList<>(sourceNode.getShortestPath());
-			shortest_path.add(sourceNode);
-			evaluationNode.setShortestPath(shortest_path);
-		}
 	}
 }

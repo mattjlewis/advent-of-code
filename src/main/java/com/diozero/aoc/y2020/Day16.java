@@ -14,7 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.diozero.aoc.Day;
-import com.diozero.aoc.util.Range;
+import com.diozero.aoc.util.IntRange;
 
 public class Day16 extends Day {
 	public static void main(String[] args) {
@@ -151,7 +151,7 @@ public class Day16 extends Day {
 		//
 	}
 
-	private static record Field(String category, List<Range> ranges) {
+	private static record Field(String category, List<IntRange> ranges) {
 		private static final Pattern PATTERN = Pattern.compile("(.*): (\\w+)-(\\w+) or (\\w+)-(\\w+)");
 
 		public static Field parse(final String line) {
@@ -160,13 +160,13 @@ public class Day16 extends Day {
 				throw new IllegalArgumentException("Line '" + line + "' does not match pattern " + PATTERN.pattern());
 			}
 
-			return new Field(m.group(1), List.of(new Range(Integer.parseInt(m.group(2)), Integer.parseInt(m.group(3))),
-					new Range(Integer.parseInt(m.group(4)), Integer.parseInt(m.group(5)))));
+			return new Field(m.group(1), List.of(new IntRange(Integer.parseInt(m.group(2)), Integer.parseInt(m.group(3))),
+					new IntRange(Integer.parseInt(m.group(4)), Integer.parseInt(m.group(5)))));
 		}
 
 		public boolean matches(final int ticketValue) {
 			// Return true if the ticketValue matches at least one field
-			for (Range r : ranges) {
+			for (IntRange r : ranges) {
 				if (r.contains(ticketValue)) {
 					return true;
 				}

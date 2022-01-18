@@ -1,8 +1,11 @@
-package com.diozero.aoc.util;
+package com.diozero.aoc.geometry;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
+
+import com.diozero.aoc.util.IntRange;
 
 public record Cuboid(boolean on, int x1, int x2, int y1, int y2, int z1, int z2) {
 	public long width() {
@@ -49,16 +52,43 @@ public record Cuboid(boolean on, int x1, int x2, int y1, int y2, int z1, int z2)
 
 		Cuboid intersection = opt.get();
 
-		return Range.of(x1, x2).split(other.x1, other.x2) //
-				.flatMap(ix -> Range.of(y1, y2).split(other.y1, other.y2) // loop through all y splits
-						.flatMap(iy -> Range.of(z1, z2).split(other.z1, other.z2) // loop through all z splits
-								// skip if this part of the given input cube
+		// Loop through all x splits
+		return IntRange.of(x1, x2).split(other.x1, other.x2)
+				// Loop through all y splits
+				.flatMap(ix -> IntRange.of(y1, y2).split(other.y1, other.y2)
+						// Loop through all z splits
+						.flatMap(iy -> IntRange.of(z1, z2).split(other.z1, other.z2)
+								// Skip if this is part of the given input cube
 								.filter(iz -> !(ix.equals(intersection.x1, intersection.x2)
 										&& iy.equals(intersection.y1, intersection.y2)
 										&& iz.equals(intersection.z1, intersection.z2)))
-								// otherwise add to result
+								// Otherwise add a new cuboid to the result
 								.map(iz -> new Cuboid(on, ix.start(), ix.end(), iy.start(), iy.end(), iz.start(),
 										iz.end()))))
 				.toList();
+	}
+
+	public Stream<Cuboid> extract(Cuboid other) {
+		Optional<Cuboid> opt = intersection(other);
+		if (opt.isEmpty()) {
+			return Stream.empty();
+		}
+
+		Cuboid intersection = opt.get();
+
+		// Loop through all x splits
+		return IntRange.of(x1, x2).split(other.x1, other.x2) //
+				.parallel() //
+				// Loop through all y splits
+				.flatMap(ix -> IntRange.of(y1, y2).split(other.y1, other.y2)
+						// Loop through all z splits
+						.flatMap(iy -> IntRange.of(z1, z2).split(other.z1, other.z2) //
+								// Skip if this is part of the given input cube
+								.filter(iz -> !(ix.equals(intersection.x1, intersection.x2)
+										&& iy.equals(intersection.y1, intersection.y2)
+										&& iz.equals(intersection.z1, intersection.z2)))
+								// Otherwise add a new cuboid to the result
+								.map(iz -> new Cuboid(on, ix.start(), ix.end(), iy.start(), iy.end(), iz.start(),
+										iz.end()))));
 	}
 }

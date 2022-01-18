@@ -1,4 +1,4 @@
-package com.diozero.aoc.util;
+package com.diozero.aoc.geometry;
 
 /**
  * Simple 2D line class that only supports horizontal, vertical or diagonal

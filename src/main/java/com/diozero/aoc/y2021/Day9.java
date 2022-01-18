@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.diozero.aoc.Day;
-import com.diozero.aoc.util.Point2D;
+import com.diozero.aoc.geometry.Point2D;
 import com.diozero.aoc.util.TextParser;
 
 public class Day9 extends Day {

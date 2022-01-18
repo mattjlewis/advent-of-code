@@ -6,16 +6,16 @@ import java.util.stream.Stream;
  * Integer range where start <= n <= end. The numbers start and end are both
  * inclusive.
  */
-public record Range(int start, int end) {
-	public static Range of(int start, int end) {
-		return new Range(Math.min(start, end), Math.max(start, end));
+public record IntRange(int start, int end) {
+	public static IntRange of(int start, int end) {
+		return new IntRange(Math.min(start, end), Math.max(start, end));
 	}
 
 	// Return all different ranges that can be built from these two ranges
-	public Stream<Range> split(int otherStart, int otherEnd) {
-		return Stream.of(new Range(start, Math.min(otherStart - 1, end)),
-				new Range(Math.max(start, otherStart), Math.min(end, otherEnd)),
-				new Range(Math.max(otherEnd + 1, start), end)).filter(r -> r.size() > 0);
+	public Stream<IntRange> split(int otherStart, int otherEnd) {
+		return Stream.of(new IntRange(start, Math.min(otherStart - 1, end)),
+				new IntRange(Math.max(start, otherStart), Math.min(end, otherEnd)),
+				new IntRange(Math.max(otherEnd + 1, start), end)).filter(r -> r.size() > 0);
 	}
 
 	public long size() {

@@ -7,9 +7,9 @@ import java.nio.file.Path;
 import org.tinylog.Logger;
 
 import com.diozero.aoc.Day;
-import com.diozero.aoc.util.Point2D;
-import com.diozero.aoc.util.Projectile;
-import com.diozero.aoc.util.Rectangle;
+import com.diozero.aoc.geometry.Point2D;
+import com.diozero.aoc.geometry.Projectile;
+import com.diozero.aoc.geometry.Rectangle;
 
 /**
  * Credit:

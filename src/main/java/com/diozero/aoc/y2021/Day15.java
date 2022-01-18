@@ -6,8 +6,8 @@ import java.nio.file.Path;
 import org.tinylog.Logger;
 
 import com.diozero.aoc.Day;
-import com.diozero.aoc.util.Dijkstra;
-import com.diozero.aoc.util.Node;
+import com.diozero.aoc.algorithm.dijkstra.Dijkstra;
+import com.diozero.aoc.algorithm.dijkstra.Node;
 import com.diozero.aoc.util.TextParser;
 
 public class Day15 extends Day {

@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
 import org.tinylog.Logger;
 
 import com.diozero.aoc.Day;
-import com.diozero.aoc.util.Line2D;
-import com.diozero.aoc.util.Point2D;
+import com.diozero.aoc.geometry.Line2D;
+import com.diozero.aoc.geometry.Point2D;
 
 public class Day5 extends Day {
 	public static void main(String[] args) {
