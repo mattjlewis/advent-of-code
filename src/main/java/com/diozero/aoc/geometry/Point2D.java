@@ -22,6 +22,10 @@ public record Point2D(int x, int y) {
 		}
 	}
 
+	public int manhattanDistance(Point2D p) {
+		return Math.abs(x - p.x) + Math.abs(y - p.y);
+	}
+
 	public Point2D rotateDegrees(Axis axis, int degrees) {
 		return rotateTurns(axis, degrees / 90);
 	}

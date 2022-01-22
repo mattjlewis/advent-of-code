@@ -8,8 +8,9 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.tinylog.Logger;
 
@@ -30,104 +31,111 @@ public class Day12 extends Day {
 
 	@Override
 	public String part1(final Path input) throws IOException {
-		final Map<String, GraphNode> nodes = loadData(input);
+		return Integer.toString(getNumPaths(loadData(input), Day12::canVisitSmallNeighbourPart1));
+	}
 
-		final Deque<Deque<GraphNode>> search_space = new ArrayDeque<>();
-		search_space.addLast(new ArrayDeque<>());
-		search_space.getLast().addLast(nodes.get(START_NAME));
+	@Override
+	public String part2(final Path input) throws IOException {
+		return Integer.toString(getNumPaths(loadData(input), Day12::canVisitSmallNeighbourPart2));
+	}
+
+	private static int getNumPaths(final Map<String, D12GraphNode> allNodes, SmallNeighourLogic smallNeighbourLogic) {
+		final Queue<Deque<D12GraphNode>> open_set = new ArrayDeque<>();
+
+		final Deque<D12GraphNode> start = new ArrayDeque<>();
+		start.add(allNodes.get(START_NAME));
+		open_set.offer(start);
 
 		int num_paths = 0;
-		while (!search_space.isEmpty()) {
-			final Deque<GraphNode> current_path = search_space.removeFirst();
-			final GraphNode current_node = current_path.getLast();
-			for (String neighbour_name : current_node.getNeighbours()) {
-				GraphNode neighbour = nodes.get(neighbour_name);
+		while (!open_set.isEmpty()) {
+			// Get and remove the head of the open set of nodes
+			final Deque<D12GraphNode> current_path = open_set.poll();
+
+			// Get but don't remove the tail of the current path
+			final D12GraphNode current_node = current_path.peekLast();
+
+			for (String neighbour_name : current_node.neighbours()) {
+				final D12GraphNode neighbour = allNodes.get(neighbour_name);
+
 				if (neighbour.isStart()) {
 					continue;
 				} else if (neighbour.isEnd()) {
 					num_paths++;
 				} else if (neighbour.isSmall()) {
-					// Small caves can only appear once
-					if (!current_path.contains(neighbour)) {
-						search_space.offer(joinAsNewPath(current_path, neighbour));
+					if (smallNeighbourLogic.canVisitSmallNeighbour(current_path, neighbour)) {
+						open_set.offer(joinAsNewPath(current_path, neighbour));
 					}
 				} else {
-					search_space.offer(joinAsNewPath(current_path, neighbour));
+					open_set.offer(joinAsNewPath(current_path, neighbour));
 				}
 			}
 		}
 
-		return Integer.toString(num_paths);
+		return num_paths;
 	}
 
-	@Override
-	public String part2(final Path input) throws IOException {
-		final Map<String, GraphNode> nodes = loadData(input);
+	private static boolean canVisitSmallNeighbourPart1(Deque<D12GraphNode> path, D12GraphNode neighbour) {
+		// Small caves can only appear once
+		return !path.contains(neighbour);
+	}
 
-		final Deque<Deque<GraphNode>> search_space = new ArrayDeque<>();
-		search_space.addLast(new ArrayDeque<>());
-		search_space.getLast().addLast(nodes.get(START_NAME));
+	private static boolean canVisitSmallNeighbourPart2(Deque<D12GraphNode> path, D12GraphNode neighbour) {
+		// Only one small cave can be visited at most twice, the remaining small
+		// caves can be visited at most once
 
-		int num_paths = 0;
-		while (!search_space.isEmpty()) {
-			final Deque<GraphNode> current_path = search_space.removeFirst();
-			final GraphNode current_node = current_path.getLast();
-			for (String neighbour_name : current_node.getNeighbours()) {
-				final GraphNode neighbour = nodes.get(neighbour_name);
-				if (neighbour.isStart()) {
-					continue;
-				} else if (neighbour.isEnd()) {
-					num_paths++;
-				} else {
-					if (neighbour.isSmall()) {
-						// Only one small cave can be visited at most twice, the remaining small
-						// caves can be visited at most once
+		// Has this small neighbour already been visited?
+		if (!path.contains(neighbour)) {
+			return true;
+		}
 
-						final Map<String, Long> counts = current_path.stream().filter(GraphNode::isSmall)
-								.collect(Collectors.groupingBy(GraphNode::getName, Collectors.counting()));
-						if (counts.containsKey(neighbour_name)) {
-							// this cave has already been traversed
-							if (counts.values().stream().noneMatch(c -> c > 1)) {
-								// No small caves have been visited twice.
-								// Add a path that re-visits this one.
-								search_space.addLast(joinAsNewPath(current_path, neighbour));
-							}
-						} else {
-							// This room has not yet been traversed
-							search_space.addLast(joinAsNewPath(current_path, neighbour));
-						}
-					} else {
-						search_space.addLast(joinAsNewPath(current_path, neighbour));
-					}
+		// This small room has already been visited -> its visit count _will_ increment
+		// to two. Is there another small room that has been visited more than once?
+
+		final Map<String, AtomicInteger> counts = new HashMap<>();
+		for (D12GraphNode node : path) {
+			if (node.isSmall()) {
+				if (counts.computeIfAbsent(node.name(), n -> new AtomicInteger()).incrementAndGet() > 1) {
+					return false;
 				}
 			}
 		}
 
-		return Integer.toString(num_paths);
+		return true;
 	}
 
-	private static Map<String, GraphNode> loadData(final Path input) throws IOException {
-		final Map<String, GraphNode> nodes = new HashMap<>();
+	private static Map<String, D12GraphNode> loadData(final Path input) throws IOException {
+		final Map<String, D12GraphNode> nodes = new HashMap<>();
+
 		// Load all nodes
 		Files.lines(input).forEach(line -> processLine(line.split("-"), nodes));
 		Logger.debug("nodes: {}", nodes);
+
 		return nodes;
 	}
 
-	private static void processLine(final String[] nodeNames, final Map<String, GraphNode> nodes) {
-		nodes.computeIfAbsent(nodeNames[0], node_name -> new GraphNode(node_name)).addNeighbour(nodeNames[1]);
-		nodes.computeIfAbsent(nodeNames[1], node_name -> new GraphNode(node_name)).addNeighbour(nodeNames[0]);
+	private static void processLine(final String[] nodeNames, final Map<String, D12GraphNode> nodes) {
+		nodes.computeIfAbsent(nodeNames[0], node_name -> new D12GraphNode(node_name)).addNeighbour(nodeNames[1]);
+		nodes.computeIfAbsent(nodeNames[1], node_name -> new D12GraphNode(node_name)).addNeighbour(nodeNames[0]);
 	}
 
-	private static Deque<GraphNode> joinAsNewPath(final Deque<GraphNode> path, final GraphNode node) {
+	private static Deque<D12GraphNode> joinAsNewPath(final Deque<D12GraphNode> path, final D12GraphNode node) {
 		// Create a new path containing all of the nodes in path ...
-		final Deque<GraphNode> new_path = new ArrayDeque<>(path);
+		final Deque<D12GraphNode> new_path = new ArrayDeque<>(path);
 		// ... and add node to the end of the path
 		new_path.offer(node);
+
 		return new_path;
 	}
 
-	public static final class GraphNode {
+	private interface SmallNeighourLogic {
+		boolean canVisitSmallNeighbour(Deque<D12GraphNode> current_path, D12GraphNode neighbour);
+	}
+
+	/*
+	 * Note no need to override hashCode() and equals(o) as the default behaviour is
+	 * correct - nodes will be unique and object identity is correct.
+	 */
+	public static final class D12GraphNode {
 		private final String name;
 		private final Set<String> neighbours;
 
@@ -135,7 +143,7 @@ public class Day12 extends Day {
 		private final boolean end;
 		private final boolean small;
 
-		public GraphNode(String name) {
+		public D12GraphNode(String name) {
 			this.name = name;
 			neighbours = new HashSet<>();
 			start = name.equals(START_NAME);
@@ -143,16 +151,25 @@ public class Day12 extends Day {
 			small = !start && !end && name.chars().allMatch(Character::isLowerCase);
 		}
 
-		public String getName() {
+		public D12GraphNode(String name, String neighbourName) {
+			this.name = name;
+			neighbours = new HashSet<>();
+			neighbours.add(neighbourName);
+			start = name.equals(START_NAME);
+			end = name.equals(END_NAME);
+			small = !start && !end && name.chars().allMatch(Character::isLowerCase);
+		}
+
+		public String name() {
 			return name;
 		}
 
-		public Set<String> getNeighbours() {
+		public Set<String> neighbours() {
 			return neighbours;
 		}
 
-		public Set<String> addNeighbour(String name) {
-			neighbours.add(name);
+		public Set<String> addNeighbour(String neighbourName) {
+			neighbours.add(neighbourName);
 			return neighbours;
 		}
 
@@ -170,33 +187,8 @@ public class Day12 extends Day {
 
 		@Override
 		public String toString() {
-			return "GraphNode [name=" + name + ", neighbours=" + neighbours + ", start=" + start + ", end=" + end
+			return "D12GraphNode [name=" + name + ", neighbours=" + neighbours + ", start=" + start + ", end=" + end
 					+ ", small=" + small + "]";
-		}
-
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + ((name == null) ? 0 : name.hashCode());
-			return result;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			GraphNode other = (GraphNode) obj;
-			if (name == null) {
-				if (other.name != null)
-					return false;
-			} else if (!name.equals(other.name))
-				return false;
-			return true;
 		}
 	}
 }

@@ -9,6 +9,8 @@ import java.util.function.Consumer;
  * Credit: https://www.baeldung.com/java-circular-linked-list
  * https://github.com/eugenp/tutorials/blob/master/data-structures/src/main/java/com/baeldung/circularlinkedlist/CircularLinkedList.java
  */
+// TODO Optimise get by storing a map from key to node
+// public class CircularLinkedList<K, V> {
 public class CircularLinkedList<E> {
 	// Head is always tail.next
 	private Node<E> tail;
@@ -70,23 +72,14 @@ public class CircularLinkedList<E> {
 	}
 
 	public boolean contains(E e) {
-		if (tail == null) {
-			return false;
-		}
-
-		// Start at the head
-		Node<E> current_node = tail.next;
-		do {
-			if (current_node.value.equals(e)) {
-				return true;
-			}
-			current_node = current_node.next;
-		} while (current_node != tail.next);
-
-		return false;
+		return get(e) != null;
 	}
 
 	public Node<E> get(E e) {
+		if (tail == null) {
+			return null;
+		}
+
 		// Start at the head
 		Node<E> current_node = tail.next;
 		do {
@@ -127,28 +120,21 @@ public class CircularLinkedList<E> {
 	}
 
 	public void insertAfter(E e, List<E> values) {
-		if (tail == null) {
+		Node<E> e_node = get(e);
+
+		if (e_node == null) {
 			throw new NoSuchElementException();
 		}
 
-		// Locate e starting at the head
-		Node<E> current_node = tail.next;
-		while (!current_node.value.equals(e)) {
-			current_node = current_node.next;
-			if (current_node == tail.next) {
-				throw new NoSuchElementException();
-			}
-		}
-
-		Node<E> next_node = current_node.next;
+		Node<E> next_node = e_node.next;
 		// Insert the values
 		for (E value : values) {
-			current_node.next = new Node<>(value);
-			current_node = current_node.next;
+			e_node.next = new Node<>(value);
+			e_node = e_node.next;
 
-			// FIXME May need to adjust head / tail
+			// FIXME Do we need to adjust the tail?
 		}
-		current_node.next = next_node;
+		e_node.next = next_node;
 	}
 
 	public boolean delete(E e) {
@@ -184,22 +170,15 @@ public class CircularLinkedList<E> {
 	}
 
 	public List<E> deleteAfter(E e, int count) {
-		if (tail == null) {
-			throw new NoSuchElementException();
-		}
+		Node<E> e_node = get(e);
 
-		// Locate e starting at head
-		Node<E> start_node = tail.next;
-		while (!start_node.value.equals(e)) {
-			start_node = start_node.next;
-			if (start_node == tail.next) {
-				throw new NoSuchElementException();
-			}
+		if (e_node == null) {
+			throw new NoSuchElementException();
 		}
 
 		List<E> deleted = new ArrayList<>();
 
-		Node<E> current_node = start_node;
+		Node<E> current_node = e_node;
 		for (int i = 0; i < count; i++) {
 			// Is the list empty
 			if (tail == tail.next) {

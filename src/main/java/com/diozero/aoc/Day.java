@@ -15,17 +15,14 @@ public abstract class Day implements Runnable {
 		day = Integer.parseInt(getClass().getSimpleName().split("Day(?=\\d+$)")[1]);
 	}
 
-	public void selfTest() {
-		//
-	}
+	public abstract String name();
+
+	public abstract String part1(final Path input) throws IOException;
+
+	public abstract String part2(final Path input) throws IOException;
 
 	@Override
 	public final void run() {
-		if (System.getProperty("t") != null || System.getProperty("test") != null || System.getProperty("st") != null
-				|| System.getProperty("selftest") != null || System.getProperty("selfTest") != null) {
-			selfTest();
-		}
-
 		String s = System.getProperty("perf");
 		boolean perf = false;
 		int iterations = 10;
@@ -100,12 +97,6 @@ public abstract class Day implements Runnable {
 			}
 		}
 	}
-
-	public abstract String name();
-
-	public abstract String part1(final Path input) throws IOException;
-
-	public abstract String part2(final Path input) throws IOException;
 
 	public static void printGrid(final int[][] matrix) {
 		if (!Logger.isDebugEnabled()) {

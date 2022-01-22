@@ -11,15 +11,18 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<maven.compiler.release>17</maven.compiler.release>
+		
+		<maven-compiler-plugin.version>3.9.0</maven-compiler-plugin.version>
 
-		<tinylog.version>2.3.2</tinylog.version>
+		<tinylog.version>2.4.1</tinylog.version>
+		<junit.version>5.8.2</junit.version>
 	</properties>
 
 	<build>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
+				<version>${maven-compiler-plugin.version}</version>
 			</plugin>
 		</plugins>
 	</build>
@@ -31,6 +34,13 @@
 				<artifactId>tinylog-impl</artifactId>
 				<version>${tinylog.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.junit</groupId>
+				<artifactId>junit-bom</artifactId>
+				<version>${junit.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -38,6 +48,11 @@
 		<dependency>
 			<groupId>org.tinylog</groupId>
 			<artifactId>tinylog-impl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>

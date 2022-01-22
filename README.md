@@ -7,8 +7,22 @@ Goals:
 * Efficiency in terms of execution time and memory allocation
 * Learning, in particular modern Java features and algorithms
 * No external dependencies other than a logging framework (tinylog)
+* Attempt to solve entirely independently; if stuck look on Reddit for tips on general approaches to
+solving the problem. As a last resort, look at other Java solution implementations.
 
 Warning - includes answers to enable self verification!
+
+## References and Credits
+
+* [Circular Linked List in Java](https://www.baeldung.com/java-circular-linked-list) with associated [implementation](https://github.com/eugenp/tutorials/blob/master/data-structures/src/main/java/com/baeldung/circularlinkedlist/CircularLinkedList.java)
+* Stack Abuse [Graph Theory and Graph-Related Algorithm's Theory and Implementation](https://stackabuse.com/graph-theory-and-graph-related-algorithms-theory-and-implementation/)
+* [Dijkstra shortest path](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm) algorithm.
+    * Baeldung article on how to [implement with Java](https://www.baeldung.com/java-dijkstra) with associated [implementation](https://github.com/eugenp/tutorials/blob/master/algorithms-miscellaneous-2/src/main/java/com/baeldung/algorithms/ga/dijkstra/Dijkstra.java)
+    * Stack Abuse Graphs in Java [article and implementation](https://stackabuse.com/graphs-in-java-dijkstras-algorithm/)
+* [A* search](https://en.wikipedia.org/wiki/A*_search_algorithm) algorithm
+    * Baeldung article on how to [implement with Java](https://www.baeldung.com/java-a-star-pathfinding) with associated [implementation](https://github.com/eugenp/tutorials/blob/master/algorithms-miscellaneous-2/src/test/java/com/baeldung/algorithms/astar/RouteFinder.java)
+    * Stack Abuse Graphs in Java [article and implementation](https://stackabuse.com/graphs-in-java-a-star-algorithm/)
+* [Dijkstra vs. A* for Pathfinding](https://www.baeldung.com/cs/dijkstra-vs-a-pathfinding)
 
 ## Tricky Challenges
 
@@ -33,9 +47,9 @@ if there is a way to match number of pattern matches to handle the second recurs
 
 #### Day 20
 
-Not too difficult but very laborious once you realise that edges are unique, hence corner tiles are
-guaranteed to have exactly two matching edges. All possible orientations can be made by applying
-these transformations in order:
+Not too difficult but very labour intensive once you realise that edges are unique, hence corner
+tiles are guaranteed to have exactly two matching edges. All possible orientations can be made by
+applying these transformations in order:
 
 1. Rotate 90,
 1. Flip Horizontal,
@@ -73,11 +87,14 @@ Interesting challenge. In part 2, recurse from each low point to calculate the b
 
 #### Day 12
 
-Need to revisit and use either Dijkstra or [A* Pathfinding](https://www.baeldung.com/java-a-star-pathfinding).
+Need to revisit and use either the generic Dijkstra or
+[A* Pathfinding](https://www.baeldung.com/java-a-star-pathfinding) algorithm implementation. Could
+be tricky given the rules on how many times you can visit a cave based on its size.
 
 #### Day 15
 
-Introduction to Dijkstra shortest path algorithm.
+Introduction to Dijkstra and A\* shortest path algorithms. Also implemented with A\* - approximately
+six times faster.
 
 #### Day 16
 
@@ -95,12 +112,13 @@ reached at: `yVel = -yMin - 1`.
 
 Took a long time over this one. Basically used a tree structure and the solution was okay once I
 worked out `addToFirstNumberToTheLeft` and `addToFirstNumberToTheRight` which search downwards and then
-upwards.
+upwards. Could a [binary tree](https://github.com/eugenp/tutorials/blob/master/data-structures/src/main/java/com/baeldung/tree/BinaryTree.java) provide a more general solution?
 
 #### Day 19
 
-Another difficult one!
-
+Another difficult one! There are twenty four possible cube face orientations - each of the six faces
+can have four rotational positions (0, 90, 180, and 270 degrees). Solved by iteratively finding the
+alignment that produces at least 12 common translations from one scanner to all others.
 
 #### Day 20
 
@@ -120,7 +138,8 @@ See `UnboundedReactorCore.addOrRemove(cuboid)`.
 
 #### Day 23
 
-Nightmare - still to do.
+I found this very challenging, was my first introduction to the
+[A* search](https://en.wikipedia.org/wiki/A*_search_algorithm) algorithm.
 
 #### Day 24
 

@@ -40,7 +40,7 @@ public record Point3D(int x, int y, int z) {
 	}
 
 	public int manhattanDistance(Point3D p) {
-		return Math.abs((x - p.x)) + Math.abs((y - p.y)) + Math.abs((z - p.z));
+		return Math.abs(x - p.x) + Math.abs(y - p.y) + Math.abs(z - p.z);
 	}
 
 	public Point3D translate(Point3D delta) {

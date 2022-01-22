@@ -111,9 +111,6 @@ public class Day23 extends Day {
 			final GameState state = open_set.poll();
 			/*-
 			 * FIXME Use the generic A* implementation
-			 * graph.getConnections(next.current()).forEach(connection -> {
-			 *   ...
-			 * });
 			 */
 
 			/*
@@ -407,7 +404,7 @@ public class Day23 extends Day {
 				hash2 += occupancy[i] == UNOCCUPIED ? 0
 						: getAmphipodTypeIndex(occupancy[i], amphipodPositions.length) + 1;
 			}
-
+			
 			return Long.toString(hash) + Byte.toString(hash2);
 			*/
 		}

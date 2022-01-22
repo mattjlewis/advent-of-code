@@ -132,6 +132,7 @@ public class Day19 extends Day {
 		do {
 			a: for (int i = 0; i < scanners.size() - 1; i++) {
 				Scanner scanner1 = scanners.get(i);
+
 				// Find another scanner with at least 12 overlapping beacons
 				for (int j = i + 1; j < scanners.size(); j++) {
 					Scanner scanner2 = scanners.get(j);
@@ -176,18 +177,20 @@ public class Day19 extends Day {
 		final Scanner scanner0 = to_align.remove(0);
 		aligned.add(new Scanner(scanner0.id(), scanner0.beacons(), new Point3D(0, 0, 0)));
 
-		// Loop until all scanners aligned
+		// Loop until all scanners are aligned
 		a: while (!to_align.isEmpty()) {
 			// Use aligned scanners as source
 			for (Scanner aligned_scanner : aligned) {
 				for (Scanner not_aligned_scanner : to_align) {
 					Optional<ScannerTranslation> opt_st = findTranslation(min_match_count, aligned_scanner.beacons(),
 							not_aligned_scanner);
+
 					if (opt_st.isPresent()) {
 						ScannerTranslation st = opt_st.get();
 						aligned.add(new Scanner(st.scanner().id(), st.scanner().beacons(),
 								st.translation().translate(aligned_scanner.translation())));
 						to_align.remove(not_aligned_scanner);
+
 						continue a;
 					}
 				}

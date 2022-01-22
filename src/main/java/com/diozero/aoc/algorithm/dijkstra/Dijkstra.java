@@ -1,59 +1,56 @@
 package com.diozero.aoc.algorithm.dijkstra;
 
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Map;
 import java.util.Set;
+
+import com.diozero.aoc.algorithm.GraphNode;
 
 /**
  * Courtesy of <a href="https://www.baeldung.com/java-dijkstra">Baeldung</a>
+ *
+ * https://github.com/eugenp/tutorials/blob/master/algorithms-miscellaneous-2/src/main/java/com/baeldung/algorithms/ga/dijkstra/Dijkstra.java
+ *
+ * https://stackabuse.com/graphs-in-java-dijkstras-algorithm/
  */
 public class Dijkstra {
-	public static void calculateShortestPathFromSource(Node source) {
-		source.setDistance(0);
+	public static <K, V> void findRoute(GraphNode<K, V> start, GraphNode<K, V> target) {
+		start.updateCost(0);
 
-		Set<Node> settled_nodes = new HashSet<>();
-		Set<Node> unsettled_nodes = new HashSet<>();
-		unsettled_nodes.add(source);
+		Set<GraphNode<K, V>> open_nodes = new HashSet<>();
+		// Queue<GraphNode<K, V>> open_nodes = new PriorityQueue<>();
+		Set<GraphNode<K, V>> closed_nodes = new HashSet<>();
 
-		while (unsettled_nodes.size() != 0) {
-			Node current_node = getLowestDistanceNode(unsettled_nodes);
-			unsettled_nodes.remove(current_node);
+		open_nodes.add(start);
 
-			for (Map.Entry<Node, Integer> adjacency_pair : current_node.getAdjacentNodes().entrySet()) {
-				Node adjacent_node = adjacency_pair.getKey();
+		while (!open_nodes.isEmpty()) {
+			final GraphNode<K, V> current = open_nodes.stream().min(GraphNode::compareTo).orElseThrow();
+			open_nodes.remove(current);
+			// FIXME Can this be optimised by using a PriorityQueue instead?!
+			// LondonUndergroundDijkstraTest works with a PrirityQueue, Day15 goes into an
+			// infinite loop...
+			// GraphNode<K, V> current = open_nodes.poll();
+
+			if (current == target) {
+				return;
+			}
+
+			for (GraphNode.Neighbour<K, V> neighbour : current.neighbours()) {
+				GraphNode<K, V> next = neighbour.node();
 
 				// Make sure we haven't already visited this node
-				if (!settled_nodes.contains(adjacent_node)) {
-					calculateMinimumDistance(adjacent_node, adjacency_pair.getValue().intValue(), current_node);
-					unsettled_nodes.add(adjacent_node);
+				if (!closed_nodes.contains(next)) {
+					int new_cost = current.cost() + neighbour.cost();
+
+					if (new_cost < next.cost()) {
+						next.updateCost(new_cost);
+						next.setParent(current);
+					}
+
+					open_nodes.add(next);
 				}
 			}
 
-			settled_nodes.add(current_node);
+			closed_nodes.add(current);
 		}
-	}
-
-	private static void calculateMinimumDistance(Node evaluationNode, int edgeWeight, Node sourceNode) {
-		int source_distance = sourceNode.getDistance();
-		if (source_distance + edgeWeight < evaluationNode.getDistance()) {
-			evaluationNode.setDistance(source_distance + edgeWeight);
-			LinkedList<Node> shortest_path = new LinkedList<>(sourceNode.getShortestPath());
-			shortest_path.add(sourceNode);
-			evaluationNode.setShortestPath(shortest_path);
-		}
-	}
-
-	private static Node getLowestDistanceNode(Set<Node> unsettledNodes) {
-		Node lowest_distance_node = null;
-		int lowest_distance = Integer.MAX_VALUE;
-		for (Node node : unsettledNodes) {
-			int node_distance = node.getDistance();
-			if (node_distance < lowest_distance) {
-				lowest_distance = node_distance;
-				lowest_distance_node = node;
-			}
-		}
-		return lowest_distance_node;
 	}
 }
