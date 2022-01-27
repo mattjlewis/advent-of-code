@@ -51,8 +51,8 @@ public class GraphNode<K, V> implements Comparable<GraphNode<K, V>> {
 		return neighbours;
 	}
 
-	public void addNeighbour(GraphNode<K, V> destination, int weight) {
-		neighbours.add(new Neighbour<>(destination, weight));
+	public void addNeighbour(GraphNode<K, V> destination, int neighbourCost) {
+		neighbours.add(new Neighbour<>(destination, neighbourCost));
 	}
 
 	public GraphNode<K, V> getParent() {

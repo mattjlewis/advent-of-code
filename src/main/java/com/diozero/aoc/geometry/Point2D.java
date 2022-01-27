@@ -22,8 +22,12 @@ public record Point2D(int x, int y) {
 		}
 	}
 
-	public int manhattanDistance(Point2D p) {
-		return Math.abs(x - p.x) + Math.abs(y - p.y);
+	public int manhattanDistance(Point2D other) {
+		return manhattanDistance(other.x, other.y);
+	}
+
+	public int manhattanDistance(int otherX, int otherY) {
+		return Math.abs(x - otherX) + Math.abs(y - otherY);
 	}
 
 	public Point2D rotateDegrees(Axis axis, int degrees) {
@@ -55,5 +59,9 @@ public record Point2D(int x, int y) {
 		 * return new MutablePoint2D(x, x).translate(deltas).toPoint2D();
 		 */
 		return deltas.stream().reduce(this, (a, b) -> a.translate(b));
+	}
+
+	public MutablePoint2D mutable() {
+		return new MutablePoint2D(x, y);
 	}
 }

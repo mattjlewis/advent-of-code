@@ -2,8 +2,12 @@ package com.diozero.aoc.y2021;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.tinylog.Logger;
 
 import com.diozero.aoc.Day;
 import com.diozero.aoc.algorithm.GraphNode;
@@ -53,24 +57,36 @@ public class Day15 extends Day {
 		final GraphNode<Integer, Point2D> start = all_nodes.get(Integer.valueOf(0));
 		final GraphNode<Integer, Point2D> end = all_nodes.get(Integer.valueOf(width * height - 1));
 
-		return Integer.toString(AStarPathFinder.findRoute(start, end, Day15::heuristic).cost());
+		final GraphNode<Integer, Point2D> result = AStarPathFinder.findRoute(start, end, Day15::heuristic);
+
+		if (Logger.isDebugEnabled()) {
+			Deque<String> stack = new ArrayDeque<>();
+			GraphNode<Integer, Point2D> current = result;
+			do {
+				stack.offerFirst("(" + current.value().x() + ", " + current.value().y() + ")");
+				current = current.getParent();
+			} while (current != null);
+			System.out.println(String.join(" -> ", stack));
+		}
+
+		return Integer.toString(result.cost());
 	}
 
 	@Override
 	public String part2(Path input) throws IOException {
-		int[][] cost_matrix = TextParser.loadIntMatrix(input);
+		final int[][] start_cost_matrix = TextParser.loadIntMatrix(input);
 
 		// Expand the cost matrix - this could be optimised...
-		int expansion = 5;
-		int orig_height = cost_matrix.length;
-		int orig_width = cost_matrix[0].length;
-		int[][] new_cost_matrix = new int[orig_height * expansion][orig_width * expansion];
+		final int expansion = 5;
+		final int orig_height = start_cost_matrix.length;
+		final int orig_width = start_cost_matrix[0].length;
+		final int[][] cost_matrix = new int[orig_height * expansion][orig_width * expansion];
 		for (int grid_y = 0; grid_y < expansion; grid_y++) {
 			for (int grid_x = 0; grid_x < expansion; grid_x++) {
 				if (grid_y == 0 && grid_x == 0) {
 					for (int y = 0; y < orig_height; y++) {
 						for (int x = 0; x < orig_width; x++) {
-							new_cost_matrix[y][x] = cost_matrix[y][x];
+							cost_matrix[y][x] = start_cost_matrix[y][x];
 						}
 					}
 				} else if (grid_x == 0) {
@@ -78,8 +94,8 @@ public class Day15 extends Day {
 					for (int y = 0; y < orig_height; y++) {
 						for (int x = 0; x < orig_width; x++) {
 							int xx = grid_x * orig_height + x;
-							int new_val = new_cost_matrix[(grid_y - 1) * orig_height + y][xx] + 1;
-							new_cost_matrix[grid_y * orig_height + y][xx] = new_val > 9 ? 1 : new_val;
+							int new_val = cost_matrix[(grid_y - 1) * orig_height + y][xx] + 1;
+							cost_matrix[grid_y * orig_height + y][xx] = new_val > 9 ? 1 : new_val;
 						}
 					}
 				} else {
@@ -87,14 +103,13 @@ public class Day15 extends Day {
 					for (int y = 0; y < orig_height; y++) {
 						for (int x = 0; x < orig_width; x++) {
 							int yy = grid_y * orig_height + y;
-							int new_val = new_cost_matrix[yy][(grid_x - 1) * orig_width + x] + 1;
-							new_cost_matrix[yy][grid_x * orig_width + x] = new_val > 9 ? 1 : new_val;
+							int new_val = cost_matrix[yy][(grid_x - 1) * orig_width + x] + 1;
+							cost_matrix[yy][grid_x * orig_width + x] = new_val > 9 ? 1 : new_val;
 						}
 					}
 				}
 			}
 		}
-		cost_matrix = new_cost_matrix;
 		final int width = cost_matrix[0].length;
 		final int height = cost_matrix.length;
 
@@ -253,8 +268,8 @@ public class Day15 extends Day {
 	}
 
 	public static int heuristic(Point2D from, Point2D to) {
-		// Assume that 5 is a good approximation of the average cost
-		// FIXME Why does changing to 5 * from.manhattanDistance(to); break it?
+		// 5 would be a good approximation of the overall average cost
+		// However, the ideal average best path score would be 1
 		return from.manhattanDistance(to);
 	}
 }

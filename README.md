@@ -26,6 +26,27 @@ Warning - includes answers to enable self verification!
 
 ## Tricky Challenges
 
+### 2019
+
+#### Day 7
+
+Nice progressive use of the Intcode Virtual Machine. This challenge is relatively straightforward
+by linking the amplifiers together with a blocking queue such that the output from one amplifier is
+used as the input for the next. The slight annoyance here is that the BlockingQueue put / take
+methods both throw the checked InterruptedException which doesn't play well with lambda expressions.
+Using a blocking queue allows the VMs to execute in parallel until they receive their HALT
+instruction. A fixed thread pool executor service provides a neat solution to running all amplifiers
+in parallel and waiting until all have terminated.
+
+All that is then left is to stream the permutations of the phase settings, calculate the output
+signal for each permutation and extract the maximum output signal. Streaming the permutations means
+that the list of all possible permutations does not need to calculated up front and stored in memory
+in a single list.
+
+Solutions for parts 1 and 2 are then identical as the phase settings for part 1 result in all of the
+amplifiers terminating immediately after just one pass, whereas part 2 requires a number of
+iterations.
+
 ### 2020
 
 #### Day 13
@@ -138,8 +159,9 @@ See `UnboundedReactorCore.addOrRemove(cuboid)`.
 
 #### Day 23
 
-I found this very challenging, was my first introduction to the
-[A* search](https://en.wikipedia.org/wiki/A*_search_algorithm) algorithm.
+I found this very challenging, implementation based on the
+[A* search](https://en.wikipedia.org/wiki/A*_search_algorithm) algorithm. Need to see if it can be
+refactored to use the generic implementation.
 
 #### Day 24
 

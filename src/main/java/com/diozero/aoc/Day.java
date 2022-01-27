@@ -65,9 +65,13 @@ public abstract class Day implements Runnable {
 				}
 			}
 			long start = System.currentTimeMillis();
-			String answer = part1(input_path);
-			long duration = System.currentTimeMillis() - start;
-			checkResult(1, answers, answer, duration);
+			try {
+				String answer = part1(input_path);
+				long duration = System.currentTimeMillis() - start;
+				checkResult(1, answers, answer, duration);
+			} catch (Exception e) {
+				Logger.error(e, "Error: {}", e);
+			}
 
 			if (perf) {
 				for (int i = 0; i < iterations; i++) {
@@ -75,8 +79,8 @@ public abstract class Day implements Runnable {
 				}
 			}
 			start = System.currentTimeMillis();
-			answer = part2(input_path);
-			duration = System.currentTimeMillis() - start;
+			String answer = part2(input_path);
+			long duration = System.currentTimeMillis() - start;
 			checkResult(2, answers, answer, duration);
 		} catch (IOException e) {
 			System.out.println("Error unable to read input '" + input_path + "'");
@@ -92,22 +96,9 @@ public abstract class Day implements Runnable {
 				System.out.format("%d Day %d '%s' part %d - Correct answer: %s. Duration: %,dms%n", year, day, name(),
 						part, result, duration);
 			} else {
-				System.out.format("%d Day %d '%s' part %d - Wrong answer (%s), expected: %s. Duration: %,dms%n", year,
-						day, name(), part, result, answers[part - 1], duration);
+				System.out.format("WRONG: %d Day %d '%s' part %d - Wrong answer (%s), expected: %s. Duration: %,dms%n",
+						year, day, name(), part, result, answers[part - 1], duration);
 			}
 		}
-	}
-
-	public static void printGrid(final int[][] matrix) {
-		if (!Logger.isDebugEnabled()) {
-			return;
-		}
-		for (int y = 0; y < matrix.length; y++) {
-			for (int x = 0; x < matrix[y].length; x++) {
-				System.out.format("%3d", Integer.valueOf(matrix[y][x]));
-			}
-			System.out.println();
-		}
-		System.out.println();
 	}
 }

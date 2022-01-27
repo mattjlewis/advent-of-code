@@ -1752,626 +1752,349 @@ public class LondonUnderground {
 			 * Replace: '$1'
 			 *
 			 * Find: '(\d+)\)\.collect\('
-			 * Replace: '$1).mapToObj(Integer::valueOf).collect('
+			 * Replace: '$1).boxed().collect('
 			 */
-			connections.put(Integer.valueOf(1),
-					IntStream.of(52, 73, 73, 233, 264).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(2),
-					IntStream.of(156, 262, 156).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(3),
-					IntStream.of(262, 294, 156, 294).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(4),
-					IntStream.of(70, 200).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(5),
-					IntStream.of(193, 251).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(6),
-					IntStream.of(46).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(7),
-					IntStream.of(145, 188).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(8),
-					IntStream.of(124, 263).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(9),
-					IntStream.of(31, 231).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(10),
-					IntStream.of(95, 128).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(11), IntStream.of(163, 211, 83, 104, 83, 104, 28, 248, 94, 104)
-					.mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(12),
-					IntStream.of(56, 256).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(1), IntStream.of(52, 73, 73, 233, 264).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(2), IntStream.of(156, 262, 156).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(3), IntStream.of(262, 294, 156, 294).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(4), IntStream.of(70, 200).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(5), IntStream.of(193, 251).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(6), IntStream.of(46).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(7), IntStream.of(145, 188).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(8), IntStream.of(124, 263).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(9), IntStream.of(31, 231).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(10), IntStream.of(95, 128).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(11),
+					IntStream.of(163, 211, 83, 104, 83, 104, 28, 248, 94, 104).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(12), IntStream.of(56, 256).boxed().collect(Collectors.toSet()));
 			connections.put(Integer.valueOf(13),
-					IntStream.of(156, 249, 224, 157, 167, 278).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
+					IntStream.of(156, 249, 224, 157, 167, 278).boxed().collect(Collectors.toSet()));
 			connections.put(Integer.valueOf(14),
-					IntStream.of(92, 167, 92, 167, 92, 167).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(15),
-					IntStream.of(78, 268, 78).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(16),
-					IntStream.of(91, 173).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(17),
-					IntStream.of(110, 292, 74, 110).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(18),
-					IntStream.of(186, 192, 186, 192).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(19),
-					IntStream.of(97).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(20),
-					IntStream.of(65, 216).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(21),
-					IntStream.of(67, 268).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(22),
-					IntStream.of(47, 111).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(23),
-					IntStream.of(41, 157).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(24),
-					IntStream.of(156, 164).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(25),
-					IntStream.of(161, 254, 161, 254).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(26),
-					IntStream.of(259, 273).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(27),
-					IntStream.of(79, 200).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(28),
-					IntStream.of(162, 191, 11, 107).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(29),
-					IntStream.of(84, 157).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(30),
-					IntStream.of(176, 189).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(31),
-					IntStream.of(9, 302).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(32),
-					IntStream.of(70, 203).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(33),
-					IntStream.of(36, 164, 36, 164).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(34),
-					IntStream.of(100, 119).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(35),
-					IntStream.of(244).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(36),
-					IntStream.of(33, 288, 33, 288).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(37),
-					IntStream.of(158, 300).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(38),
-					IntStream.of(58, 81).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(39),
-					IntStream.of(128, 145).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(40),
-					IntStream.of(47, 89, 139, 170).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(41),
-					IntStream.of(215, 252, 23, 42).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(42),
-					IntStream.of(120, 291, 41, 183).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(43),
-					IntStream.of(79, 218, 183, 288).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(44),
-					IntStream.of(161, 166, 161, 166).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(45),
-					IntStream.of(206, 242).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(46),
-					IntStream.of(6, 50, 53).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(47),
-					IntStream.of(22, 40).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(48),
-					IntStream.of(126, 249).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(49),
-					IntStream.of(87, 196, 87, 151).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(50),
-					IntStream.of(46).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(51),
-					IntStream.of(103, 214).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(52),
-					IntStream.of(1, 264).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(53),
-					IntStream.of(46, 213).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(54),
-					IntStream.of(55, 56).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(55),
-					IntStream.of(54, 244).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(56),
-					IntStream.of(12, 54).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(57),
-					IntStream.of(187).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(58),
-					IntStream.of(38, 119).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(59),
-					IntStream.of(239, 257).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(60),
-					IntStream.of(126, 151).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(61),
-					IntStream.of(171, 237).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(62),
-					IntStream.of(168, 279).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(63),
-					IntStream.of(202, 218).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(64),
-					IntStream.of(106, 135).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(65),
-					IntStream.of(20, 97).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(66),
-					IntStream.of(67, 85).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(67),
-					IntStream.of(21, 66).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(68),
-					IntStream.of(158, 255).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(69),
-					IntStream.of(86, 106).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(70),
-					IntStream.of(4, 32).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(71),
-					IntStream.of(172, 296).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(72),
-					IntStream.of(285, 73).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(73),
-					IntStream.of(72, 1, 1, 182).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(74), IntStream.of(99, 122, 138, 286, 292, 17, 99).mapToObj(Integer::valueOf)
-					.collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(75),
-					IntStream.of(209, 221, 209, 221).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(76),
-					IntStream.of(181, 295).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(77),
-					IntStream.of(93, 124).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(78),
-					IntStream.of(15, 269, 15, 269).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(79),
-					IntStream.of(27, 43).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(80),
-					IntStream.of(204, 230).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(81),
-					IntStream.of(38).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(82),
-					IntStream.of(163, 192).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
+					IntStream.of(92, 167, 92, 167, 92, 167).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(15), IntStream.of(78, 268, 78).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(16), IntStream.of(91, 173).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(17), IntStream.of(110, 292, 74, 110).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(18), IntStream.of(186, 192, 186, 192).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(19), IntStream.of(97).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(20), IntStream.of(65, 216).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(21), IntStream.of(67, 268).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(22), IntStream.of(47, 111).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(23), IntStream.of(41, 157).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(24), IntStream.of(156, 164).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(25), IntStream.of(161, 254, 161, 254).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(26), IntStream.of(259, 273).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(27), IntStream.of(79, 200).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(28), IntStream.of(162, 191, 11, 107).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(29), IntStream.of(84, 157).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(30), IntStream.of(176, 189).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(31), IntStream.of(9, 302).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(32), IntStream.of(70, 203).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(33), IntStream.of(36, 164, 36, 164).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(34), IntStream.of(100, 119).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(35), IntStream.of(244).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(36), IntStream.of(33, 288, 33, 288).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(37), IntStream.of(158, 300).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(38), IntStream.of(58, 81).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(39), IntStream.of(128, 145).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(40), IntStream.of(47, 89, 139, 170).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(41), IntStream.of(215, 252, 23, 42).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(42), IntStream.of(120, 291, 41, 183).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(43), IntStream.of(79, 218, 183, 288).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(44), IntStream.of(161, 166, 161, 166).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(45), IntStream.of(206, 242).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(46), IntStream.of(6, 50, 53).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(47), IntStream.of(22, 40).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(48), IntStream.of(126, 249).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(49), IntStream.of(87, 196, 87, 151).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(50), IntStream.of(46).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(51), IntStream.of(103, 214).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(52), IntStream.of(1, 264).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(53), IntStream.of(46, 213).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(54), IntStream.of(55, 56).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(55), IntStream.of(54, 244).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(56), IntStream.of(12, 54).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(57), IntStream.of(187).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(58), IntStream.of(38, 119).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(59), IntStream.of(239, 257).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(60), IntStream.of(126, 151).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(61), IntStream.of(171, 237).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(62), IntStream.of(168, 279).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(63), IntStream.of(202, 218).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(64), IntStream.of(106, 135).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(65), IntStream.of(20, 97).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(66), IntStream.of(67, 85).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(67), IntStream.of(21, 66).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(68), IntStream.of(158, 255).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(69), IntStream.of(86, 106).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(70), IntStream.of(4, 32).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(71), IntStream.of(172, 296).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(72), IntStream.of(285, 73).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(73), IntStream.of(72, 1, 1, 182).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(74),
+					IntStream.of(99, 122, 138, 286, 292, 17, 99).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(75), IntStream.of(209, 221, 209, 221).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(76), IntStream.of(181, 295).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(77), IntStream.of(93, 124).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(78), IntStream.of(15, 269, 15, 269).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(79), IntStream.of(27, 43).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(80), IntStream.of(204, 230).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(81), IntStream.of(38).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(82), IntStream.of(163, 192).boxed().collect(Collectors.toSet()));
 			connections.put(Integer.valueOf(83),
-					IntStream.of(11, 192, 192, 11, 192).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(84),
-					IntStream.of(148, 29, 136).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(85),
-					IntStream.of(66, 129).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(86),
-					IntStream.of(69, 152).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(87), IntStream.of(49, 278, 254, 284, 254, 284, 49, 278)
-					.mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(88),
-					IntStream.of(255).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
+					IntStream.of(11, 192, 192, 11, 192).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(84), IntStream.of(148, 29, 136).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(85), IntStream.of(66, 129).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(86), IntStream.of(69, 152).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(87),
+					IntStream.of(49, 278, 254, 284, 254, 284, 49, 278).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(88), IntStream.of(255).boxed().collect(Collectors.toSet()));
 			connections.put(Integer.valueOf(89),
-					IntStream.of(40, 145, 170, 276, 145, 276).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
+					IntStream.of(40, 145, 170, 276, 145, 276).boxed().collect(Collectors.toSet()));
 			connections.put(Integer.valueOf(90),
-					IntStream.of(104, 145, 104, 145, 104, 145).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(91),
-					IntStream.of(16, 109).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
+					IntStream.of(104, 145, 104, 145, 104, 145).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(91), IntStream.of(16, 109).boxed().collect(Collectors.toSet()));
 			connections.put(Integer.valueOf(92),
-					IntStream.of(14, 145, 14, 145, 14, 145).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(93),
-					IntStream.of(77, 165, 287).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(94),
-					IntStream.of(253, 289, 11, 281).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(95),
-					IntStream.of(10, 160, 123, 223).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(96),
-					IntStream.of(194, 286).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(97),
-					IntStream.of(19, 65).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(98),
-					IntStream.of(173, 210).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
+					IntStream.of(14, 145, 14, 145, 14, 145).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(93), IntStream.of(77, 165, 287).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(94), IntStream.of(253, 289, 11, 281).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(95), IntStream.of(10, 160, 123, 223).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(96), IntStream.of(194, 286).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(97), IntStream.of(19, 65).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(98), IntStream.of(173, 210).boxed().collect(Collectors.toSet()));
 			connections.put(Integer.valueOf(99),
-					IntStream.of(122, 235, 74, 235, 74, 235).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(100),
-					IntStream.of(34, 111).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(101),
-					IntStream.of(110, 226).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(102),
-					IntStream.of(258, 276).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(103),
-					IntStream.of(51, 109).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
+					IntStream.of(122, 235, 74, 235, 74, 235).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(100), IntStream.of(34, 111).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(101), IntStream.of(110, 226).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(102), IntStream.of(258, 276).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(103), IntStream.of(51, 109).boxed().collect(Collectors.toSet()));
 			connections.put(Integer.valueOf(104),
-					IntStream.of(11, 90, 11, 90, 11, 90).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(105),
-					IntStream.of(177, 195).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(106),
-					IntStream.of(64, 69).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
+					IntStream.of(11, 90, 11, 90, 11, 90).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(105), IntStream.of(177, 195).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(106), IntStream.of(64, 69).boxed().collect(Collectors.toSet()));
 			connections.put(Integer.valueOf(107),
-					IntStream.of(28, 284, 133, 196, 191, 272).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(108),
-					IntStream.of(141, 264).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(109),
-					IntStream.of(91, 103).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
+					IntStream.of(28, 284, 133, 196, 191, 272).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(108), IntStream.of(141, 264).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(109), IntStream.of(91, 103).boxed().collect(Collectors.toSet()));
 			connections.put(Integer.valueOf(110),
-					IntStream.of(17, 208, 101, 17, 264).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(111),
-					IntStream.of(22, 100).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(112),
-					IntStream.of(181, 195).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(113),
-					IntStream.of(245, 297).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(114),
-					IntStream.of(140).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(115),
-					IntStream.of(178, 184, 290).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(116),
-					IntStream.of(117, 118, 132).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(117),
-					IntStream.of(116, 118).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(118),
-					IntStream.of(116, 117).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(119),
-					IntStream.of(34, 58).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(120),
-					IntStream.of(42, 237).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(121),
-					IntStream.of(260).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(122),
-					IntStream.of(99, 186, 74, 186).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(123),
-					IntStream.of(95, 145).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(124),
-					IntStream.of(8, 77).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(125),
-					IntStream.of(134, 270, 134, 270).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(126),
-					IntStream.of(48, 258, 60, 222).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(127),
-					IntStream.of(186, 225).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(128),
-					IntStream.of(10, 39).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(129),
-					IntStream.of(85, 267).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(130),
-					IntStream.of(131, 132).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(131),
-					IntStream.of(130, 189).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(132),
-					IntStream.of(116, 130).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(133),
-					IntStream.of(107, 146).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(134),
-					IntStream.of(125, 219, 125, 219).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(135),
-					IntStream.of(64, 171).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(136),
-					IntStream.of(84, 190, 278).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(137),
-					IntStream.of(205, 297).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(138),
-					IntStream.of(74).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(139),
-					IntStream.of(40, 263).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(140),
-					IntStream.of(114, 236).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(141),
-					IntStream.of(108, 212).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(142),
-					IntStream.of(289, 296).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(143),
-					IntStream.of(159, 205).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(144),
-					IntStream.of(206, 281).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(145), IntStream.of(90, 92, 90, 92, 90, 92, 7, 89, 39, 222, 89, 123)
-					.mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(146),
-					IntStream.of(133, 235).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(147),
-					IntStream.of(150, 282).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(148),
-					IntStream.of(84, 278).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(149),
-					IntStream.of(162, 207).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(150),
-					IntStream.of(147, 226).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(151),
-					IntStream.of(49, 258, 60, 196).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(152),
-					IntStream.of(86).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(153),
-					IntStream.of(154, 246).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(154),
-					IntStream.of(153, 229, 274).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(155),
-					IntStream.of(224, 283).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(156), IntStream.of(13, 24, 2, 167, 3, 167, 2, 167)
-					.mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(157),
-					IntStream.of(23, 232, 13, 29).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(158),
-					IntStream.of(37, 68).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(159),
-					IntStream.of(143, 277).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(160),
-					IntStream.of(95, 265).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(161),
-					IntStream.of(25, 44, 25, 44).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(162),
-					IntStream.of(28, 149).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(163),
-					IntStream.of(11, 82).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
+					IntStream.of(17, 208, 101, 17, 264).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(111), IntStream.of(22, 100).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(112), IntStream.of(181, 195).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(113), IntStream.of(245, 297).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(114), IntStream.of(140).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(115), IntStream.of(178, 184, 290).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(116), IntStream.of(117, 118, 132).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(117), IntStream.of(116, 118).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(118), IntStream.of(116, 117).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(119), IntStream.of(34, 58).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(120), IntStream.of(42, 237).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(121), IntStream.of(260).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(122), IntStream.of(99, 186, 74, 186).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(123), IntStream.of(95, 145).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(124), IntStream.of(8, 77).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(125), IntStream.of(134, 270, 134, 270).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(126), IntStream.of(48, 258, 60, 222).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(127), IntStream.of(186, 225).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(128), IntStream.of(10, 39).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(129), IntStream.of(85, 267).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(130), IntStream.of(131, 132).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(131), IntStream.of(130, 189).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(132), IntStream.of(116, 130).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(133), IntStream.of(107, 146).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(134), IntStream.of(125, 219, 125, 219).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(135), IntStream.of(64, 171).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(136), IntStream.of(84, 190, 278).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(137), IntStream.of(205, 297).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(138), IntStream.of(74).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(139), IntStream.of(40, 263).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(140), IntStream.of(114, 236).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(141), IntStream.of(108, 212).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(142), IntStream.of(289, 296).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(143), IntStream.of(159, 205).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(144), IntStream.of(206, 281).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(145),
+					IntStream.of(90, 92, 90, 92, 90, 92, 7, 89, 39, 222, 89, 123).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(146), IntStream.of(133, 235).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(147), IntStream.of(150, 282).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(148), IntStream.of(84, 278).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(149), IntStream.of(162, 207).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(150), IntStream.of(147, 226).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(151), IntStream.of(49, 258, 60, 196).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(152), IntStream.of(86).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(153), IntStream.of(154, 246).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(154), IntStream.of(153, 229, 274).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(155), IntStream.of(224, 283).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(156),
+					IntStream.of(13, 24, 2, 167, 3, 167, 2, 167).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(157), IntStream.of(23, 232, 13, 29).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(158), IntStream.of(37, 68).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(159), IntStream.of(143, 277).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(160), IntStream.of(95, 265).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(161), IntStream.of(25, 44, 25, 44).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(162), IntStream.of(28, 149).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(163), IntStream.of(11, 82).boxed().collect(Collectors.toSet()));
 			connections.put(Integer.valueOf(164),
-					IntStream.of(24, 246, 33, 243, 33, 243).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(165),
-					IntStream.of(93).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(166),
-					IntStream.of(44, 262, 44, 262).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(167), IntStream.of(14, 156, 14, 156, 14, 156, 13, 188)
-					.mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(168),
-					IntStream.of(62, 179, 213).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(169),
-					IntStream.of(239).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(170),
-					IntStream.of(40, 89).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(171),
-					IntStream.of(61, 135).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(172),
-					IntStream.of(71, 281).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(173),
-					IntStream.of(16, 98).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(174),
-					IntStream.of(252).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(175),
-					IntStream.of(252).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(176),
-					IntStream.of(30, 233).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(177),
-					IntStream.of(105, 238).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(178),
-					IntStream.of(115, 201).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(179),
-					IntStream.of(168, 180).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(180),
-					IntStream.of(179, 198).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(181),
-					IntStream.of(76, 112, 285).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(182),
-					IntStream.of(73, 193).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(183),
-					IntStream.of(42, 43).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(184),
-					IntStream.of(115, 198).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(185),
-					IntStream.of(236, 280).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
+					IntStream.of(24, 246, 33, 243, 33, 243).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(165), IntStream.of(93).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(166), IntStream.of(44, 262, 44, 262).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(167),
+					IntStream.of(14, 156, 14, 156, 14, 156, 13, 188).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(168), IntStream.of(62, 179, 213).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(169), IntStream.of(239).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(170), IntStream.of(40, 89).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(171), IntStream.of(61, 135).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(172), IntStream.of(71, 281).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(173), IntStream.of(16, 98).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(174), IntStream.of(252).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(175), IntStream.of(252).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(176), IntStream.of(30, 233).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(177), IntStream.of(105, 238).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(178), IntStream.of(115, 201).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(179), IntStream.of(168, 180).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(180), IntStream.of(179, 198).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(181), IntStream.of(76, 112, 285).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(182), IntStream.of(73, 193).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(183), IntStream.of(42, 43).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(184), IntStream.of(115, 198).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(185), IntStream.of(236, 280).boxed().collect(Collectors.toSet()));
 			connections.put(Integer.valueOf(186),
-					IntStream.of(127, 207, 18, 122, 18, 122).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(187),
-					IntStream.of(57, 231).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(188),
-					IntStream.of(7, 167).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(189),
-					IntStream.of(30, 131).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(190),
-					IntStream.of(136, 244).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
+					IntStream.of(127, 207, 18, 122, 18, 122).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(187), IntStream.of(57, 231).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(188), IntStream.of(7, 167).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(189), IntStream.of(30, 131).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(190), IntStream.of(136, 244).boxed().collect(Collectors.toSet()));
 			connections.put(Integer.valueOf(191),
-					IntStream.of(196, 211, 28, 258, 107, 276).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(192), IntStream.of(82, 277, 18, 83, 18, 83, 83, 217)
-					.mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(193),
-					IntStream.of(5, 182).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(194),
-					IntStream.of(96, 204).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(195),
-					IntStream.of(105, 112).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(196),
-					IntStream.of(49, 191, 107, 151).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(197),
-					IntStream.of(271, 272).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(198),
-					IntStream.of(180, 184).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(199),
-					IntStream.of(269, 288, 269, 288).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(200),
-					IntStream.of(4, 27, 283, 291).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(201),
-					IntStream.of(178, 281).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(202),
-					IntStream.of(63, 216).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(203),
-					IntStream.of(32, 246).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(204),
-					IntStream.of(80, 194).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(205),
-					IntStream.of(137, 143).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(206),
-					IntStream.of(45, 144).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(207),
-					IntStream.of(149, 186).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(208),
-					IntStream.of(110, 241).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(209),
-					IntStream.of(75, 290, 75, 234).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(210),
-					IntStream.of(98, 274).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(211),
-					IntStream.of(11, 191).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(212),
-					IntStream.of(141).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(213),
-					IntStream.of(53, 168).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(214),
-					IntStream.of(51, 300).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(215),
-					IntStream.of(41, 275).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(216),
-					IntStream.of(20, 202).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(217),
-					IntStream.of(192, 282).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(218),
-					IntStream.of(43, 63).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(219),
-					IntStream.of(134, 221, 134, 221).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(220),
-					IntStream.of(238, 293).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(221),
-					IntStream.of(75, 219, 75, 219).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(222),
-					IntStream.of(126, 145).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(223),
-					IntStream.of(95, 259).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
+					IntStream.of(196, 211, 28, 258, 107, 276).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(192),
+					IntStream.of(82, 277, 18, 83, 18, 83, 83, 217).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(193), IntStream.of(5, 182).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(194), IntStream.of(96, 204).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(195), IntStream.of(105, 112).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(196), IntStream.of(49, 191, 107, 151).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(197), IntStream.of(271, 272).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(198), IntStream.of(180, 184).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(199), IntStream.of(269, 288, 269, 288).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(200), IntStream.of(4, 27, 283, 291).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(201), IntStream.of(178, 281).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(202), IntStream.of(63, 216).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(203), IntStream.of(32, 246).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(204), IntStream.of(80, 194).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(205), IntStream.of(137, 143).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(206), IntStream.of(45, 144).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(207), IntStream.of(149, 186).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(208), IntStream.of(110, 241).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(209), IntStream.of(75, 290, 75, 234).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(210), IntStream.of(98, 274).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(211), IntStream.of(11, 191).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(212), IntStream.of(141).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(213), IntStream.of(53, 168).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(214), IntStream.of(51, 300).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(215), IntStream.of(41, 275).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(216), IntStream.of(20, 202).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(217), IntStream.of(192, 282).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(218), IntStream.of(43, 63).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(219), IntStream.of(134, 221, 134, 221).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(220), IntStream.of(238, 293).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(221), IntStream.of(75, 219, 75, 219).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(222), IntStream.of(126, 145).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(223), IntStream.of(95, 259).boxed().collect(Collectors.toSet()));
 			connections.put(Integer.valueOf(224),
-					IntStream.of(13, 155, 261, 275, 294).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(225),
-					IntStream.of(127, 295).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(226),
-					IntStream.of(101, 150).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(227),
-					IntStream.of(294).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(228),
-					IntStream.of(235, 272, 235, 272).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(229),
-					IntStream.of(154, 240).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(230),
-					IntStream.of(80, 299).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(231),
-					IntStream.of(9, 187).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(232),
-					IntStream.of(157, 278).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(233),
-					IntStream.of(1, 176).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(234),
-					IntStream.of(209, 250).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
+					IntStream.of(13, 155, 261, 275, 294).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(225), IntStream.of(127, 295).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(226), IntStream.of(101, 150).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(227), IntStream.of(294).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(228), IntStream.of(235, 272, 235, 272).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(229), IntStream.of(154, 240).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(230), IntStream.of(80, 299).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(231), IntStream.of(9, 187).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(232), IntStream.of(157, 278).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(233), IntStream.of(1, 176).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(234), IntStream.of(209, 250).boxed().collect(Collectors.toSet()));
 			connections.put(Integer.valueOf(235),
-					IntStream.of(99, 228, 99, 228, 99, 146).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(236),
-					IntStream.of(140, 185).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(237),
-					IntStream.of(61, 120).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(238),
-					IntStream.of(177, 220).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(239),
-					IntStream.of(59, 169).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(240),
-					IntStream.of(229, 300).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(241),
-					IntStream.of(208, 264).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(242),
-					IntStream.of(45).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(243),
-					IntStream.of(164, 294, 164, 294).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(244),
-					IntStream.of(55, 190, 35, 271).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(245),
-					IntStream.of(113, 280).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(246),
-					IntStream.of(153, 164, 203, 288).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(247),
-					IntStream.of(272, 284, 272, 284).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(248),
-					IntStream.of(11, 253).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(249),
-					IntStream.of(13, 48).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(250),
-					IntStream.of(234, 251).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(251),
-					IntStream.of(5, 250).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(252),
-					IntStream.of(41, 174, 175).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(253),
-					IntStream.of(94, 248).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(254),
-					IntStream.of(25, 87, 25, 87).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(255),
-					IntStream.of(68, 88).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(256),
-					IntStream.of(12, 257).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(257),
-					IntStream.of(59, 256).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(258),
-					IntStream.of(126, 191, 102, 151).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(259),
-					IntStream.of(26, 223).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(260),
-					IntStream.of(121, 301).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(261),
-					IntStream.of(224).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(262),
-					IntStream.of(2, 166, 3, 166).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(263),
-					IntStream.of(8, 139).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
+					IntStream.of(99, 228, 99, 228, 99, 146).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(236), IntStream.of(140, 185).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(237), IntStream.of(61, 120).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(238), IntStream.of(177, 220).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(239), IntStream.of(59, 169).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(240), IntStream.of(229, 300).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(241), IntStream.of(208, 264).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(242), IntStream.of(45).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(243), IntStream.of(164, 294, 164, 294).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(244), IntStream.of(55, 190, 35, 271).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(245), IntStream.of(113, 280).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(246), IntStream.of(153, 164, 203, 288).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(247), IntStream.of(272, 284, 272, 284).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(248), IntStream.of(11, 253).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(249), IntStream.of(13, 48).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(250), IntStream.of(234, 251).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(251), IntStream.of(5, 250).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(252), IntStream.of(41, 174, 175).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(253), IntStream.of(94, 248).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(254), IntStream.of(25, 87, 25, 87).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(255), IntStream.of(68, 88).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(256), IntStream.of(12, 257).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(257), IntStream.of(59, 256).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(258), IntStream.of(126, 191, 102, 151).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(259), IntStream.of(26, 223).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(260), IntStream.of(121, 301).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(261), IntStream.of(224).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(262), IntStream.of(2, 166, 3, 166).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(263), IntStream.of(8, 139).boxed().collect(Collectors.toSet()));
 			connections.put(Integer.valueOf(264),
-					IntStream.of(52, 108, 241, 1, 110).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(265),
-					IntStream.of(160, 302).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(266),
-					IntStream.of(267).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(267),
-					IntStream.of(129, 266).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(268),
-					IntStream.of(15, 21).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(269),
-					IntStream.of(78, 199, 78, 199).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(270),
-					IntStream.of(125, 125).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(271),
-					IntStream.of(197, 244).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
+					IntStream.of(52, 108, 241, 1, 110).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(265), IntStream.of(160, 302).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(266), IntStream.of(267).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(267), IntStream.of(129, 266).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(268), IntStream.of(15, 21).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(269), IntStream.of(78, 199, 78, 199).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(270), IntStream.of(125, 125).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(271), IntStream.of(197, 244).boxed().collect(Collectors.toSet()));
 			connections.put(Integer.valueOf(272),
-					IntStream.of(228, 247, 228, 247, 107, 197).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(273),
-					IntStream.of(26).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(274),
-					IntStream.of(154, 210).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(275),
-					IntStream.of(215, 224).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(276),
-					IntStream.of(89, 102, 89, 191).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(277),
-					IntStream.of(159, 192).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(278), IntStream.of(87, 148, 232, 284, 87, 136, 13)
-					.mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(279),
-					IntStream.of(62).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(280),
-					IntStream.of(185, 245).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(281),
-					IntStream.of(144, 172, 94, 201).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(282),
-					IntStream.of(147, 217).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(283),
-					IntStream.of(155, 200, 291).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
+					IntStream.of(228, 247, 228, 247, 107, 197).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(273), IntStream.of(26).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(274), IntStream.of(154, 210).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(275), IntStream.of(215, 224).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(276), IntStream.of(89, 102, 89, 191).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(277), IntStream.of(159, 192).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(278),
+					IntStream.of(87, 148, 232, 284, 87, 136, 13).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(279), IntStream.of(62).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(280), IntStream.of(185, 245).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(281), IntStream.of(144, 172, 94, 201).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(282), IntStream.of(147, 217).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(283), IntStream.of(155, 200, 291).boxed().collect(Collectors.toSet()));
 			connections.put(Integer.valueOf(284),
-					IntStream.of(87, 247, 87, 247, 107, 278).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(285),
-					IntStream.of(72, 181).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(286),
-					IntStream.of(74, 96).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(287),
-					IntStream.of(93, 301).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
+					IntStream.of(87, 247, 87, 247, 107, 278).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(285), IntStream.of(72, 181).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(286), IntStream.of(74, 96).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(287), IntStream.of(93, 301).boxed().collect(Collectors.toSet()));
 			connections.put(Integer.valueOf(288),
-					IntStream.of(36, 199, 36, 199, 43, 246).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(289),
-					IntStream.of(94, 142).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(290),
-					IntStream.of(115, 209).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(291),
-					IntStream.of(42, 200, 283).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(292),
-					IntStream.of(17, 74).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(293),
-					IntStream.of(220).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
+					IntStream.of(36, 199, 36, 199, 43, 246).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(289), IntStream.of(94, 142).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(290), IntStream.of(115, 209).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(291), IntStream.of(42, 200, 283).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(292), IntStream.of(17, 74).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(293), IntStream.of(220).boxed().collect(Collectors.toSet()));
 			connections.put(Integer.valueOf(294),
-					IntStream.of(3, 243, 224, 227, 3, 243).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(295),
-					IntStream.of(76, 225).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(296),
-					IntStream.of(71, 142).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(297),
-					IntStream.of(113, 137).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(298),
-					IntStream.of(299).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(299),
-					IntStream.of(230, 298).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(300),
-					IntStream.of(37, 214, 240).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(301),
-					IntStream.of(260, 287).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
-			connections.put(Integer.valueOf(302),
-					IntStream.of(31, 265).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
+					IntStream.of(3, 243, 224, 227, 3, 243).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(295), IntStream.of(76, 225).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(296), IntStream.of(71, 142).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(297), IntStream.of(113, 137).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(298), IntStream.of(299).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(299), IntStream.of(230, 298).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(300), IntStream.of(37, 214, 240).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(301), IntStream.of(260, 287).boxed().collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(302), IntStream.of(31, 265).boxed().collect(Collectors.toSet()));
 
 			// Knightsbridge (146) goes to Gloucester Road (99) and Hyde Park Corner (133)
 			// and not South Kensington (235)
-			connections.put(Integer.valueOf(146),
-					IntStream.of(99, 133).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(146), IntStream.of(99, 133).boxed().collect(Collectors.toSet()));
 			// South Kensington (235) goes to Gloucester Road (99) and Sloane Square (228)
 			// and not Knightsbridge (146)
-			connections.put(Integer.valueOf(235),
-					IntStream.of(99, 228).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(235), IntStream.of(99, 228).boxed().collect(Collectors.toSet()));
 			// Gloucester Road (99) goes to High Street Kensington (122), Earl's Court (74),
 			// South Kensington (235), and Knightsbridge (146) - Baeldung is missing
 			// Knightsbridge (146)
-			connections.put(Integer.valueOf(99),
-					IntStream.of(122, 74, 235, 146).mapToObj(Integer::valueOf).collect(Collectors.toSet()));
+			connections.put(Integer.valueOf(99), IntStream.of(122, 74, 235, 146).boxed().collect(Collectors.toSet()));
 
 			System.out.println("\tpublic static Map<String, GraphNode<String, Station>> getGraph2() {");
 			System.out.println("\t\tfinal Map<String, Station> stations = new HashMap<>();");

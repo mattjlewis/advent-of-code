@@ -36,9 +36,9 @@ public class Day15 extends Day {
 
 	private static final int computeNth(final int[] startingNumbers, final int iterations) {
 		// Map from number to the turn it was last spoken on
-		final Map<Integer, Integer> spoken_numbers = IntStream.range(0, startingNumbers.length - 1)
-				.mapToObj(Integer::valueOf).collect(Collectors.toMap(
-						i -> Integer.valueOf(startingNumbers[i.intValue()]), i -> Integer.valueOf(i.intValue() + 1)));
+		final Map<Integer, Integer> spoken_numbers = IntStream.range(0, startingNumbers.length - 1).boxed()
+				.collect(Collectors.toMap(i -> Integer.valueOf(startingNumbers[i.intValue()]),
+						i -> Integer.valueOf(i.intValue() + 1)));
 
 		Integer current = Integer.valueOf(startingNumbers[startingNumbers.length - 1]);
 		for (int i = startingNumbers.length; i < iterations; i++) {

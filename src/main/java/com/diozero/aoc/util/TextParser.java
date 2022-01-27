@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 import org.tinylog.Logger;
 
@@ -84,6 +85,20 @@ public class TextParser {
 	public static int[] loadFirstLineAsCsvIntArray(Path input, boolean sorted) throws IOException {
 		IntStream stream = Arrays.stream(Files.lines(input).findFirst().orElseThrow().split(","))
 				.mapToInt(Integer::parseInt);
+		if (sorted) {
+			stream = stream.sorted();
+		}
+
+		return stream.toArray();
+	}
+
+	public static long[] loadFirstLineAsCsvLongArray(Path input) throws IOException {
+		return loadFirstLineAsCsvLongArray(input, false);
+	}
+
+	public static long[] loadFirstLineAsCsvLongArray(Path input, boolean sorted) throws IOException {
+		LongStream stream = Arrays.stream(Files.lines(input).findFirst().orElseThrow().split(","))
+				.mapToLong(Long::parseLong);
 		if (sorted) {
 			stream = stream.sorted();
 		}

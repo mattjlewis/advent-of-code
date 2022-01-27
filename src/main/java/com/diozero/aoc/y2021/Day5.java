@@ -34,13 +34,13 @@ public class Day5 extends Day {
 		for (Line2D line : lines) {
 			switch (line.direction()) {
 			case VERTICAL:
-				for (int y = line.y1(); y <= line.y2(); y++) {
-					incrementCount(counts, line.x1(), y);
+				for (int y = line.minY(); y <= line.maxY(); y++) {
+					incrementCount(counts, line.minX(), y);
 				}
 				break;
 			case HORIZONTAL:
-				for (int x = line.x1(); x <= line.x2(); x++) {
-					incrementCount(counts, x, line.y1());
+				for (int x = line.minX(); x <= line.maxX(); x++) {
+					incrementCount(counts, x, line.minY());
 				}
 				break;
 			default:
@@ -84,13 +84,13 @@ public class Day5 extends Day {
 				}
 				break;
 			case VERTICAL:
-				for (y = line.y1(); y <= line.y2(); y++) {
-					incrementCount(counts, line.x1(), y);
+				for (y = line.minY(); y <= line.maxY(); y++) {
+					incrementCount(counts, line.minX(), y);
 				}
 				break;
 			case HORIZONTAL:
-				for (int x = line.x1(); x <= line.x2(); x++) {
-					incrementCount(counts, x, line.y1());
+				for (int x = line.minX(); x <= line.maxX(); x++) {
+					incrementCount(counts, x, line.minY());
 				}
 			default:
 			}

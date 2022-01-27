@@ -1,6 +1,8 @@
 package com.diozero.aoc.algorithm.dijkstra;
 
 import java.util.HashSet;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Set;
 
 import com.diozero.aoc.algorithm.GraphNode;
@@ -14,21 +16,15 @@ import com.diozero.aoc.algorithm.GraphNode;
  */
 public class Dijkstra {
 	public static <K, V> void findRoute(GraphNode<K, V> start, GraphNode<K, V> target) {
+		final Queue<GraphNode<K, V>> open_nodes = new PriorityQueue<>();
+		final Set<K> closed_nodes = new HashSet<>();
+
 		start.updateCost(0);
-
-		Set<GraphNode<K, V>> open_nodes = new HashSet<>();
-		// Queue<GraphNode<K, V>> open_nodes = new PriorityQueue<>();
-		Set<GraphNode<K, V>> closed_nodes = new HashSet<>();
-
 		open_nodes.add(start);
 
 		while (!open_nodes.isEmpty()) {
-			final GraphNode<K, V> current = open_nodes.stream().min(GraphNode::compareTo).orElseThrow();
-			open_nodes.remove(current);
-			// FIXME Can this be optimised by using a PriorityQueue instead?!
-			// LondonUndergroundDijkstraTest works with a PrirityQueue, Day15 goes into an
-			// infinite loop...
-			// GraphNode<K, V> current = open_nodes.poll();
+			// Get the node with the lowest cost from the set of open nodes
+			final GraphNode<K, V> current = open_nodes.poll();
 
 			if (current == target) {
 				return;
@@ -36,21 +32,27 @@ public class Dijkstra {
 
 			for (GraphNode.Neighbour<K, V> neighbour : current.neighbours()) {
 				GraphNode<K, V> next = neighbour.node();
+				int new_cost = current.cost() + neighbour.cost();
 
-				// Make sure we haven't already visited this node
-				if (!closed_nodes.contains(next)) {
-					int new_cost = current.cost() + neighbour.cost();
+				if (!closed_nodes.contains(next.id()) && !open_nodes.contains(next)) {
+					next.setParent(current);
+					next.updateCost(new_cost);
 
-					if (new_cost < next.cost()) {
-						next.updateCost(new_cost);
-						next.setParent(current);
+					open_nodes.offer(next);
+				} else if (new_cost < next.cost()) {
+					next.setParent(current);
+					next.updateCost(new_cost);
+
+					if (closed_nodes.contains(next.id())) {
+						closed_nodes.remove(next.id());
+						open_nodes.offer(next);
 					}
-
-					open_nodes.add(next);
 				}
 			}
 
-			closed_nodes.add(current);
+			closed_nodes.add(current.id());
 		}
+
+		throw new IllegalStateException("No route found");
 	}
 }

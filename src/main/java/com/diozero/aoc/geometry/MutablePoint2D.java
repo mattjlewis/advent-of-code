@@ -19,17 +19,20 @@ public class MutablePoint2D {
 		return y;
 	}
 
-	public void translate(Point2D delta) {
+	public MutablePoint2D translate(Point2D delta) {
 		this.x += delta.x();
 		this.y += delta.y();
+
+		return this;
 	}
 
 	public MutablePoint2D translate(List<Point2D> deltas) {
 		deltas.forEach(this::translate);
+
 		return this;
 	}
 
-	public Point2D toPoint2D() {
+	public Point2D immutable() {
 		return new Point2D(x, y);
 	}
 

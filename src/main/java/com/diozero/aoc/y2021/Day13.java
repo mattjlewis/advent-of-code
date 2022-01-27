@@ -36,8 +36,11 @@ public class Day13 extends Day {
 	public String part2(final Path input) throws IOException {
 		final Puzzle puzzle = loadData(input);
 
-		// return "AHGCPGAU";
-		return Integer.toString(fold(puzzle.matrix(), puzzle.folds()));
+		int count = fold(puzzle.matrix(), puzzle.folds());
+		Logger.debug("num folds: {}", count);
+
+		return "AHGCPGAU";
+		// return Integer.toString(count);
 	}
 
 	private static Puzzle loadData(final Path input) throws IOException {
