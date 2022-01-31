@@ -12,7 +12,7 @@ import org.tinylog.Logger;
 
 import com.diozero.aoc.Day;
 import com.diozero.aoc.geometry.Point2D;
-import com.diozero.aoc.util.ArrayUtil;
+import com.diozero.aoc.util.PrintUtil;
 
 public class Day13 extends Day {
 	public static void main(String[] args) {
@@ -122,14 +122,14 @@ public class Day13 extends Day {
 
 			if (Logger.isDebugEnabled() && matrix.length < 20) {
 				System.out.println();
-				ArrayUtil.print(matrix, '█', ' ');
+				PrintUtil.print(matrix, PrintUtil.FILLED_PIXEL, PrintUtil.BLANK_PIXEL);
 			}
 		}
 
 		if (matrix.length < 50 && matrix[0].length < 50) {
 			// Part 2 should print "AHGCPGAU" (40x6 matrix)
 			System.out.println();
-			ArrayUtil.print(matrix, '█', ' ');
+			PrintUtil.print(matrix, PrintUtil.FILLED_PIXEL, PrintUtil.BLANK_PIXEL);
 			System.out.println();
 		}
 

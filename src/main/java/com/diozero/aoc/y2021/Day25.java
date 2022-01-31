@@ -8,6 +8,7 @@ import org.tinylog.Logger;
 
 import com.diozero.aoc.Day;
 import com.diozero.aoc.util.ArrayUtil;
+import com.diozero.aoc.util.PrintUtil;
 
 public class Day25 extends Day {
 	private static final char EAST = '>';
@@ -31,7 +32,7 @@ public class Day25 extends Day {
 
 		if (Logger.isDebugEnabled()) {
 			System.out.println("Initial state:");
-			ArrayUtil.print(cucumbers);
+			PrintUtil.print(cucumbers);
 			System.out.println();
 		}
 
@@ -89,7 +90,7 @@ public class Day25 extends Day {
 
 			if (Logger.isDebugEnabled()) {
 				System.out.println("After " + step + " step" + (step > 1 ? "s" : "") + ":");
-				ArrayUtil.print(cucumbers);
+				PrintUtil.print(cucumbers);
 				System.out.println();
 			}
 		} while (moved);

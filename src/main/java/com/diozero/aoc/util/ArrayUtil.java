@@ -2,10 +2,12 @@ package com.diozero.aoc.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
-import org.tinylog.Logger;
+import com.diozero.aoc.geometry.Point2D;
 
 public class ArrayUtil {
 	private ArrayUtil() {
@@ -31,51 +33,16 @@ public class ArrayUtil {
 		return new_array;
 	}
 
-	public static void print(final int[][] matrix) {
+	public static Set<Point2D> toPoints(boolean[][] matrix) {
+		Set<Point2D> points = new HashSet<>();
 		for (int y = 0; y < matrix.length; y++) {
 			for (int x = 0; x < matrix[0].length; x++) {
-				System.out.print(matrix[y][x]);
+				if (matrix[y][x]) {
+					points.add(new Point2D(x, y));
+				}
 			}
-			System.out.println();
 		}
-		System.out.println();
-	}
-
-	public static void printGrid(final int[][] matrix) {
-		if (!Logger.isDebugEnabled()) {
-			return;
-		}
-		for (int y = 0; y < matrix.length; y++) {
-			for (int x = 0; x < matrix[0].length; x++) {
-				System.out.format("%3d", Integer.valueOf(matrix[y][x]));
-			}
-			System.out.println();
-		}
-		System.out.println();
-	}
-
-	public static void print(final boolean[][] matrix, char trueChar, char falseChar) {
-		if (!Logger.isDebugEnabled()) {
-			return;
-		}
-		for (int y = 0; y < matrix.length; y++) {
-			for (int x = 0; x < matrix[0].length; x++) {
-				System.out.print(matrix[y][x] ? trueChar : falseChar);
-			}
-			System.out.println();
-		}
-	}
-
-	public static void print(final char[][] matrix) {
-		if (!Logger.isDebugEnabled()) {
-			return;
-		}
-		for (int y = 0; y < matrix.length; y++) {
-			for (int x = 0; x < matrix[0].length; x++) {
-				System.out.print(matrix[y][x]);
-			}
-			System.out.println();
-		}
+		return points;
 	}
 
 	public static <T> Stream<List<T>> permutations(List<T> values) {

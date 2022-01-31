@@ -7,8 +7,41 @@ public record Point2D(int x, int y) {
 		X, Y;
 	}
 
+	public enum Direction {
+		UP(0, -1), UP_RIGHT(1, -1), RIGHT(1, 0), DOWN_RIGHT(1, 1), DOWN(0, 1), DOWN_LEFT(-1, 1), LEFT(-1, 0),
+		UP_LEFT(-1, -1);
+
+		private final Point2D delta;
+
+		Direction(int dx, int dy) {
+			delta = new Point2D(dx, dy);
+		}
+
+		public int dx() {
+			return delta.x;
+		}
+
+		public int dy() {
+			return delta.y;
+		}
+
+		public Point2D delta() {
+			return delta;
+		}
+
+		public Direction turnLeft90() {
+			return values()[(ordinal() - 2 + values().length) % values().length];
+		}
+
+		public Direction turnRight90() {
+			return values()[(ordinal() + 2) % values().length];
+		}
+	}
+
+	public static final Point2D ORIGIN = new Point2D(0, 0);
+
 	public static Point2D sum(List<Point2D> points) {
-		return new Point2D(0, 0).translate(points);
+		return ORIGIN.translate(points);
 	}
 
 	private static final int[] COS_VALUES;
@@ -28,6 +61,12 @@ public record Point2D(int x, int y) {
 
 	public int manhattanDistance(int otherX, int otherY) {
 		return Math.abs(x - otherX) + Math.abs(y - otherY);
+	}
+
+	public double distance(Point2D other) {
+		int deltaX = x - other.x;
+		int deltaY = y - other.y;
+		return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 	}
 
 	public Point2D rotateDegrees(Axis axis, int degrees) {
@@ -61,7 +100,20 @@ public record Point2D(int x, int y) {
 		return deltas.stream().reduce(this, (a, b) -> a.translate(b));
 	}
 
+	public Point2D scale(int amount) {
+		return new Point2D(x * amount, y * amount);
+	}
+
 	public MutablePoint2D mutable() {
 		return new MutablePoint2D(x, y);
+	}
+
+	public double angleTo(Point2D other) {
+		return angleTo(other, 0);
+	}
+
+	public double angleTo(Point2D other, int offset) {
+		double result = (Math.toDegrees(Math.atan2(other.y - y, other.x - x)) + offset) % 360;
+		return result < 0 ? result + 360 : result;
 	}
 }

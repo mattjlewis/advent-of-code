@@ -15,8 +15,21 @@ public class MutablePoint2D {
 		return x;
 	}
 
+	public void setX(int x) {
+		this.x = x;
+	}
+
 	public int y() {
 		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public void set(int x, int y) {
+		this.x = x;
+		this.y = y;
 	}
 
 	public MutablePoint2D translate(Point2D delta) {
@@ -34,6 +47,11 @@ public class MutablePoint2D {
 
 	public Point2D immutable() {
 		return new Point2D(x, y);
+	}
+
+	@Override
+	public MutablePoint2D clone() {
+		return new MutablePoint2D(x, y);
 	}
 
 	@Override

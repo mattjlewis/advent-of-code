@@ -8,6 +8,8 @@ public record Point3D(int x, int y, int z) {
 		X, Y, Z;
 	}
 
+	public static final Point3D ORIGIN = new Point3D(0, 0, 0);
+
 	private static final int[] COS_VALUES;
 	private static final int[] SIN_VALUES;
 	static {
@@ -91,5 +93,9 @@ public record Point3D(int x, int y, int z) {
 				matrix[0][0] * x + matrix[0][1] * y + matrix[0][2] * z, //
 				matrix[1][0] * x + matrix[1][1] * y + matrix[1][2] * z, //
 				matrix[2][0] * x + matrix[2][1] * y + matrix[2][2] * z);
+	}
+
+	public MutablePoint3D mutable() {
+		return new MutablePoint3D(x, y, z);
 	}
 }

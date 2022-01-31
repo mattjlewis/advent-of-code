@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import org.tinylog.Logger;
 
 import com.diozero.aoc.Day;
-import com.diozero.aoc.util.ArrayUtil;
+import com.diozero.aoc.util.PrintUtil;
 import com.diozero.aoc.util.TextParser;
 
 public class Day11 extends Day {
@@ -106,6 +106,6 @@ public class Day11 extends Day {
 			System.out.println("After step " + step + ":");
 		}
 
-		ArrayUtil.print(energyLevels);
+		PrintUtil.print(energyLevels);
 	}
 }

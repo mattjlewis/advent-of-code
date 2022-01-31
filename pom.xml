@@ -1,6 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>AdventOfCode2021</groupId>
 	<artifactId>AdventOfCode2021</artifactId>
@@ -11,10 +9,11 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<maven.compiler.release>17</maven.compiler.release>
-		
+
 		<maven-compiler-plugin.version>3.9.0</maven-compiler-plugin.version>
 
 		<tinylog.version>2.4.1</tinylog.version>
+		<hipparchus.version>2.0</hipparchus.version>
 		<junit.version>5.8.2</junit.version>
 	</properties>
 
@@ -41,6 +40,12 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.hipparchus</groupId>
+				<artifactId>hipparchus-core</artifactId>
+				<version>${hipparchus.version}</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
@@ -48,6 +53,10 @@
 		<dependency>
 			<groupId>org.tinylog</groupId>
 			<artifactId>tinylog-impl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hipparchus</groupId>
+			<artifactId>hipparchus-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>

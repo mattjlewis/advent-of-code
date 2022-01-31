@@ -17,8 +17,6 @@ import com.diozero.aoc.geometry.MutablePoint2D;
 import com.diozero.aoc.geometry.Point2D;
 
 public class Day3 extends Day {
-	private static final Point2D ORIGIN = new Point2D(0, 0);
-
 	public static void main(String[] args) {
 		new Day3().run();
 	}
@@ -34,7 +32,7 @@ public class Day3 extends Day {
 
 		// Find the intersection that is closest to ORIGIN
 		return Integer.toString(getIntersections(paths.get(0), paths.get(1)).stream()
-				.mapToInt(p -> p.manhattanDistance(ORIGIN)).min().orElseThrow());
+				.mapToInt(p -> p.manhattanDistance(Point2D.ORIGIN)).min().orElseThrow());
 	}
 
 	@Override
@@ -56,14 +54,14 @@ public class Day3 extends Day {
 		// Convert a stream of relative segments to a list of absolute lines
 		// Note there is no need to call Stream.sequential() as Pattern.results()
 		// returns a sequential stream
-		final MutablePoint2D p = ORIGIN.mutable();
+		final MutablePoint2D p = Point2D.ORIGIN.mutable();
 		return Segment.parse(line)
 				.map(segment -> Line2D.create(p.immutable(), p.translate(segment.delta()).immutable())).toList();
 	}
 
 	private static Set<Point2D> getIntersections(List<Line2D> path1, List<Line2D> path2) {
 		return path1.stream().flatMap(l1 -> path2.stream().map(l2 -> l1.intersection(l2)).filter(Optional::isPresent))
-				.map(Optional::get).dropWhile(i -> i.equals(ORIGIN)).collect(Collectors.toSet());
+				.map(Optional::get).dropWhile(i -> i.equals(Point2D.ORIGIN)).collect(Collectors.toSet());
 	}
 
 	private static int distanceToIntersection(List<Line2D> path, Point2D intersection) {

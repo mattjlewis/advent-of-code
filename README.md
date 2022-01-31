@@ -3,11 +3,11 @@ Java solutions for the [Advent of Code](https://adventofcode.com/) daily challen
 
 Goals:
 
-* The code is readable and logical, includes meaningful comments and debug statements, and is easy to comprehend
-* Efficiency in terms of execution time and memory allocation
-* Learning, in particular modern Java features and algorithms
-* No external dependencies other than a logging framework (tinylog)
-* Attempt to solve entirely independently; if stuck look on Reddit for tips on general approaches to
+1. The code is readable and logical, includes meaningful comments and debug statements, and is easy to comprehend
+1. Efficiency in terms of execution time and memory allocation
+1. Learning, in particular modern Java features and algorithms
+1. No external dependencies other than a logging framework (tinylog)
+1. Attempt to solve entirely independently; if stuck look on Reddit for tips on general approaches to
 solving the problem. As a last resort, look at other Java solution implementations.
 
 Warning - includes answers to enable self verification!
@@ -46,6 +46,15 @@ in a single list.
 Solutions for parts 1 and 2 are then identical as the phase settings for part 1 result in all of the
 amplifiers terminating immediately after just one pass, whereas part 2 requires a number of
 iterations.
+
+### Day 12
+
+A brute force solution wouldn't work for part 2 - simply a matter of finding the first step at which
+an axis position and velocity values loop back to their first value and then finding the least
+common multiple of the steps for each axis.
+
+Broke rule 4 (no external dependencies) to use the Hipparchus mathematics core library - it would be
+silly to implement a least common multiple function.
 
 ### 2020
 

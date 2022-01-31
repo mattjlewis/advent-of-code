@@ -50,7 +50,7 @@ public abstract class Day implements Runnable {
 		Path answers_path = input_folder.resolve(input + "_answers.txt");
 
 		if (sample_prop != null) {
-			System.out.format("%d Day %d - Working from sample data set '%s'%n", year, day, input);
+			System.out.format("--- %d Day %d: Working from sample data set '%s' ---%n", year, day, input);
 		}
 
 		try {
@@ -64,8 +64,8 @@ public abstract class Day implements Runnable {
 					part1(input_path);
 				}
 			}
-			long start = System.currentTimeMillis();
 			try {
+				long start = System.currentTimeMillis();
 				String answer = part1(input_path);
 				long duration = System.currentTimeMillis() - start;
 				checkResult(1, answers, answer, duration);
@@ -78,7 +78,7 @@ public abstract class Day implements Runnable {
 					part2(input_path);
 				}
 			}
-			start = System.currentTimeMillis();
+			long start = System.currentTimeMillis();
 			String answer = part2(input_path);
 			long duration = System.currentTimeMillis() - start;
 			checkResult(2, answers, answer, duration);
@@ -89,14 +89,14 @@ public abstract class Day implements Runnable {
 
 	private void checkResult(int part, String[] answers, String result, long duration) {
 		if (answers == null || answers.length < part) {
-			System.out.format("%d Day %d '%s' part %d: %s. Duration: %dms%n", year, day, name(), part, result,
+			System.out.format("%d Day %d: '%s' part %d: %s. Duration: %dms%n", year, day, name(), part, result,
 					duration);
 		} else {
 			if (result != null && result.equals(answers[part - 1])) {
-				System.out.format("%d Day %d '%s' part %d - Correct answer: %s. Duration: %,dms%n", year, day, name(),
+				System.out.format("%d Day %d: '%s' part %d - Correct answer: %s. Duration: %,dms%n", year, day, name(),
 						part, result, duration);
 			} else {
-				System.out.format("WRONG: %d Day %d '%s' part %d - Wrong answer (%s), expected: %s. Duration: %,dms%n",
+				System.out.format("WRONG! %d Day %d: '%s' part %d - Wrong answer (%s), expected: %s. Duration: %,dms%n",
 						year, day, name(), part, result, answers[part - 1], duration);
 			}
 		}

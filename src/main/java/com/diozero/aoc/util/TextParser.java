@@ -4,14 +4,37 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.PrimitiveIterator;
+import java.util.Set;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
 import org.tinylog.Logger;
 
+import com.diozero.aoc.geometry.Point2D;
+
 public class TextParser {
 	private TextParser() {
+	}
+
+	public static Set<Point2D> loadPoints(final Path input, final char ch) throws IOException {
+		Set<Point2D> points = new HashSet<>();
+
+		final Iterator<String> it = Files.lines(input).iterator();
+		for (int y = 0; it.hasNext(); y++) {
+
+			PrimitiveIterator.OfInt char_it = it.next().chars().iterator();
+			for (int x = 0; char_it.hasNext(); x++) {
+				if (char_it.nextInt() == ch) {
+					points.add(new Point2D(x, y));
+				}
+			}
+		}
+
+		return points;
 	}
 
 	public static boolean[][] loadBooleanArray(final Path input) throws IOException {

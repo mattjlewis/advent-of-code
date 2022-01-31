@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.tinylog.Logger;
 
 import com.diozero.aoc.Day;
+import com.diozero.aoc.geometry.Point2D;
 import com.diozero.aoc.util.ArrayUtil;
 import com.diozero.aoc.util.TextParser;
 
@@ -124,7 +125,7 @@ public class Day11 extends Day {
 		int num_occupied = 0;
 
 		// Go in each direction
-		for (Direction direction : Direction.values()) {
+		for (Point2D.Direction direction : Point2D.Direction.values()) {
 			num_occupied += hasVisibleOccupiedSeats(seats, occupancy, x, y, direction) ? 1 : 0;
 		}
 
@@ -143,7 +144,7 @@ public class Day11 extends Day {
 	}
 
 	private static boolean hasVisibleOccupiedSeats(final boolean[][] seats, final boolean[][] occupancy, final int x,
-			final int y, final Direction direction) {
+			final int y, final Point2D.Direction direction) {
 		int xx = x + direction.dx();
 		int yy = y + direction.dy();
 		while (xx >= 0 && xx < seats[0].length && yy >= 0 && yy < seats.length) {
@@ -182,26 +183,5 @@ public class Day11 extends Day {
 		 *         vacant, empty if no change
 		 */
 		Optional<Boolean> seatChange(final boolean[][] seats, final boolean[][] occupancy, final int x, final int y);
-	}
-
-	private enum Direction {
-		UP(0, -1), UP_RIGHT(1, -1), RIGHT(1, 0), DOWN_RIGHT(1, 1), DOWN(0, 1), DOWN_LEFT(-1, 1), LEFT(-1, 0),
-		UP_LEFT(-1, -1);
-
-		private final int dx;
-		private final int dy;
-
-		Direction(int dx, int dy) {
-			this.dx = dx;
-			this.dy = dy;
-		}
-
-		public int dx() {
-			return dx;
-		}
-
-		public int dy() {
-			return dy;
-		}
 	}
 }

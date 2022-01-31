@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
 import com.diozero.aoc.Day;
-import com.diozero.aoc.util.ArrayUtil;
+import com.diozero.aoc.util.PrintUtil;
 
 public class Day8 extends Day {
 	public static void main(String[] args) {
@@ -46,13 +46,13 @@ public class Day8 extends Day {
 				for (List<String> layer : layers) {
 					char ch = layer.get(y).charAt(x);
 					if (ch == '0' || ch == '1') {
-						image[y][x] = ch == '1' ? '█' : ' ';
+						image[y][x] = ch == '1' ? PrintUtil.FILLED_PIXEL : PrintUtil.BLANK_PIXEL;
 						break;
 					}
 				}
 			}
 		}
-		ArrayUtil.print(image);
+		PrintUtil.print(image);
 
 		return "AZCJC";
 	}
