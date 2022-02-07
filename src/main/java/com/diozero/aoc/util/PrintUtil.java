@@ -1,9 +1,10 @@
 package com.diozero.aoc.util;
 
-import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import com.diozero.aoc.geometry.Point2D;
+import com.diozero.aoc.geometry.Rectangle;
 
 public class PrintUtil {
 	public static final char FILLED_PIXEL = '█';
@@ -51,23 +52,45 @@ public class PrintUtil {
 		}
 	}
 
-	public static <T> void print(Map<Point2D, T> grid, char defaultValue, ToCharFunction<T> cellFunction) {
+	public static void print(Set<Point2D> points) {
+		print(points, FILLED_PIXEL, BLANK_PIXEL);
+	}
+
+	public static void print(Set<Point2D> points, char filledPixel, char blankPixel) {
+		Rectangle bounds = getBounds(points);
+
+		for (int y = bounds.topLeft().y(); y <= bounds.bottomRight().y(); y++) {
+			for (int x = bounds.topLeft().x(); x <= bounds.bottomRight().x(); x++) {
+				if (points.contains(new Point2D(x, y))) {
+					System.out.print(filledPixel);
+				} else {
+					System.out.print(blankPixel);
+				}
+			}
+			System.out.println();
+		}
+	}
+
+	private static Rectangle getBounds(Set<Point2D> points) {
 		int min_x = Integer.MAX_VALUE;
 		int max_x = Integer.MIN_VALUE;
 		int min_y = Integer.MAX_VALUE;
 		int max_y = Integer.MIN_VALUE;
-		Iterator<Point2D> it = grid.keySet().iterator();
-		while (it.hasNext()) {
-			Point2D p = it.next();
-
+		for (Point2D p : points) {
 			min_x = Math.min(min_x, p.x());
 			max_x = Math.max(max_x, p.x());
 			min_y = Math.min(min_y, p.y());
 			max_y = Math.max(max_y, p.y());
 		}
 
-		for (int y = min_y; y <= max_y; y++) {
-			for (int x = min_x; x <= max_x; x++) {
+		return Rectangle.create(min_x, min_y, max_x, max_y);
+	}
+
+	public static <T> void print(Map<Point2D, T> grid, char defaultValue, ToCharFunction<T> cellFunction) {
+		Rectangle bounds = getBounds(grid.keySet());
+
+		for (int y = bounds.topLeft().y(); y <= bounds.bottomRight().y(); y++) {
+			for (int x = bounds.topLeft().x(); x <= bounds.bottomRight().x(); x++) {
 				T val = grid.get(new Point2D(x, y));
 				if (val == null) {
 					System.out.print(defaultValue);

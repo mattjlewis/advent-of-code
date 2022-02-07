@@ -1,9 +1,11 @@
 package com.diozero.aoc.algorithm.dijkstra;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
+import java.util.function.Function;
 
 import com.diozero.aoc.algorithm.GraphNode;
 
@@ -15,7 +17,21 @@ import com.diozero.aoc.algorithm.GraphNode;
  * https://stackabuse.com/graphs-in-java-dijkstras-algorithm/
  */
 public class Dijkstra {
+	public static <K, V> void findRoutes(GraphNode<K, V> start) {
+		findRoute(start, Optional.empty(), GraphNode::neighbours);
+	}
+
 	public static <K, V> void findRoute(GraphNode<K, V> start, GraphNode<K, V> target) {
+		findRoute(start, Optional.of(target), GraphNode::neighbours);
+	}
+
+	public static <K, V> void findRoute(GraphNode<K, V> start, GraphNode<K, V> target,
+			Function<GraphNode<K, V>, Set<GraphNode.Neighbour<K, V>>> getNeighboursFunction) {
+		findRoute(start, Optional.of(target), getNeighboursFunction);
+	}
+
+	public static <K, V> void findRoute(GraphNode<K, V> start, Optional<GraphNode<K, V>> target,
+			Function<GraphNode<K, V>, Set<GraphNode.Neighbour<K, V>>> getNeighboursFunction) {
 		final Queue<GraphNode<K, V>> open_nodes = new PriorityQueue<>();
 		final Set<K> closed_nodes = new HashSet<>();
 
@@ -25,12 +41,11 @@ public class Dijkstra {
 		while (!open_nodes.isEmpty()) {
 			// Get the node with the lowest cost from the set of open nodes
 			final GraphNode<K, V> current = open_nodes.poll();
-
-			if (current == target) {
+			if (target.filter(node -> node == current).isPresent()) {
 				return;
 			}
 
-			for (GraphNode.Neighbour<K, V> neighbour : current.neighbours()) {
+			for (GraphNode.Neighbour<K, V> neighbour : getNeighboursFunction.apply(current)) {
 				GraphNode<K, V> next = neighbour.node();
 				int new_cost = current.cost() + neighbour.cost();
 
@@ -53,6 +68,8 @@ public class Dijkstra {
 			closed_nodes.add(current.id());
 		}
 
-		throw new IllegalStateException("No route found");
+		if (target.isPresent()) {
+			throw new IllegalStateException("No route found");
+		}
 	}
 }

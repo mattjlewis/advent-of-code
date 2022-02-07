@@ -56,6 +56,43 @@ common multiple of the steps for each axis.
 Broke rule 4 (no external dependencies) to use the Hipparchus mathematics core library - it would be
 silly to implement a least common multiple function.
 
+#### Day 15
+
+Enjoyed this challenge, the tricky bit was mapping out the maze - I used a depth-first search (DFS)
+algorithm to move the droid to every accessible position in the maze. The DFS approach was taken as
+it is relatively simple to backtrack the droid to the last unexplored branch using a stack of
+movement directions. An alternative approach would be to save the Intcode VM state at each branch,
+restoring the VM state at every branch - possibly use a breadth-first solution. It might even be
+possible to use one of the generic path-finding algorithms given a bit of refactoring.
+
+Once the maze is mapped out the existing Dijkstra and A* path finding algorithms can be used. The
+solution to part 1 is the shortest path from the droid's start position to the O2 Supply position.
+Part 2 is the length of the longest path from the O2 Supply position to any other position in the
+maze.
+
+#### Day 16
+
+Didn't particularly like part 2 - the solution relies on the input offset being in the second half
+of the expanded input signal. This formula works only for the second half of the signal:
+`signal[i] = (signal[i] + signal[i+1]) % 10`.
+
+#### Day 17
+
+Surprisingly difficult and resulted in a fair amount of refactoring of existing geometry classes,
+making Point2D, Line2D, Rectangle, and CompassDirection more general purpose. The solution uses the
+Intcode VM program output data to create a path of lines starting at the vacuum robot to represent
+the scaffolding. This made the solution to part two a bit easier as the vacuumm robot then just has
+to follow the path to the end to generate the list of movements.
+
+Finding the three repeating movement patterns (A, B and C) in part two was particularly challenging,
+however, regular expressions came to the rescue. The following regular expression extracts the three
+repeating blocks from single full string of movement instructions (thank you nl_alexxx
+[Reddit](https://www.reddit.com/r/adventofcode/comments/ebr7dg/2019_day_17_solutions/) for the hint):
+
+```
+^(.{1,20})\\1*(.{1,20})(?:\\1|\\2)*(.{1,20})(?:\\1|\\2|\\3)*$
+```
+
 ### 2020
 
 #### Day 13

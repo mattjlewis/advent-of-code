@@ -7,37 +7,6 @@ public record Point2D(int x, int y) {
 		X, Y;
 	}
 
-	public enum Direction {
-		UP(0, -1), UP_RIGHT(1, -1), RIGHT(1, 0), DOWN_RIGHT(1, 1), DOWN(0, 1), DOWN_LEFT(-1, 1), LEFT(-1, 0),
-		UP_LEFT(-1, -1);
-
-		private final Point2D delta;
-
-		Direction(int dx, int dy) {
-			delta = new Point2D(dx, dy);
-		}
-
-		public int dx() {
-			return delta.x;
-		}
-
-		public int dy() {
-			return delta.y;
-		}
-
-		public Point2D delta() {
-			return delta;
-		}
-
-		public Direction turnLeft90() {
-			return values()[(ordinal() - 2 + values().length) % values().length];
-		}
-
-		public Direction turnRight90() {
-			return values()[(ordinal() + 2) % values().length];
-		}
-	}
-
 	public static final Point2D ORIGIN = new Point2D(0, 0);
 
 	public static Point2D sum(List<Point2D> points) {
@@ -88,6 +57,10 @@ public record Point2D(int x, int y) {
 
 	public Point2D translate(Point2D delta) {
 		return new Point2D(x + delta.x, y + delta.y);
+	}
+
+	public Point2D translate(CompassDirection direction) {
+		return translate(direction.delta());
 	}
 
 	public Point2D translate(List<Point2D> deltas) {

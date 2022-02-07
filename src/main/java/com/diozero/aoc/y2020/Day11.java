@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.tinylog.Logger;
 
 import com.diozero.aoc.Day;
-import com.diozero.aoc.geometry.Point2D;
+import com.diozero.aoc.geometry.CompassDirection;
 import com.diozero.aoc.util.ArrayUtil;
 import com.diozero.aoc.util.TextParser;
 
@@ -125,7 +125,7 @@ public class Day11 extends Day {
 		int num_occupied = 0;
 
 		// Go in each direction
-		for (Point2D.Direction direction : Point2D.Direction.values()) {
+		for (CompassDirection direction : CompassDirection.values()) {
 			num_occupied += hasVisibleOccupiedSeats(seats, occupancy, x, y, direction) ? 1 : 0;
 		}
 
@@ -144,7 +144,7 @@ public class Day11 extends Day {
 	}
 
 	private static boolean hasVisibleOccupiedSeats(final boolean[][] seats, final boolean[][] occupancy, final int x,
-			final int y, final Point2D.Direction direction) {
+			final int y, final CompassDirection direction) {
 		int xx = x + direction.dx();
 		int yy = y + direction.dy();
 		while (xx >= 0 && xx < seats[0].length && yy >= 0 && yy < seats.length) {

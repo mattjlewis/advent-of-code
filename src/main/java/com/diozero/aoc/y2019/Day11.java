@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.diozero.aoc.Day;
+import com.diozero.aoc.geometry.CompassDirection;
 import com.diozero.aoc.geometry.Point2D;
 import com.diozero.aoc.util.PrintUtil;
 import com.diozero.aoc.y2019.util.IntcodeVirtualMachine;
@@ -52,15 +53,15 @@ public class Day11 extends Day {
 
 		private Map<Point2D, Long> panelColours;
 		private Point2D position;
-		private Point2D.Direction direction;
+		private CompassDirection direction;
 		private int updateIndex;
 
 		public Robot(boolean startingPositionWhite) {
 			// All of the panels are currently black
 			panelColours = new HashMap<>();
 			position = Point2D.ORIGIN;
-			// The robot starts facing up
-			direction = Point2D.Direction.UP;
+			// The robot starts facing south (up)
+			direction = CompassDirection.SOUTH;
 			if (startingPositionWhite) {
 				panelColours.put(position, WHITE);
 			}
@@ -92,7 +93,7 @@ public class Day11 extends Day {
 					direction = direction.turnRight90();
 				}
 
-				position = position.translate(direction.delta());
+				position = position.translate(direction);
 			}
 
 			updateIndex++;

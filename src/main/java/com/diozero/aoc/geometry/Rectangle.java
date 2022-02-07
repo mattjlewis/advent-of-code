@@ -18,16 +18,17 @@ public record Rectangle(Point2D topLeft, Point2D bottomRight) {
 					String.format("line '{}' does not match pattern '{}'!", line, TARGET_PATTERN.pattern()));
 		}
 
-		int x1 = Integer.parseInt(m.group(1));
-		int x2 = Integer.parseInt(m.group(2));
+		return create(Integer.parseInt(m.group(1)), Integer.parseInt(m.group(3)), Integer.parseInt(m.group(2)),
+				Integer.parseInt(m.group(4)));
+	}
+
+	public static Rectangle create(int x1, int y1, int x2, int y2) {
 		if (x1 > x2) {
 			int tmp = x1;
 			x1 = x2;
 			x2 = tmp;
 		}
 
-		int y1 = Integer.parseInt(m.group(3));
-		int y2 = Integer.parseInt(m.group(4));
 		if (y1 < y2) {
 			int tmp = y1;
 			y1 = y2;

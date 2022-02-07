@@ -1,16 +1,48 @@
 package com.diozero.aoc.util;
 
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import com.diozero.aoc.geometry.Point2D;
 
 public class ArrayUtil {
 	private ArrayUtil() {
+	}
+
+	public static int[] shuffle(int startInclusive, int endExcusive) {
+		final List<Integer> random_int_list = IntStream.range(startInclusive, endExcusive).boxed()
+				.collect(Collectors.toList());
+		Collections.shuffle(random_int_list);
+		return random_int_list.stream().mapToInt(Integer::intValue).toArray();
+	}
+
+	public static void shuffle(int[] array) {
+		Collections.shuffle(new AbstractList<Integer>() {
+			@Override
+			public Integer get(int index) {
+				return Integer.valueOf(array[index]);
+			}
+
+			@Override
+			public int size() {
+				return array.length;
+			}
+
+			@Override
+			public Integer set(int index, Integer element) {
+				int result = array[index];
+				array[index] = element.intValue();
+				return Integer.valueOf(result);
+			}
+		});
 	}
 
 	public static boolean[][] clone(final boolean[][] matrix) {
@@ -70,5 +102,17 @@ public class ArrayUtil {
 			out.add(e);
 			return out;
 		}));
+	}
+
+	public static int[] repeat(int[] array, int repetitions) {
+		final int length = array.length;
+		final int new_length = repetitions * length;
+		final int[] new_array = new int[new_length];
+
+		for (int i = 0; i < repetitions; i++) {
+			System.arraycopy(array, 0, new_array, i * length, length);
+		}
+
+		return new_array;
 	}
 }

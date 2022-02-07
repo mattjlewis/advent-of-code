@@ -3,15 +3,15 @@ package com.diozero.aoc.y2019;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.Map;
 import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.diozero.aoc.Day;
+import com.diozero.aoc.geometry.CompassDirection;
 import com.diozero.aoc.geometry.Line2D;
 import com.diozero.aoc.geometry.MutablePoint2D;
 import com.diozero.aoc.geometry.Point2D;
@@ -31,7 +31,7 @@ public class Day3 extends Day {
 		final List<List<Line2D>> paths = loadData(input);
 
 		// Find the intersection that is closest to ORIGIN
-		return Integer.toString(getIntersections(paths.get(0), paths.get(1)).stream()
+		return Integer.toString(Line2D.pathIntersections(paths.get(0), paths.get(1)).stream()
 				.mapToInt(p -> p.manhattanDistance(Point2D.ORIGIN)).min().orElseThrow());
 	}
 
@@ -41,7 +41,7 @@ public class Day3 extends Day {
 
 		// Find the intersection that has the shortest distance from ORIGIN when
 		// considering the sum of the distances for both wires
-		return Integer.toString(getIntersections(paths.get(0), paths.get(1)).stream().mapToInt(
+		return Integer.toString(Line2D.pathIntersections(paths.get(0), paths.get(1)).stream().mapToInt(
 				intersection -> paths.stream().mapToInt(path -> distanceToIntersection(path, intersection)).sum()).min()
 				.orElseThrow());
 	}
@@ -57,11 +57,6 @@ public class Day3 extends Day {
 		final MutablePoint2D p = Point2D.ORIGIN.mutable();
 		return Segment.parse(line)
 				.map(segment -> Line2D.create(p.immutable(), p.translate(segment.delta()).immutable())).toList();
-	}
-
-	private static Set<Point2D> getIntersections(List<Line2D> path1, List<Line2D> path2) {
-		return path1.stream().flatMap(l1 -> path2.stream().map(l2 -> l1.intersection(l2)).filter(Optional::isPresent))
-				.map(Optional::get).dropWhile(i -> i.equals(Point2D.ORIGIN)).collect(Collectors.toSet());
 	}
 
 	private static int distanceToIntersection(List<Line2D> path, Point2D intersection) {
@@ -80,9 +75,14 @@ public class Day3 extends Day {
 		return distance;
 	}
 
-	private static record Segment(Direction direction, int amount) {
-		private enum Direction {
-			U, R, D, L;
+	private static record Segment(CompassDirection direction, int amount) {
+		private static final Map<String, CompassDirection> DIRECTION_MAPPING;
+		static {
+			DIRECTION_MAPPING = new HashMap<>();
+			DIRECTION_MAPPING.put("U", CompassDirection.NORTH);
+			DIRECTION_MAPPING.put("R", CompassDirection.EAST);
+			DIRECTION_MAPPING.put("D", CompassDirection.SOUTH);
+			DIRECTION_MAPPING.put("L", CompassDirection.WEST);
 		}
 
 		private static final Pattern PATTERN = Pattern.compile("(U|R|D|L)(\\d+)");
@@ -92,17 +92,11 @@ public class Day3 extends Day {
 		}
 
 		private static Segment create(MatchResult matchResult) {
-			return new Segment(Direction.valueOf(matchResult.group(1)), Integer.parseInt(matchResult.group(2)));
+			return new Segment(DIRECTION_MAPPING.get(matchResult.group(1)), Integer.parseInt(matchResult.group(2)));
 		}
 
 		public Point2D delta() {
-			return switch (direction) {
-			case U -> new Point2D(0, amount);
-			case R -> new Point2D(amount, 0);
-			case D -> new Point2D(0, -amount);
-			case L -> new Point2D(-amount, 0);
-			default -> throw new IllegalArgumentException("Invalid direction " + direction);
-			};
+			return direction.delta().scale(amount);
 		}
 
 		@Override

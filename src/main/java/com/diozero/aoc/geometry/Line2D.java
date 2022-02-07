@@ -1,6 +1,10 @@
 package com.diozero.aoc.geometry;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Simple 2D line class that only supports horizontal, vertical or diagonal
@@ -86,14 +90,39 @@ public record Line2D(int x1, int y1, int x2, int y2, Line2D.Direction direction)
 		return y1 > y2;
 	}
 
+	public CompassDirection compassDirection() {
+		return switch (direction) {
+		case HORIZONTAL -> goesForwards() ? CompassDirection.EAST : CompassDirection.WEST;
+		case VERTICAL -> goesUp() ? CompassDirection.SOUTH : CompassDirection.NORTH;
+		case DIAGONAL -> goesUp() ? (goesForwards() ? CompassDirection.SOUTH_EAST : CompassDirection.SOUTH_WEST)
+				: (goesForwards() ? CompassDirection.NORTH_EAST : CompassDirection.NORTH_WEST);
+		default -> throw new IllegalArgumentException();
+		};
+	}
+
+	public static Set<Point2D> pathIntersections(List<Line2D> path1, List<Line2D> path2) {
+		return path1.stream().flatMap(l1 -> path2.stream().map(l2 -> l1.intersection(l2)).filter(Optional::isPresent))
+				.map(Optional::get).dropWhile(i -> i.equals(Point2D.ORIGIN)).collect(Collectors.toSet());
+	}
+
+	public static Set<Point2D> pathIntersections(List<Line2D> path) {
+		final Set<Point2D> intersections = new HashSet<>();
+		for (int i = 0; i < path.size(); i++) {
+			for (int j = i + 1; j < path.size(); j++) {
+				path.get(i).intersection(path.get(j)).ifPresent(intersections::add);
+			}
+		}
+		return intersections;
+	}
+
 	public Optional<Point2D> intersection(Line2D other) {
 		// Assume lines are parallel if in the same direction
 		if (direction == other.direction()) {
 			return Optional.empty();
 		}
 
-		// No intersection?
-		if (other.minX() > maxX() || other.maxX() < minX() || other.minY() > maxY() || other.maxY() < minY()) {
+		// No intersection? Note must actually cross and not just touch
+		if (other.minX() >= maxX() || other.maxX() <= minX() || other.minY() >= maxY() || other.maxY() <= minY()) {
 			return Optional.empty();
 		}
 

@@ -141,7 +141,7 @@ public class Day16 extends Day {
 				if (index < 0 || index >= Type.values().length) {
 					throw new IllegalArgumentException("Invalid packet type " + index);
 				}
-				return Type.values()[index];
+				return values()[index];
 			}
 		}
 

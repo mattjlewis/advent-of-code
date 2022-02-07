@@ -25,8 +25,8 @@ public class Day13 extends Day {
 
 	@Override
 	public String part1(Path input) throws IOException {
-		BreakoutGame ac = new BreakoutGame();
-		IntcodeVirtualMachine vm = IntcodeVirtualMachine.load(input, null, ac::instruction);
+		final BreakoutGame ac = new BreakoutGame();
+		final IntcodeVirtualMachine vm = IntcodeVirtualMachine.load(input, null, ac::instruction);
 
 		vm.run();
 		if (Logger.isDebugEnabled()) {
@@ -38,8 +38,8 @@ public class Day13 extends Day {
 
 	@Override
 	public String part2(Path input) throws IOException {
-		BreakoutGame game = new BreakoutGame();
-		IntcodeVirtualMachine vm = IntcodeVirtualMachine.load(input, game::move, game::instruction);
+		final BreakoutGame game = new BreakoutGame();
+		final IntcodeVirtualMachine vm = IntcodeVirtualMachine.load(input, game::move, game::instruction);
 
 		// Memory address 0 represents the number of quarters that have been inserted;
 		// set it to 2 to play for free.
@@ -72,17 +72,21 @@ public class Day13 extends Day {
 				default -> throw new IllegalArgumentException("Invalid tile " + tile);
 				};
 			}
+
+			public static Tile valueOf(int ordinal) {
+				return values()[ordinal];
+			}
 		}
 
 		private int index;
-		private MutablePoint2D position;
-		private Map<Point2D, Tile> tiles;
+		private final MutablePoint2D position;
+		private final Map<Point2D, Tile> tiles;
 		private int score;
 		private MutablePoint2D ballPosition;
 		private MutablePoint2D paddlePosition;
 
 		BreakoutGame() {
-			position = new MutablePoint2D(0, 0);
+			position = Point2D.ORIGIN.mutable();
 			tiles = new HashMap<>();
 		}
 
@@ -100,7 +104,7 @@ public class Day13 extends Day {
 				if (position.x() == -1 && position.y() == 0) {
 					score = (int) instruction;
 				} else {
-					Tile tile = Tile.values()[(int) instruction];
+					Tile tile = Tile.valueOf((int) instruction);
 					tiles.put(position.immutable(), tile);
 
 					if (tile == Tile.BALL) {

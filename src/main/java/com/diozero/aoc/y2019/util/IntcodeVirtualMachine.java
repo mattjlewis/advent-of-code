@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.LongConsumer;
 import java.util.function.LongSupplier;
 
@@ -57,7 +59,6 @@ public class IntcodeVirtualMachine implements Runnable {
 	}
 
 	private static final Long ZERO = Long.valueOf(0);
-	private static final AtomicInteger INSTANCE = new AtomicInteger();
 
 	public static IntcodeVirtualMachine load(Path input) throws IOException {
 		return load(input, null, null);
@@ -77,22 +78,29 @@ public class IntcodeVirtualMachine implements Runnable {
 		return new IntcodeVirtualMachine(memory, input, output);
 	}
 
-	private int id = INSTANCE.getAndIncrement();
 	private final Map<Long, Long> memory;
+	private long instructionPointer;
+	private long relativeBase;
 	private final LongSupplier input;
 	private final LongConsumer output;
-	private long relativeBase = 0;
+	private final AtomicBoolean running;
+	private final AtomicBoolean waitingForInput;
+	private CountDownLatch terminationMonitor;
+	private Semaphore runningSemaphore;
 
 	public IntcodeVirtualMachine(Map<Long, Long> memory) {
-		this.memory = memory;
-		this.input = null;
-		this.output = null;
+		this(memory, null, null);
 	}
 
 	public IntcodeVirtualMachine(Map<Long, Long> memory, LongSupplier input, LongConsumer output) {
 		this.memory = memory;
+		instructionPointer = 0;
+		relativeBase = 0;
 		this.input = input;
 		this.output = output;
+		running = new AtomicBoolean(false);
+		waitingForInput = new AtomicBoolean(false);
+		runningSemaphore = new Semaphore(1);
 	}
 
 	public void store(long address, long value) {
@@ -107,84 +115,177 @@ public class IntcodeVirtualMachine implements Runnable {
 		return memory.getOrDefault(Long.valueOf(address), ZERO).longValue();
 	}
 
-	public long getParameter(ParameterMode mode, long instructionPointer) {
-		return switch (mode) {
-		case POSITION -> getOrDefaultToZero(getAddress(mode, instructionPointer));
-		case IMMEDIATE -> get(instructionPointer);
-		case RELATIVE -> getOrDefaultToZero(getAddress(mode, instructionPointer));
-		default -> throw new IllegalArgumentException("Invalid ParameterMode " + mode);
-		};
+	private long getParameter(long instr, int offset) {
+		long memory_location = instructionPointer + offset;
+
+		ParameterMode mode = ParameterMode.valueOf(instr, offset);
+		if (mode == ParameterMode.IMMEDIATE) {
+			return get(memory_location);
+		}
+
+		return getOrDefaultToZero(getAddress(mode, memory_location));
 	}
 
-	public long getAddress(ParameterMode mode, long instructionPointer) {
+	private long getAddress(long instr, int offset) {
+		return getAddress(ParameterMode.valueOf(instr, offset), instructionPointer + offset);
+	}
+
+	private long getAddress(ParameterMode mode, long memoryLocation) {
 		return switch (mode) {
-		case POSITION -> get(instructionPointer);
-		case RELATIVE -> get(instructionPointer) + relativeBase;
-		default -> throw new IllegalArgumentException("Invalid ParameterMode " + mode);
+		case POSITION -> get(memoryLocation);
+		case RELATIVE -> get(memoryLocation) + relativeBase;
+		default -> throw new IllegalArgumentException("Invalid address ParameterMode " + mode);
 		};
 	}
 
 	@Override
 	public void run() {
-		boolean halted = false;
-		long instruction_pointer = 0;
+		running.set(true);
+		terminationMonitor = new CountDownLatch(1);
+		runningSemaphore.acquireUninterruptibly();
 
-		while (!halted) {
-			final long instr = memory.get(Long.valueOf(instruction_pointer++)).longValue();
-			final Opcode opcode = Opcode.valueOf(instr);
-			Logger.trace("{}: Processing opcode {}, instr {}", id, opcode, instr);
-			switch (opcode) {
-			case ADD:
-			case MULTIPLY:
-				long param1 = getParameter(ParameterMode.valueOf(instr, 1), instruction_pointer++);
-				long param2 = getParameter(ParameterMode.valueOf(instr, 2), instruction_pointer++);
-				long destination_pos = getAddress(ParameterMode.valueOf(instr, 3), instruction_pointer++);
-				store(destination_pos, opcode.apply(param1, param2));
-				break;
-			case INPUT:
-				destination_pos = getAddress(ParameterMode.valueOf(instr, 1), instruction_pointer++);
-				store(destination_pos, input.getAsLong());
-				break;
-			case OUTPUT:
-				output.accept(getParameter(ParameterMode.valueOf(instr, 1), instruction_pointer++));
-				break;
-			case JUMP_IF_TRUE:
-				if (getParameter(ParameterMode.valueOf(instr, 1), instruction_pointer++) != 0) {
-					instruction_pointer = getParameter(ParameterMode.valueOf(instr, 2), instruction_pointer);
-				} else {
-					instruction_pointer++;
-				}
-				break;
-			case JUMP_IF_FALSE:
-				if (getParameter(ParameterMode.valueOf(instr, 1), instruction_pointer++) == 0) {
-					instruction_pointer = getParameter(ParameterMode.valueOf(instr, 2), instruction_pointer);
-				} else {
-					instruction_pointer++;
-				}
-				break;
-			case LESS_THAN:
-				param1 = getParameter(ParameterMode.valueOf(instr, 1), instruction_pointer++);
-				param2 = getParameter(ParameterMode.valueOf(instr, 2), instruction_pointer++);
-				destination_pos = getAddress(ParameterMode.valueOf(instr, 3), instruction_pointer++);
-				store(destination_pos, (param1 < param2) ? 1 : 0);
-				break;
-			case EQUALS:
-				param1 = getParameter(ParameterMode.valueOf(instr, 1), instruction_pointer++);
-				param2 = getParameter(ParameterMode.valueOf(instr, 2), instruction_pointer++);
-				destination_pos = getAddress(ParameterMode.valueOf(instr, 3), instruction_pointer++);
-				store(destination_pos, (param1 == param2) ? 1 : 0);
-				break;
-			case RELATIVE_BASE:
-				relativeBase += getParameter(ParameterMode.valueOf(instr, 1), instruction_pointer++);
-				break;
-			case HALT:
-				halted = true;
-				break;
-			default:
-				throw new IllegalArgumentException("Invalid opcode " + opcode);
-			}
+		while (running.get()) {
+			processInstruction();
 		}
 
-		Logger.debug("{}: Intcode program terminating", id);
+		runningSemaphore.release();
+		terminationMonitor.countDown();
+		running.set(false);
+
+		Logger.debug("Intcode program terminating - interrupted? {}",
+				Boolean.valueOf(Thread.currentThread().isInterrupted()));
+	}
+
+	public Opcode peekNextOpcode() {
+		return Opcode.valueOf(memory.get(Long.valueOf(instructionPointer)).longValue());
+	}
+
+	public void processInstruction() {
+		final long instr = memory.get(Long.valueOf(instructionPointer)).longValue();
+
+		final Opcode opcode = Opcode.valueOf(instr);
+		Logger.trace("Processing opcode {}, instr {}", opcode, Long.valueOf(instr));
+
+		switch (opcode) {
+		case ADD:
+		case MULTIPLY:
+			long param1 = getParameter(instr, 1);
+			long param2 = getParameter(instr, 2);
+			long destination_pos = getAddress(instr, 3);
+			store(destination_pos, opcode.apply(param1, param2));
+			instructionPointer += 4;
+			break;
+		case INPUT:
+			destination_pos = getAddress(instr, 1);
+			waitingForInput.set(true);
+			store(destination_pos, input.getAsLong());
+			waitingForInput.set(false);
+			if (Thread.currentThread().isInterrupted()) {
+				running.set(false);
+				Logger.debug("Interrupted while waiting for input");
+				break;
+			}
+			instructionPointer += 2;
+			break;
+		case OUTPUT:
+			output.accept(getParameter(instr, 1));
+			instructionPointer += 2;
+			break;
+		case JUMP_IF_TRUE:
+			if (getParameter(instr, 1) != 0) {
+				instructionPointer = getParameter(instr, 2);
+			} else {
+				instructionPointer += 3;
+			}
+			break;
+		case JUMP_IF_FALSE:
+			if (getParameter(instr, 1) == 0) {
+				instructionPointer = getParameter(instr, 2);
+			} else {
+				instructionPointer += 3;
+			}
+			break;
+		case LESS_THAN:
+			param1 = getParameter(instr, 1);
+			param2 = getParameter(instr, 2);
+			destination_pos = getAddress(instr, 3);
+			store(destination_pos, (param1 < param2) ? 1 : 0);
+			instructionPointer += 4;
+			break;
+		case EQUALS:
+			param1 = getParameter(instr, 1);
+			param2 = getParameter(instr, 2);
+			destination_pos = getAddress(instr, 3);
+			store(destination_pos, (param1 == param2) ? 1 : 0);
+			instructionPointer += 4;
+			break;
+		case RELATIVE_BASE:
+			relativeBase += getParameter(instr, 1);
+			instructionPointer += 2;
+			break;
+		case HALT:
+			running.set(false);
+			break;
+		default:
+			throw new IllegalArgumentException("Invalid opcode " + opcode);
+		}
+	}
+
+	public boolean isRunning() {
+		return running.get();
+	}
+
+	public void reset(long[] program) {
+		if (running.get()) {
+			throw new IllegalStateException("Cannot reset a running VM");
+		}
+
+		instructionPointer = 0;
+		relativeBase = 0;
+		memory.clear();
+		for (int i = 0; i < program.length; i++) {
+			memory.put(Long.valueOf(i), Long.valueOf(program[i]));
+		}
+	}
+
+	public State backup() throws InterruptedException {
+		// Note should really only backup when the VM is halted or waiting for input...
+		if (running.get() && !waitingForInput.get()) {
+			Logger.info("Backing up a running VM that isn't waiting on input - will wait for semaphore to be released");
+		}
+
+		// Make sure the program isn't running, wait for it to complete if it is
+		runningSemaphore.acquire();
+
+		State state = new State(instructionPointer, relativeBase, new HashMap<>(memory));
+
+		runningSemaphore.release();
+
+		return state;
+	}
+
+	public void restore(State state) {
+		// Can only restore if not running
+		if (running.get()) {
+			throw new IllegalStateException("Cannot restore a running VM");
+		}
+
+		memory.clear();
+		memory.putAll(state.backup);
+		instructionPointer = state.instructionPointer;
+		relativeBase = state.relativeBase;
+	}
+
+	public void awaitTermination() throws InterruptedException {
+		if (!running.get()) {
+			return;
+		}
+
+		// Shouldn't be possible for this to be null...
+		terminationMonitor.await();
+	}
+
+	public static record State(long instructionPointer, long relativeBase, Map<Long, Long> backup) {
+		//
 	}
 }

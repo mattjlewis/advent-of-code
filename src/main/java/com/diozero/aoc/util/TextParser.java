@@ -62,6 +62,10 @@ public class TextParser {
 				.map(l -> l.chars().mapToObj(ch -> Integer.valueOf(charToInt(ch))).toList()).orElseThrow();
 	}
 
+	public static int[] loadFirstLineAsIntArray(final Path input) throws IOException {
+		return Files.lines(input).findFirst().map(l -> l.chars().map(ch -> charToInt(ch)).toArray()).orElseThrow();
+	}
+
 	public static int charToInt(int ch) {
 		return ch - 48;
 	}

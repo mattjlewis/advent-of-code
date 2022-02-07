@@ -8,8 +8,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
-import java.util.function.LongConsumer;
-import java.util.function.LongSupplier;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
@@ -17,6 +15,7 @@ import org.tinylog.Logger;
 
 import com.diozero.aoc.Day;
 import com.diozero.aoc.util.ArrayUtil;
+import com.diozero.aoc.util.FunctionUtil;
 import com.diozero.aoc.util.TextParser;
 import com.diozero.aoc.y2019.util.IntcodeVirtualMachine;
 
@@ -68,8 +67,9 @@ public class Day7 extends Day {
 		// Start an Intcode VM for each amplifier using the output from blocking queue n
 		// as the input for blocking queue n+1; i.e. input for n is output from n-1
 		IntStream.range(0, num_amplifiers)
-				.mapToObj(n -> IntcodeVirtualMachine.load(programData, blockingLongSupplier(input_output.get(n)),
-						blockingLongConsumer(input_output.get((n + 1) % num_amplifiers))))
+				.mapToObj(n -> IntcodeVirtualMachine.load(programData,
+						FunctionUtil.blockingLongSupplier(input_output.get(n)),
+						FunctionUtil.blockingLongConsumer(input_output.get((n + 1) % num_amplifiers))))
 				.forEach(es::submit);
 
 		Logger.debug("Waiting for Intcode VMs to complete");
@@ -85,25 +85,5 @@ public class Day7 extends Day {
 		Logger.debug("All Intcode VMs completed");
 
 		return input_output.get(0).peek().intValue();
-	}
-
-	private static LongSupplier blockingLongSupplier(BlockingQueue<Long> blockingQueue) {
-		return () -> {
-			try {
-				return blockingQueue.take().longValue();
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			}
-		};
-	}
-
-	private static LongConsumer blockingLongConsumer(BlockingQueue<Long> blockingQueue) {
-		return (l) -> {
-			try {
-				blockingQueue.put(Long.valueOf(l));
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			}
-		};
 	}
 }

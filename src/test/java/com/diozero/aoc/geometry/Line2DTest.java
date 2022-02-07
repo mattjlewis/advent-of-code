@@ -27,6 +27,7 @@ public class Line2DTest {
 
 		Assertions.assertTrue(l1.intersection(l2).equals(l2.intersection(l1)));
 
+		// l3 has the same x value as l1 so touches but doesn't actually intercept
 		Point2D l3_p1 = new Point2D(l1.x1(), 0);
 		Point2D l3_p2 = new Point2D(l1.x1(), 10);
 		Line2D l3 = Line2D.create(l3_p1, l3_p2);
@@ -34,9 +35,7 @@ public class Line2DTest {
 		Assertions.assertFalse(l3.intersection(l3).isPresent());
 
 		intersection = l1.intersection(l3);
-		Assertions.assertTrue(intersection.isPresent());
-		Assertions.assertEquals(new Point2D(l3.x1(), l1.y1()), intersection.get());
-
+		Assertions.assertFalse(intersection.isPresent());
 		Assertions.assertTrue(l1.intersection(l3).equals(l3.intersection(l1)));
 	}
 
@@ -60,6 +59,7 @@ public class Line2DTest {
 
 		Assertions.assertTrue(l1.intersection(l2).equals(l2.intersection(l1)));
 
+		// Same x
 		Point2D l3_p1 = new Point2D(l1.x2(), 10);
 		Point2D l3_p2 = new Point2D(l1.x2(), 0);
 		Line2D l3 = Line2D.create(l3_p1, l3_p2);
@@ -67,9 +67,7 @@ public class Line2DTest {
 		Assertions.assertFalse(l3.intersection(l3).isPresent());
 
 		intersection = l1.intersection(l3);
-		Assertions.assertTrue(intersection.isPresent());
-		Assertions.assertEquals(new Point2D(l3.x1(), l1.y1()), intersection.get());
-
+		Assertions.assertFalse(intersection.isPresent());
 		Assertions.assertTrue(l1.intersection(l3).equals(l3.intersection(l1)));
 	}
 
@@ -99,5 +97,31 @@ public class Line2DTest {
 		Assertions.assertFalse(intersection.isPresent());
 
 		Assertions.assertTrue(l1.intersection(l2).equals(l2.intersection(l1)));
+	}
+
+	@Test
+	public void startAndEnd() {
+		Point2D l1_p1 = new Point2D(0, 0);
+		Point2D l1_p2 = new Point2D(10, 0);
+		Line2D l1 = Line2D.create(l1_p1, l1_p2);
+		Assertions.assertEquals(Line2D.Direction.HORIZONTAL, l1.direction());
+
+		// Same starting point
+		Point2D l2_p1 = l1_p1;
+		Point2D l2_p2 = new Point2D(l1_p1.x(), l1_p1.y() + 5);
+		Line2D l2 = Line2D.create(l2_p1, l2_p2);
+		Assertions.assertEquals(Line2D.Direction.VERTICAL, l2.direction());
+
+		Assertions.assertFalse(l1.intersection(l2).isPresent());
+		Assertions.assertFalse(l2.intersection(l1).isPresent());
+
+		// Same x, touching midway
+		l2_p1 = new Point2D(l1_p1.x(), l1_p1.y() - 5);
+		l2_p2 = new Point2D(l1_p1.x(), l1_p1.y() + 5);
+		l2 = Line2D.create(l2_p1, l2_p2);
+		Assertions.assertEquals(Line2D.Direction.VERTICAL, l2.direction());
+
+		Assertions.assertFalse(l1.intersection(l2).isPresent());
+		Assertions.assertFalse(l2.intersection(l1).isPresent());
 	}
 }
