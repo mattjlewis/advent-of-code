@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -111,9 +112,8 @@ public class Day19 extends Day {
 
 			if (!delta_counts.isEmpty()) {
 				Logger.debug("Found a match to scanner #{}", scanner2.id());
-				Point3D delta = delta_counts.entrySet().stream()
-						.max((a, b) -> Integer.compare(a.getValue().get(), b.getValue().get())).map(Map.Entry::getKey)
-						.orElseThrow();
+				Point3D delta = delta_counts.entrySet().stream().max(Comparator.comparingInt(e -> e.getValue().get())) //
+						.map(Map.Entry::getKey).orElseThrow();
 				translation = Optional
 						.of(new ScannerTranslation(scanner2_variation, delta, delta_counts.get(delta).get()));
 
@@ -159,8 +159,8 @@ public class Day19 extends Day {
 		} while (scanners.size() > 1);
 
 		if (Logger.isDebugEnabled()) {
-			List<Point3D> sorted_beacons = scanners.get(0).beacons.stream()
-					.sorted((p1, p2) -> Integer.compare(p1.x(), p2.x())).toList();
+			List<Point3D> sorted_beacons = scanners.get(0).beacons.stream().sorted(Comparator.comparingInt(Point3D::x))
+					.toList();
 			sorted_beacons.forEach(b -> System.out.format("%d,%d,%d%n", b.x(), b.y(), b.z()));
 		}
 

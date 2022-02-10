@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,7 +106,7 @@ public class Day23 extends Day {
 		final int num_amphipods = getNumAmphipods(start.occupancy().length);
 
 		// A priority queue so that game states can be processed in order of cost
-		final Queue<GameState> open_nodes = new PriorityQueue<>();
+		final Queue<GameState> open_nodes = new PriorityQueue<>(Comparator.comparingInt(GameState::cost));
 		// Map from GameState representation to cost
 		final Map<String, Long> closed_nodes = new HashMap<>();
 
@@ -347,7 +348,7 @@ public class Day23 extends Day {
 		return dist * energyPerStep;
 	}
 
-	private static record GameState(byte[] occupancy, int cost) implements Comparable<GameState> {
+	private static record GameState(byte[] occupancy, int cost) {
 		public GameState moveAmphipod(byte fromPosition, byte toPosition, int moveCost) {
 			byte[] new_occupancy = Arrays.copyOf(occupancy, occupancy.length);
 			new_occupancy[fromPosition] = UNOCCUPIED;
@@ -365,11 +366,6 @@ public class Day23 extends Day {
 			}
 
 			return true;
-		}
-
-		@Override
-		public int compareTo(GameState other) {
-			return Integer.compare(cost, other.cost);
 		}
 
 		@Override

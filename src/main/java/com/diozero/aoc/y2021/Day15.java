@@ -4,12 +4,11 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.tinylog.Logger;
 
 import com.diozero.aoc.Day;
+import com.diozero.aoc.algorithm.Graph;
 import com.diozero.aoc.algorithm.GraphNode;
 import com.diozero.aoc.algorithm.astar.AStarPathFinder;
 import com.diozero.aoc.algorithm.dijkstra.Dijkstra;
@@ -20,7 +19,8 @@ import com.diozero.aoc.util.TextParser;
  * Note the Dijkstra solution takes ~1.9 seconds for part 2, A* ~450ms.
  */
 public class Day15 extends Day {
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
+		/*-
 		Path input = Path.of("src/main/resources/input/2021/day15.txt");
 		for (int i = 0; i < 2; i++) {
 			part1Dijkstra(input);
@@ -37,6 +37,7 @@ public class Day15 extends Day {
 		System.out.format("Dijkstra part2: %s. Duration: %,dms%n", result, duration);
 
 		System.setProperty("perf", "2");
+		*/
 
 		new Day15().run();
 	}
@@ -52,12 +53,12 @@ public class Day15 extends Day {
 		final int width = cost_matrix[0].length;
 		final int height = cost_matrix.length;
 
-		final Map<Integer, GraphNode<Integer, Point2D>> all_nodes = buildGraph(cost_matrix);
+		final Graph<Integer, Point2D> all_nodes = buildGraph(cost_matrix);
 
 		final GraphNode<Integer, Point2D> start = all_nodes.get(Integer.valueOf(0));
 		final GraphNode<Integer, Point2D> end = all_nodes.get(Integer.valueOf(width * height - 1));
 
-		final GraphNode<Integer, Point2D> result = AStarPathFinder.findRoute(start, end, Day15::heuristic);
+		final GraphNode<Integer, Point2D> result = AStarPathFinder.findPath(start, end, Day15::heuristic);
 
 		if (Logger.isDebugEnabled()) {
 			Deque<String> stack = new ArrayDeque<>();
@@ -113,12 +114,12 @@ public class Day15 extends Day {
 		final int width = cost_matrix[0].length;
 		final int height = cost_matrix.length;
 
-		final Map<Integer, GraphNode<Integer, Point2D>> all_nodes = buildGraph(cost_matrix);
+		final Graph<Integer, Point2D> graph = buildGraph(cost_matrix);
 
-		final GraphNode<Integer, Point2D> start = all_nodes.get(Integer.valueOf(0));
-		final GraphNode<Integer, Point2D> end = all_nodes.get(Integer.valueOf(width * height - 1));
+		final GraphNode<Integer, Point2D> start = graph.get(Integer.valueOf(0));
+		final GraphNode<Integer, Point2D> end = graph.get(Integer.valueOf(width * height - 1));
 
-		return Integer.toString(AStarPathFinder.findRoute(start, end, Day15::heuristic).cost());
+		return Integer.toString(AStarPathFinder.findPath(start, end, Day15::heuristic).cost());
 	}
 
 	public static String part1Dijkstra(Path input) throws IOException {
@@ -127,12 +128,12 @@ public class Day15 extends Day {
 		final int height = cost_matrix.length;
 
 		// Populate the possible destinations and associated costs for each node
-		final Map<Integer, GraphNode<Integer, Point2D>> all_nodes = populateDestinations(cost_matrix);
+		final Graph<Integer, Point2D> graph = populateDestinations(cost_matrix);
 
-		final GraphNode<Integer, Point2D> start_node = all_nodes.get(Integer.valueOf(0));
-		final GraphNode<Integer, Point2D> end_node = all_nodes.get(Integer.valueOf(width * height - 1));
+		final GraphNode<Integer, Point2D> start_node = graph.get(Integer.valueOf(0));
+		final GraphNode<Integer, Point2D> end_node = graph.get(Integer.valueOf(width * height - 1));
 
-		Dijkstra.findRoute(start_node, end_node);
+		Dijkstra.findPath(start_node, end_node);
 
 		return Integer.toString(end_node.cost());
 	}
@@ -178,21 +179,21 @@ public class Day15 extends Day {
 		final int height = cost_matrix.length;
 
 		// Populate the possible destinations and associated costs for each node
-		final Map<Integer, GraphNode<Integer, Point2D>> all_nodes = populateDestinations(cost_matrix);
+		final Graph<Integer, Point2D> graph = populateDestinations(cost_matrix);
 
-		final GraphNode<Integer, Point2D> start_node = all_nodes.get(Integer.valueOf(0));
-		final GraphNode<Integer, Point2D> end_node = all_nodes.get(Integer.valueOf(width * height - 1));
+		final GraphNode<Integer, Point2D> start_node = graph.get(Integer.valueOf(0));
+		final GraphNode<Integer, Point2D> end_node = graph.get(Integer.valueOf(width * height - 1));
 
-		Dijkstra.findRoute(start_node, end_node);
+		Dijkstra.findPath(start_node, end_node);
 
 		return Integer.toString(end_node.cost());
 	}
 
-	private static Map<Integer, GraphNode<Integer, Point2D>> buildGraph(int[][] costMatrix) {
+	private static Graph<Integer, Point2D> buildGraph(int[][] costMatrix) {
 		final int width = costMatrix[0].length;
 		final int height = costMatrix.length;
 
-		final Map<Integer, GraphNode<Integer, Point2D>> all_nodes = new HashMap<>();
+		final Graph<Integer, Point2D> graph = new Graph<>();
 
 		// Convert the integer matrix into a graph
 		for (int y = 0; y < height; y++) {
@@ -200,7 +201,7 @@ public class Day15 extends Day {
 				final Point2D cell = new Point2D(x, y);
 				final Integer id = Integer.valueOf(x + y * width);
 
-				final GraphNode<Integer, Point2D> node = all_nodes.computeIfAbsent(id, i -> new GraphNode<>(i, cell));
+				final GraphNode<Integer, Point2D> node = graph.getOrPut(id, cell);
 
 				// The end node has no onward connections
 				if (y == height - 1 && x == width - 1) {
@@ -215,8 +216,7 @@ public class Day15 extends Day {
 							final Point2D neighbour_cell = new Point2D(dx, dy);
 							final Integer neighbour_id = Integer.valueOf(dx + dy * width);
 
-							final GraphNode<Integer, Point2D> neighbour = all_nodes.computeIfAbsent(neighbour_id,
-									i -> new GraphNode<>(i, neighbour_cell));
+							final GraphNode<Integer, Point2D> neighbour = graph.getOrPut(neighbour_id, neighbour_cell);
 							node.addNeighbour(neighbour, costMatrix[dy][dx]);
 						}
 					}
@@ -224,14 +224,14 @@ public class Day15 extends Day {
 			}
 		}
 
-		return all_nodes;
+		return graph;
 	}
 
-	private static Map<Integer, GraphNode<Integer, Point2D>> populateDestinations(int[][] costMatrix) {
+	private static Graph<Integer, Point2D> populateDestinations(int[][] costMatrix) {
 		final int width = costMatrix[0].length;
 		final int height = costMatrix.length;
 
-		final Map<Integer, GraphNode<Integer, Point2D>> all_nodes = new HashMap<>();
+		final Graph<Integer, Point2D> graph = new Graph<>();
 
 		// Convert the integer matrix into a graph
 		for (int y = 0; y < height; y++) {
@@ -239,7 +239,7 @@ public class Day15 extends Day {
 				final Point2D cell = new Point2D(x, y);
 				final Integer id = Integer.valueOf(x + y * width);
 
-				final GraphNode<Integer, Point2D> node = all_nodes.computeIfAbsent(id, i -> new GraphNode<>(i, cell));
+				final GraphNode<Integer, Point2D> node = graph.getOrPut(id, cell);
 
 				// The end node has no onward connections
 				if (y == height - 1 && x == width - 1) {
@@ -255,8 +255,7 @@ public class Day15 extends Day {
 							final Point2D neighbour_cell = new Point2D(dx, dy);
 							final Integer neighbour_id = Integer.valueOf(dx + dy * width);
 
-							final GraphNode<Integer, Point2D> neighbour = all_nodes.computeIfAbsent(neighbour_id,
-									i -> new GraphNode<>(i, neighbour_cell));
+							final GraphNode<Integer, Point2D> neighbour = graph.getOrPut(neighbour_id, neighbour_cell);
 							node.addNeighbour(neighbour, costMatrix[dy][dx]);
 						}
 					}
@@ -264,7 +263,7 @@ public class Day15 extends Day {
 			}
 		}
 
-		return all_nodes;
+		return graph;
 	}
 
 	public static int heuristic(Point2D from, Point2D to) {

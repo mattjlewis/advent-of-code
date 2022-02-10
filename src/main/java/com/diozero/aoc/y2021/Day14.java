@@ -3,6 +3,7 @@ package com.diozero.aoc.y2021;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
@@ -91,10 +92,10 @@ public class Day14 extends Day {
 			Logger.debug("step: {}, pair_counts: {}, char_counts: {}", step, pair_counts, char_counts);
 		}
 
-		final long min = char_counts.entrySet().stream()
-				.min((e1, e2) -> Long.compare(e1.getValue().get(), e2.getValue().get())).orElseThrow().getValue().get();
-		final long max = char_counts.entrySet().stream()
-				.max((e1, e2) -> Long.compare(e1.getValue().get(), e2.getValue().get())).orElseThrow().getValue().get();
+		final long min = char_counts.entrySet().stream().min(Comparator.comparingLong(e -> e.getValue().get()))
+				.orElseThrow().getValue().get();
+		final long max = char_counts.entrySet().stream().max(Comparator.comparingLong(e -> e.getValue().get()))
+				.orElseThrow().getValue().get();
 		Logger.debug("min: {}, max: {}", min, max);
 
 		return Long.toString(max - min);

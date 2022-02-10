@@ -21,7 +21,9 @@ import java.util.concurrent.TimeUnit;
 import org.tinylog.Logger;
 
 import com.diozero.aoc.Day;
+import com.diozero.aoc.algorithm.Graph;
 import com.diozero.aoc.algorithm.GraphNode;
+import com.diozero.aoc.algorithm.astar.AStarPathFinder;
 import com.diozero.aoc.algorithm.dijkstra.Dijkstra;
 import com.diozero.aoc.geometry.CompassDirection;
 import com.diozero.aoc.geometry.Point2D;
@@ -51,14 +53,19 @@ public class Day15 extends Day {
 			ship.exploreAndBuildGraph();
 
 			// Can use generic path finder algorithms now that the ship is fully explored
-			final GraphNode<String, Point2D> o2_supply = ship.graph().get(ship.o2SupplyPosition());
+			final GraphNode<String, Point2D> o2_supply = ship.graph().get(ship.o2SupplyPosition().toString());
 			// Find the shortest path from the droid's start position to the O2 Supply
-			Dijkstra.findRoute(ship.graph().get(Point2D.ORIGIN), o2_supply);
+			// Dijkstra.findPath(ship.graph().get(Point2D.ORIGIN.toString()), o2_supply);
+			AStarPathFinder.findPath(ship.graph().get(Point2D.ORIGIN.toString()), o2_supply, Day15::heuristic);
 
 			return Integer.toString(o2_supply.cost());
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	private static int heuristic(Point2D p1, Point2D p2) {
+		return p1.manhattanDistance(p2);
 	}
 
 	@Override
@@ -70,13 +77,13 @@ public class Day15 extends Day {
 			ship.exploreAndBuildGraph();
 
 			// Can use generic path finder algorithms now that the ship is fully explored
-			final GraphNode<String, Point2D> o2_supply = ship.graph().get(ship.o2SupplyPosition());
+			final GraphNode<String, Point2D> o2_supply = ship.graph().get(ship.o2SupplyPosition().toString());
 			// Populate all of the paths that are accessible from the O2 Supply position
 			Dijkstra.findRoutes(o2_supply);
 
 			// Find the longest path from the O2 supply position to any node in the graph -
 			// that will be the time taken to fill the area with oxygen
-			return Integer.toString(ship.graph().values().stream().mapToInt(GraphNode::cost).max().orElseThrow());
+			return Integer.toString(ship.graph().nodes().stream().mapToInt(GraphNode::cost).max().orElseThrow());
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}
@@ -121,7 +128,7 @@ public class Day15 extends Day {
 		// A complete map from point to tile, including walls
 		private final Map<Point2D, Tile> map;
 		// Graph of valid routes; excludes walls of course
-		private final Map<Point2D, GraphNode<String, Point2D>> graph;
+		private final Graph<String, Point2D> graph;
 		private Point2D o2SupplyPosition;
 
 		// Droid state
@@ -138,7 +145,7 @@ public class Day15 extends Day {
 					new SynchronousQueue<Runnable>());
 
 			map = new HashMap<>();
-			graph = new HashMap<>();
+			graph = new Graph<>();
 
 			droidPosition = Point2D.ORIGIN;
 			droidDirection = CompassDirection.NORTH;
@@ -148,7 +155,7 @@ public class Day15 extends Day {
 		}
 
 		public GraphNode<String, Point2D> createAndStoreGraphNode(Point2D point) {
-			return graph.computeIfAbsent(point, p -> new GraphNode<>(p.toString(), p));
+			return graph.getOrPut(point.toString(), point);
 		}
 
 		/**
@@ -263,13 +270,19 @@ public class Day15 extends Day {
 			// Shutdown the Intcode VM
 			intcodeVmFuture.cancel(true);
 			executor.shutdown();
+
+			// Reduce the graph to replace long corridors with only one way in and out into
+			// a single node (neighbours.size() == 2)
+			graph.reduce(Set.of(Point2D.ORIGIN, o2SupplyPosition), false);
+			// Verifying the we no longer need the map
+			map.clear();
 		}
 
 		public Point2D o2SupplyPosition() {
 			return o2SupplyPosition;
 		}
 
-		public Map<Point2D, GraphNode<String, Point2D>> graph() {
+		public Graph<String, Point2D> graph() {
 			return graph;
 		}
 
@@ -310,13 +323,14 @@ public class Day15 extends Day {
 		 */
 		private List<CompassDirection> getValidDirections() throws InterruptedException {
 			final List<CompassDirection> valid_directions = new ArrayList<>();
-			final Set<GraphNode.Neighbour<String, Point2D>> neighbours = graph.get(droidPosition).neighbours();
+			final Set<GraphNode.Neighbour<String, Point2D>> neighbours = graph.get(droidPosition.toString())
+					.neighbours();
 
 			// Try to move in each direction to discover what is there
 			for (CompassDirection direction : DIRECTION_MAPPING.keySet()) {
 				final Point2D target_pos = droidPosition.translate(direction);
 
-				GraphNode<String, Point2D> neighbour_node = graph.get(target_pos);
+				GraphNode<String, Point2D> neighbour_node = graph.get(target_pos.toString());
 				Tile target_tile = map.get(target_pos);
 				// Do we already know what is at target_pos?
 				if (target_tile == null) {

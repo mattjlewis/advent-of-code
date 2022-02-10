@@ -24,7 +24,7 @@ public class LondonUnderground {
 	 * - South Kensignton (235) goes to Gloucester Road (99) and Sloane Square (228) and not Knightsbridge (146)
 	 * - Gloucester Road (99) goes to High Street Kensington (122), Earl's Court (74), South Kensington (235), as well as Knightsbridge (146)
 	 */
-	public static Map<String, GraphNode<String, Station>> getGraph() {
+	public static Graph<String, Station> getGraph() {
 		final Map<String, Station> stations = new HashMap<>();
 		stations.put("Acton Town", new Station("Acton Town", 51.5028, -0.2801));
 		stations.put("Aldgate", new Station("Aldgate", 51.5143, -0.0755));
@@ -713,7 +713,7 @@ public class LondonUnderground {
 		return buildGraph(stations, connections);
 	}
 
-	public static Map<String, GraphNode<String, Station>> getGraph2() {
+	public static Graph<String, Station> getGraph2() {
 		final Map<String, Station> stations = new HashMap<>();
 		stations.put("Acton Town", new Station("Acton Town", 51.5028, -0.2801));
 		stations.put("Aldgate", new Station("Aldgate", 51.5143, -0.0755));
@@ -1402,26 +1402,24 @@ public class LondonUnderground {
 		return buildGraph(stations, connections);
 	}
 
-	public static Map<String, GraphNode<String, Station>> buildGraph(Map<String, Station> stations,
+	public static Graph<String, Station> buildGraph(Map<String, Station> stations,
 			Map<String, Set<String>> connections) {
-		final Map<String, GraphNode<String, Station>> all_nodes = new HashMap<>();
+		final Graph<String, Station> graph = new Graph<>();
 
 		for (Map.Entry<String, Set<String>> station_connections : connections.entrySet()) {
 			String from_name = station_connections.getKey();
 			Station from = stations.get(from_name);
-			GraphNode<String, Station> from_node = all_nodes.computeIfAbsent(from.name(),
-					s -> new GraphNode<>(from_name, from));
+			GraphNode<String, Station> from_node = graph.getOrPut(from_name, from);
 
 			for (String to_name : station_connections.getValue()) {
 				Station to = stations.get(to_name);
-				GraphNode<String, Station> to_node = all_nodes.computeIfAbsent(to.name(),
-						s -> new GraphNode<>(to_name, to));
+				GraphNode<String, Station> to_node = graph.getOrPut(to_name, to);
 
 				from_node.addNeighbour(to_node, HaversineScorer.computeCost(from, to));
 			}
 		}
 
-		return all_nodes;
+		return graph;
 	}
 
 	/*-
@@ -2096,7 +2094,7 @@ public class LondonUnderground {
 			// Knightsbridge (146)
 			connections.put(Integer.valueOf(99), IntStream.of(122, 74, 235, 146).boxed().collect(Collectors.toSet()));
 
-			System.out.println("\tpublic static Map<String, GraphNode<String, Station>> getGraph2() {");
+			System.out.println("\tpublic static Graph<String, Station> getGraph2() {");
 			System.out.println("\t\tfinal Map<String, Station> stations = new HashMap<>();");
 			DecimalFormat df = new DecimalFormat();
 			df.setMaximumFractionDigits(4);

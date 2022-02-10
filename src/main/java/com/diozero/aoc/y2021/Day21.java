@@ -3,6 +3,7 @@ package com.diozero.aoc.y2021;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,7 +61,7 @@ public class Day21 extends Day {
 
 	private static List<MutablePlayer> loadData(Path input) throws IOException {
 		return Files.lines(input).map(Day21::extractPlayerAndPosition)
-				.sorted((a, b) -> Integer.compare(a.getId(), b.getId())).toList();
+				.sorted(Comparator.comparingInt(MutablePlayer::id)).toList();
 	}
 
 	private static MutablePlayer extractPlayerAndPosition(String line) {
@@ -125,7 +126,7 @@ public class Day21 extends Day {
 			this.pos = pos - 1;
 		}
 
-		public int getId() {
+		public int id() {
 			return id;
 		}
 

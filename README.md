@@ -24,6 +24,21 @@ Warning - includes answers to enable self verification!
     * Stack Abuse Graphs in Java [article and implementation](https://stackabuse.com/graphs-in-java-a-star-algorithm/)
 * [Dijkstra vs. A* for Pathfinding](https://www.baeldung.com/cs/dijkstra-vs-a-pathfinding)
 
+## Path finder challenges
+
+* 2019-15 - Oxygen System (maze path finding). Uses Dijkstra to find the furthest point in the maze
+from the O2 supply as well as A* to find the shorted path from the start to the O2 supply.
+* 2019-18 - Many-Worlds Interpretation. Needs two passes of Dijkstra - first one to get the shortest
+paths to all remaining keys for all robots, then the second one uses that output to update the state
+by moving the robots and collecting keys a processing moves in order of cost.
+* 2021-12 - Passage Pathing. Not using generic solution due to dynamic logic regarding number of
+times you can revisit a small cave.
+* 2021-15 - Chiton (matrix of numbers where the number represents the cost). Shortest path problem
+implemented with both Dijkstra as well as A*. A good use case to test the performance difference
+between the two algorithms.
+* 2021-23 - Amphipods. Not using generic solution due to logic for calculating subsequent valid
+moves.
+
 ## Tricky Challenges
 
 ### 2019
@@ -92,6 +107,13 @@ repeating blocks from single full string of movement instructions (thank you nl_
 ```
 ^(.{1,20})\\1*(.{1,20})(?:\\1|\\2)*(.{1,20})(?:\\1|\\2|\\3)*$
 ```
+
+#### Day 18
+
+One of the hardest challenges to date. Needs two passes of customised Dijkstra-like algorithms - the
+first one to get the shortest paths to all remaining keys for all robots, then the second one uses
+that output to update the state by moving all robots and collecting keys then processing moves in
+order of cost (distance moved).
 
 ### 2020
 

@@ -18,8 +18,25 @@ public record Rectangle(Point2D topLeft, Point2D bottomRight) {
 					String.format("line '{}' does not match pattern '{}'!", line, TARGET_PATTERN.pattern()));
 		}
 
-		return create(Integer.parseInt(m.group(1)), Integer.parseInt(m.group(3)), Integer.parseInt(m.group(2)),
-				Integer.parseInt(m.group(4)));
+		int x1 = Integer.parseInt(m.group(1));
+		int y1 = Integer.parseInt(m.group(3));
+		int x2 = Integer.parseInt(m.group(2));
+		int y2 = Integer.parseInt(m.group(4));
+
+		if (x1 > x2) {
+			int tmp = x1;
+			x1 = x2;
+			x2 = tmp;
+		}
+
+		// FIXME y is inverted for 2021 day 17!
+		if (y1 < y2) {
+			int tmp = y1;
+			y1 = y2;
+			y2 = tmp;
+		}
+
+		return new Rectangle(new Point2D(x1, y1), new Point2D(x2, y2));
 	}
 
 	public static Rectangle create(int x1, int y1, int x2, int y2) {
@@ -29,7 +46,8 @@ public record Rectangle(Point2D topLeft, Point2D bottomRight) {
 			x2 = tmp;
 		}
 
-		if (y1 < y2) {
+		// FIXME y is not inverted - works for PrintUtil
+		if (y1 > y2) {
 			int tmp = y1;
 			y1 = y2;
 			y2 = tmp;

@@ -89,4 +89,9 @@ public record Point2D(int x, int y) {
 		double result = (Math.toDegrees(Math.atan2(other.y - y, other.x - x)) + offset) % 360;
 		return result < 0 ? result + 360 : result;
 	}
+
+	@Override
+	public String toString() {
+		return "(" + x + "," + y + ")";
+	}
 }

@@ -39,7 +39,7 @@ public class BaeldungSimpleTest {
 		GraphNode<String, String> start = node_a;
 		GraphNode<String, String> target = node_e;
 
-		Dijkstra.findRoute(start, target);
+		Dijkstra.findPath(start, target);
 		System.out.format("Lowest cost to get from %s to %s: %d%n", start.value(), target.value(), target.cost());
 		Assertions.assertEquals(24, target.cost());
 

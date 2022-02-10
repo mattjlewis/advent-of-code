@@ -2,12 +2,12 @@ package com.diozero.aoc.algorithm.astar;
 
 import java.util.Deque;
 import java.util.LinkedList;
-import java.util.Map;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.diozero.aoc.algorithm.Graph;
 import com.diozero.aoc.algorithm.GraphNode;
 import com.diozero.aoc.algorithm.HaversineScorer;
 import com.diozero.aoc.algorithm.LondonUnderground;
@@ -15,7 +15,7 @@ import com.diozero.aoc.algorithm.Station;
 
 @SuppressWarnings("static-method")
 public class LondonUndergroundAStarTest {
-	private static Map<String, GraphNode<String, Station>> ALL_NODES;
+	private static Graph<String, Station> ALL_NODES;
 
 	@BeforeAll
 	public static void setup() {
@@ -28,7 +28,7 @@ public class LondonUndergroundAStarTest {
 		GraphNode<String, Station> to = ALL_NODES.get("Angel");
 
 		long start = System.currentTimeMillis();
-		GraphNode<String, Station> result = AStarPathFinder.findRoute(from, to, HaversineScorer::computeCost);
+		GraphNode<String, Station> result = AStarPathFinder.findPath(from, to, HaversineScorer::computeCost);
 		long duration = System.currentTimeMillis() - start;
 		System.out.format("Route distance: %,.1f km, duration: %,dms%n", Float.valueOf(to.cost() / 1000f), duration);
 

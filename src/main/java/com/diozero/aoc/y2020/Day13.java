@@ -7,7 +7,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.diozero.aoc.Day;
@@ -33,7 +35,7 @@ public class Day13 extends Day {
 				.collect(Collectors.toMap(v -> v, v -> Integer.valueOf(v.intValue() - departure_time % v.intValue())))
 				.entrySet().stream()
 				// Get the minimum wait time
-				.min((e1, e2) -> Integer.compare(e1.getValue().intValue(), e2.getValue().intValue()))
+				.min(Comparator.comparingInt(Map.Entry::getValue))
 				// Return the first bus id multiplied by it's wait time
 				.map(e -> Integer.valueOf(e.getKey().intValue() * e.getValue().intValue())).orElseThrow().intValue());
 	}

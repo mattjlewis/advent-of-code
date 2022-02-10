@@ -3,6 +3,7 @@ package com.diozero.aoc.algorithm;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.StringJoiner;
+import java.util.stream.Stream;
 
 /*
  * Note quite a bit slower when hashCode() and equals(o) are implemented.
@@ -51,6 +52,10 @@ public class GraphNode<K, V> implements Comparable<GraphNode<K, V>> {
 		return neighbours;
 	}
 
+	public Stream<Neighbour<K, V>> neighboursStream() {
+		return neighbours.stream();
+	}
+
 	public void addNeighbour(GraphNode<K, V> destination, int neighbourCost) {
 		neighbours.add(new Neighbour<>(destination, neighbourCost));
 	}
@@ -81,6 +86,12 @@ public class GraphNode<K, V> implements Comparable<GraphNode<K, V>> {
 		estimate = cost + heuristic;
 	}
 
+	public void reset() {
+		parent = null;
+		cost = Integer.MAX_VALUE;
+		estimate = Integer.MAX_VALUE;
+	}
+
 	@Override
 	public int compareTo(GraphNode<K, V> other) {
 		return Integer.compare(estimate, other.estimate);
@@ -88,7 +99,7 @@ public class GraphNode<K, V> implements Comparable<GraphNode<K, V>> {
 
 	@Override
 	public String toString() {
-		return new StringJoiner(", ", GraphNode.class.getSimpleName() + "[", "]").add("id=" + id)
+		return new StringJoiner(", ", GraphNode.class.getSimpleName() + "[", "]").add("id=" + id).add("value=" + value)
 				.add("parent.id=" + (parent == null ? "null" : parent.id)).add("cost=" + cost).toString();
 	}
 
