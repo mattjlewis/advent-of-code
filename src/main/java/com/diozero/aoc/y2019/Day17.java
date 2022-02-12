@@ -24,7 +24,6 @@ import com.diozero.aoc.geometry.Line2D;
 import com.diozero.aoc.geometry.Point2D;
 import com.diozero.aoc.util.FunctionUtil;
 import com.diozero.aoc.util.PrintUtil;
-import com.diozero.aoc.util.TextParser;
 import com.diozero.aoc.y2019.util.IntcodeVirtualMachine;
 
 public class Day17 extends Day {
@@ -51,19 +50,18 @@ public class Day17 extends Day {
 
 	@Override
 	public String part1(Path input) throws IOException {
-		return Integer.toString(Line2D.pathIntersections(loadData(TextParser.loadFirstLineAsCsvLongArray(input)).path())
-				.stream().mapToInt(p -> p.x() * p.y()).sum());
+		return Integer
+				.toString(Line2D.pathIntersections(loadData(input).path()).stream().mapToInt(p -> p.x() * p.y()).sum());
 	}
 
 	@Override
 	public String part2(Path input) throws IOException {
-		final long[] program_data = TextParser.loadFirstLineAsCsvLongArray(input);
 		// Load the scaffolding structure by running the VM with the robot asleep
-		final ShipScaffolding scaffolding = loadData(program_data);
+		final ShipScaffolding scaffolding = loadData(input);
 
 		final BlockingQueue<Long> program_input_queue = new LinkedBlockingQueue<>();
 		final ProgramOutput program_output = new ProgramOutput();
-		final IntcodeVirtualMachine vm = IntcodeVirtualMachine.load(program_data,
+		final IntcodeVirtualMachine vm = IntcodeVirtualMachine.load(input,
 				FunctionUtil.blockingLongSupplier(program_input_queue), program_output::accept);
 
 		// Get the full set of movement instructions
@@ -144,10 +142,9 @@ public class Day17 extends Day {
 		};
 	}
 
-	private static ShipScaffolding loadData(long[] programData) throws IOException {
+	private static ShipScaffolding loadData(Path input) throws IOException {
 		final StringBuffer output_buffer = new StringBuffer();
-		final IntcodeVirtualMachine vm = IntcodeVirtualMachine.load(programData, null,
-				l -> output_buffer.append((char) l));
+		final IntcodeVirtualMachine vm = IntcodeVirtualMachine.load(input, null, l -> output_buffer.append((char) l));
 		vm.run();
 
 		// First extract the set of scaffolding points and find the vacuum robot

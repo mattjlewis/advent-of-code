@@ -28,7 +28,6 @@ import com.diozero.aoc.algorithm.dijkstra.Dijkstra;
 import com.diozero.aoc.geometry.CompassDirection;
 import com.diozero.aoc.geometry.Point2D;
 import com.diozero.aoc.util.PrintUtil;
-import com.diozero.aoc.util.TextParser;
 import com.diozero.aoc.y2019.util.IntcodeVirtualMachine;
 
 /*
@@ -46,9 +45,7 @@ public class Day15 extends Day {
 
 	@Override
 	public String part1(Path input) throws IOException {
-		final long[] program_data = TextParser.loadFirstLineAsCsvLongArray(input);
-
-		try (final ShipExplorer ship = new ShipExplorer(program_data)) {
+		try (final ShipExplorer ship = new ShipExplorer(input)) {
 			// First of all fully explore the ship
 			ship.exploreAndBuildGraph();
 
@@ -70,9 +67,7 @@ public class Day15 extends Day {
 
 	@Override
 	public String part2(Path input) throws IOException {
-		final long[] program_data = TextParser.loadFirstLineAsCsvLongArray(input);
-
-		try (final ShipExplorer ship = new ShipExplorer(program_data)) {
+		try (final ShipExplorer ship = new ShipExplorer(input)) {
 			// First of all fully explore the ship
 			ship.exploreAndBuildGraph();
 
@@ -135,10 +130,10 @@ public class Day15 extends Day {
 		private Point2D droidPosition;
 		private CompassDirection droidDirection;
 
-		private ShipExplorer(long[] programData) {
+		private ShipExplorer(Path input) throws IOException {
 			movementInstructions = new LinkedBlockingQueue<>();
 			responses = new LinkedBlockingQueue<>();
-			intcodeVm = IntcodeVirtualMachine.load(programData, this::getMove, this::tileValue);
+			intcodeVm = IntcodeVirtualMachine.load(input, this::getMove, this::tileValue);
 			// executor = Executors.newSingleThreadExecutor();
 			// Note pool size is 0 and keepAliveTime is 0 to prevent shutdown delays
 			executor = new ThreadPoolExecutor(0, Integer.MAX_VALUE, 0, TimeUnit.SECONDS,

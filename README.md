@@ -4,7 +4,7 @@ Java solutions for the [Advent of Code](https://adventofcode.com/) daily challen
 Goals:
 
 1. The code is readable and logical, includes meaningful comments and debug statements, and is easy to comprehend
-1. Efficiency in terms of execution time and memory allocation
+1. Efficiency in terms of execution time and memory allocation - avoid brute force whereever possible
 1. Learning, in particular modern Java features and algorithms
 1. No external dependencies other than a logging framework (tinylog)
 1. Attempt to solve entirely independently; if stuck look on Reddit for tips on general approaches to
@@ -28,9 +28,9 @@ Warning - includes answers to enable self verification!
 
 * 2019-15 - Oxygen System (maze path finding). Uses Dijkstra to find the furthest point in the maze
 from the O2 supply as well as A* to find the shorted path from the start to the O2 supply.
-* 2019-18 - Many-Worlds Interpretation. Needs two passes of Dijkstra - first one to get the shortest
-paths to all remaining keys for all robots, then the second one uses that output to update the state
-by moving the robots and collecting keys a processing moves in order of cost.
+* 2019-18 - Many-Worlds Interpretation. Needs BFS plus Dijkstra - BFS to get the shortest paths to
+all remaining keys for all robots, then the second one uses that output to update the state by
+moving the robots and collecting keys a processing moves in order of cost.
 * 2021-12 - Passage Pathing. Not using generic solution due to dynamic logic regarding number of
 times you can revisit a small cave.
 * 2021-15 - Chiton (matrix of numbers where the number represents the cost). Shortest path problem
@@ -110,10 +110,14 @@ repeating blocks from single full string of movement instructions (thank you nl_
 
 #### Day 18
 
-One of the hardest challenges to date. Needs two passes of customised Dijkstra-like algorithms - the
-first one to get the shortest paths to all remaining keys for all robots, then the second one uses
-that output to update the state by moving all robots and collecting keys then processing moves in
-order of cost (distance moved).
+One of the hardest challenges to date. Solved with a BFS to get the shortest paths to all remaining
+keys for all robots, then a custom Dijkstra to update the state by moving all robots and collecting
+keys then processing moves in order of cost (distance moved).
+
+#### Day 19
+
+Interesting challenge, avoided a brute force approach to part 2 by using `y=mx+c` to predict where
+the 100x100 grid should first be possible.
 
 ### 2020
 

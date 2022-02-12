@@ -70,14 +70,10 @@ public class IntcodeVirtualMachine implements Runnable {
 	}
 
 	public static IntcodeVirtualMachine load(long[] program, LongSupplier input, LongConsumer output) {
-		Map<Long, Long> memory = new HashMap<>();
-		for (int i = 0; i < program.length; i++) {
-			memory.put(Long.valueOf(i), Long.valueOf(program[i]));
-		}
-
-		return new IntcodeVirtualMachine(memory, input, output);
+		return new IntcodeVirtualMachine(program, input, output);
 	}
 
+	private final long[] program;
 	private final Map<Long, Long> memory;
 	private long instructionPointer;
 	private long relativeBase;
@@ -88,12 +84,16 @@ public class IntcodeVirtualMachine implements Runnable {
 	private CountDownLatch terminationMonitor;
 	private Semaphore runningSemaphore;
 
-	public IntcodeVirtualMachine(Map<Long, Long> memory) {
-		this(memory, null, null);
+	public IntcodeVirtualMachine(long[] program) {
+		this(program, null, null);
 	}
 
-	public IntcodeVirtualMachine(Map<Long, Long> memory, LongSupplier input, LongConsumer output) {
-		this.memory = memory;
+	public IntcodeVirtualMachine(long[] program, LongSupplier input, LongConsumer output) {
+		this.program = program;
+		memory = new HashMap<>();
+		for (int i = 0; i < program.length; i++) {
+			memory.put(Long.valueOf(i), Long.valueOf(program[i]));
+		}
 		instructionPointer = 0;
 		relativeBase = 0;
 		this.input = input;
@@ -235,7 +235,7 @@ public class IntcodeVirtualMachine implements Runnable {
 		return running.get();
 	}
 
-	public void reset(long[] program) {
+	public void reset() {
 		if (running.get()) {
 			throw new IllegalStateException("Cannot reset a running VM");
 		}
