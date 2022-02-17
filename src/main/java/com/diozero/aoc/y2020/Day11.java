@@ -8,7 +8,7 @@ import org.tinylog.Logger;
 
 import com.diozero.aoc.Day;
 import com.diozero.aoc.geometry.CompassDirection;
-import com.diozero.aoc.util.ArrayUtil;
+import com.diozero.aoc.util.MatrixUtil;
 import com.diozero.aoc.util.TextParser;
 
 public class Day11 extends Day {
@@ -40,7 +40,7 @@ public class Day11 extends Day {
 		final int height = seats.length;
 
 		// After step 1 all seats become occupied
-		boolean[][] occupancy = ArrayUtil.clone(seats);
+		boolean[][] occupancy = MatrixUtil.clone(seats);
 		int step = 1;
 		boolean move = true;
 

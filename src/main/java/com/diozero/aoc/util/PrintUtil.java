@@ -7,6 +7,9 @@ import com.diozero.aoc.geometry.Point2D;
 import com.diozero.aoc.geometry.Rectangle;
 
 public class PrintUtil {
+	private PrintUtil() {
+	}
+
 	public static final char FILLED_PIXEL = '█';
 	public static final char BLANK_PIXEL = ' ';
 

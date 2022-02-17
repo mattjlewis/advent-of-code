@@ -1407,13 +1407,12 @@ public class LondonUnderground {
 		final Graph<String, Station> graph = new Graph<>();
 
 		for (Map.Entry<String, Set<String>> station_connections : connections.entrySet()) {
-			String from_name = station_connections.getKey();
-			Station from = stations.get(from_name);
-			GraphNode<String, Station> from_node = graph.getOrPut(from_name, from);
+			Station from = stations.get(station_connections.getKey());
+			GraphNode<String, Station> from_node = graph.getOrPut(from, Station::name);
 
 			for (String to_name : station_connections.getValue()) {
 				Station to = stations.get(to_name);
-				GraphNode<String, Station> to_node = graph.getOrPut(to_name, to);
+				GraphNode<String, Station> to_node = graph.getOrPut(to, Station::name);
 
 				from_node.addNeighbour(to_node, HaversineScorer.computeCost(from, to));
 			}

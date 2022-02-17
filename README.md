@@ -31,6 +31,8 @@ from the O2 supply as well as A* to find the shorted path from the start to the 
 * 2019-18 - Many-Worlds Interpretation. Needs BFS plus Dijkstra - BFS to get the shortest paths to
 all remaining keys for all robots, then the second one uses that output to update the state by
 moving the robots and collecting keys a processing moves in order of cost.
+* 2019-20 - Recursive mazes...
+* 2019-25 - BFS search of the ship combined with Dijkstra to navigate to the Security Checkpoint
 * 2021-12 - Passage Pathing. Not using generic solution due to dynamic logic regarding number of
 times you can revisit a small cave.
 * 2021-15 - Chiton (matrix of numbers where the number represents the cost). Shortest path problem
@@ -118,6 +120,21 @@ keys then processing moves in order of cost (distance moved).
 
 Interesting challenge, avoided a brute force approach to part 2 by using `y=mx+c` to predict where
 the 100x100 grid should first be possible.
+
+#### Day 20
+
+Recursive mazes - tricky...
+
+#### Day 22
+
+Gave up on part two of this challenge - this is a mathematical challenge (modular mathematics
+apparently), rather than a coding one.
+
+#### Day 25
+
+Interesting challenge - once solved manually (using `ArrayUtil.permutations`) it was interesting to
+then solve via code. Reused the BFS maze exploration algorithm from 2019 day 15 and Dijkstra to then
+navigate to the Security Checkpoint.
 
 ### 2020
 

@@ -5,6 +5,9 @@ import java.util.function.LongConsumer;
 import java.util.function.LongSupplier;
 
 public class FunctionUtil {
+	private FunctionUtil() {
+	}
+
 	public static LongSupplier blockingLongSupplier(BlockingQueue<Long> blockingQueue) {
 		return () -> {
 			try {

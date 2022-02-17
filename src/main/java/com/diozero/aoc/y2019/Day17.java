@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.function.Consumer;
+import java.util.function.LongConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -62,7 +62,7 @@ public class Day17 extends Day {
 		final BlockingQueue<Long> program_input_queue = new LinkedBlockingQueue<>();
 		final ProgramOutput program_output = new ProgramOutput();
 		final IntcodeVirtualMachine vm = IntcodeVirtualMachine.load(input,
-				FunctionUtil.blockingLongSupplier(program_input_queue), program_output::accept);
+				FunctionUtil.blockingLongSupplier(program_input_queue), program_output);
 
 		// Get the full set of movement instructions
 		final StringBuilder buffer = new StringBuilder();
@@ -239,12 +239,12 @@ public class Day17 extends Day {
 		//
 	}
 
-	private static class ProgramOutput implements Consumer<Long> {
+	private static class ProgramOutput implements LongConsumer {
 		private Deque<Long> spaceDust = new LinkedList<>();
 
 		@Override
-		public void accept(Long value) {
-			char ch = (char) value.longValue();
+		public void accept(long value) {
+			char ch = (char) value;
 			if (ch != '\n' && ch != '.' && ch != '#' && ch != '<' && ch != '>' && ch != '^' && ch != 'v') {
 				Logger.trace("Got value {}", value);
 				spaceDust.add(value);

@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.function.Function;
 
 import org.tinylog.Logger;
 
@@ -28,6 +29,10 @@ public class Graph<K, V> {
 
 	public GraphNode<K, V> getOrPut(K id, V value) {
 		return nodes.computeIfAbsent(id, k -> new GraphNode<>(k, value));
+	}
+
+	public GraphNode<K, V> getOrPut(V value, Function<V, K> idFunction) {
+		return nodes.computeIfAbsent(idFunction.apply(value), k -> new GraphNode<>(k, value));
 	}
 
 	public Collection<GraphNode<K, V>> nodes() {

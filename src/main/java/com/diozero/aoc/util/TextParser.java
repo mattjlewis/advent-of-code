@@ -95,6 +95,10 @@ public class TextParser {
 		return matrix;
 	}
 
+	public static char[][] loadCharMatrix(Path input) throws IOException {
+		return Files.lines(input).map(String::toCharArray).toArray(char[][]::new);
+	}
+
 	public static boolean[] toBooleanArray(final String line, final char ch) {
 		final boolean[] data = new boolean[line.length()];
 

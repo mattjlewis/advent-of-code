@@ -146,11 +146,7 @@ public class Day15 extends Day {
 			droidDirection = CompassDirection.NORTH;
 
 			map.put(droidPosition, Tile.CLEAR);
-			createAndStoreGraphNode(droidPosition);
-		}
-
-		public GraphNode<String, Point2D> createAndStoreGraphNode(Point2D point) {
-			return graph.getOrPut(point.toString(), point);
+			graph.getOrPut(droidPosition, Point2D::toString);
 		}
 
 		/**
@@ -345,7 +341,7 @@ public class Day15 extends Day {
 					case CLEAR:
 						// Add to the list of neighbours for this graph node
 						// Note that neighbour_node must be null here as this map node was unknown
-						neighbour_node = createAndStoreGraphNode(target_pos);
+						neighbour_node = graph.getOrPut(target_pos, Point2D::toString);
 						// Move back to where we were
 						movementInstructions.put(direction.opposite());
 						// Consume and ignore the output as we already know it

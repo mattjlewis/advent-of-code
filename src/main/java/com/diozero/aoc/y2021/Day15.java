@@ -30,12 +30,12 @@ public class Day15 extends Day {
 		String result = part1Dijkstra(input);
 		long duration = System.currentTimeMillis() - start;
 		System.out.format("Dijkstra part1: %s. Duration: %,dms%n", result, duration);
-
+		
 		start = System.currentTimeMillis();
 		result = part2Dijkstra(input);
 		duration = System.currentTimeMillis() - start;
 		System.out.format("Dijkstra part2: %s. Duration: %,dms%n", result, duration);
-
+		
 		System.setProperty("perf", "2");
 		*/
 
@@ -128,7 +128,7 @@ public class Day15 extends Day {
 		final int height = cost_matrix.length;
 
 		// Populate the possible destinations and associated costs for each node
-		final Graph<Integer, Point2D> graph = populateDestinations(cost_matrix);
+		final Graph<Integer, Point2D> graph = buildGraph(cost_matrix);
 
 		final GraphNode<Integer, Point2D> start_node = graph.get(Integer.valueOf(0));
 		final GraphNode<Integer, Point2D> end_node = graph.get(Integer.valueOf(width * height - 1));
@@ -179,7 +179,7 @@ public class Day15 extends Day {
 		final int height = cost_matrix.length;
 
 		// Populate the possible destinations and associated costs for each node
-		final Graph<Integer, Point2D> graph = populateDestinations(cost_matrix);
+		final Graph<Integer, Point2D> graph = buildGraph(cost_matrix);
 
 		final GraphNode<Integer, Point2D> start_node = graph.get(Integer.valueOf(0));
 		final GraphNode<Integer, Point2D> end_node = graph.get(Integer.valueOf(width * height - 1));
@@ -187,6 +187,10 @@ public class Day15 extends Day {
 		Dijkstra.findPath(start_node, end_node);
 
 		return Integer.toString(end_node.cost());
+	}
+
+	private static Integer idFunction(Point2D p, int width) {
+		return Integer.valueOf(p.x() + p.y() * width);
 	}
 
 	private static Graph<Integer, Point2D> buildGraph(int[][] costMatrix) {
@@ -199,47 +203,8 @@ public class Day15 extends Day {
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				final Point2D cell = new Point2D(x, y);
-				final Integer id = Integer.valueOf(x + y * width);
 
-				final GraphNode<Integer, Point2D> node = graph.getOrPut(id, cell);
-
-				// The end node has no onward connections
-				if (y == height - 1 && x == width - 1) {
-					continue;
-				}
-
-				// Add the neighbours
-				for (int dy = Math.max(y - 1, 0); dy <= Math.min(y + 1, height - 1); dy++) {
-					for (int dx = Math.max(x - 1, 0); dx <= Math.min(x + 1, width - 1); dx++) {
-						// No diagonals
-						if ((x != dx || y != dy) && (x == dx || y == dy)) {
-							final Point2D neighbour_cell = new Point2D(dx, dy);
-							final Integer neighbour_id = Integer.valueOf(dx + dy * width);
-
-							final GraphNode<Integer, Point2D> neighbour = graph.getOrPut(neighbour_id, neighbour_cell);
-							node.addNeighbour(neighbour, costMatrix[dy][dx]);
-						}
-					}
-				}
-			}
-		}
-
-		return graph;
-	}
-
-	private static Graph<Integer, Point2D> populateDestinations(int[][] costMatrix) {
-		final int width = costMatrix[0].length;
-		final int height = costMatrix.length;
-
-		final Graph<Integer, Point2D> graph = new Graph<>();
-
-		// Convert the integer matrix into a graph
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
-				final Point2D cell = new Point2D(x, y);
-				final Integer id = Integer.valueOf(x + y * width);
-
-				final GraphNode<Integer, Point2D> node = graph.getOrPut(id, cell);
+				final GraphNode<Integer, Point2D> node = graph.getOrPut(cell, p -> idFunction(p, width));
 
 				// The end node has no onward connections
 				if (y == height - 1 && x == width - 1) {
@@ -247,15 +212,15 @@ public class Day15 extends Day {
 				}
 
 				// Add the neighbours
-				// The optimal path can go up, down, left and right; not just down and right
+				//
 				for (int dy = Math.max(0, y - 1); dy <= Math.min(height - 1, y + 1); dy++) {
 					for (int dx = Math.max(0, x - 1); dx <= Math.min(width - 1, x + 1); dx++) {
 						// No diagonals
 						if ((x != dx || y != dy) && (x == dx || y == dy)) {
 							final Point2D neighbour_cell = new Point2D(dx, dy);
-							final Integer neighbour_id = Integer.valueOf(dx + dy * width);
 
-							final GraphNode<Integer, Point2D> neighbour = graph.getOrPut(neighbour_id, neighbour_cell);
+							final GraphNode<Integer, Point2D> neighbour = graph.getOrPut(neighbour_cell,
+									p -> idFunction(p, width));
 							node.addNeighbour(neighbour, costMatrix[dy][dx]);
 						}
 					}

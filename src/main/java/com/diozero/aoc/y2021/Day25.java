@@ -7,7 +7,7 @@ import java.nio.file.Path;
 import org.tinylog.Logger;
 
 import com.diozero.aoc.Day;
-import com.diozero.aoc.util.ArrayUtil;
+import com.diozero.aoc.util.MatrixUtil;
 import com.diozero.aoc.util.PrintUtil;
 
 public class Day25 extends Day {
@@ -48,7 +48,7 @@ public class Day25 extends Day {
 		int step = 0;
 		do {
 			moved = false;
-			char[][] new_cucumbers = ArrayUtil.clone(cucumbers);
+			char[][] new_cucumbers = MatrixUtil.clone(cucumbers);
 
 			// First move the east facing sea cucumbers
 			for (int y = 0; y < height; y++) {
@@ -67,7 +67,7 @@ public class Day25 extends Day {
 			}
 
 			cucumbers = new_cucumbers;
-			new_cucumbers = ArrayUtil.clone(cucumbers);
+			new_cucumbers = MatrixUtil.clone(cucumbers);
 
 			// Then move the south facing sea cucumbers
 			for (int x = 0; x < width; x++) {

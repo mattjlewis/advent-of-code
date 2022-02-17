@@ -19,6 +19,9 @@ import com.diozero.aoc.algorithm.GraphNode;
  * https://stackabuse.com/graphs-in-java-dijkstras-algorithm/
  */
 public class Dijkstra {
+	private Dijkstra() {
+	}
+
 	public static <K, V> void findRoutes(GraphNode<K, V> start) {
 		findRoutes(start, Optional.empty(), GraphNode::neighboursStream);
 	}

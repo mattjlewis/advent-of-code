@@ -178,13 +178,14 @@ public class IntcodeVirtualMachine implements Runnable {
 		case INPUT:
 			destination_pos = getAddress(instr, 1);
 			waitingForInput.set(true);
-			store(destination_pos, input.getAsLong());
+			long value = input.getAsLong();
 			waitingForInput.set(false);
 			if (Thread.currentThread().isInterrupted()) {
 				running.set(false);
 				Logger.debug("Interrupted while waiting for input");
 				break;
 			}
+			store(destination_pos, value);
 			instructionPointer += 2;
 			break;
 		case OUTPUT:
@@ -282,6 +283,16 @@ public class IntcodeVirtualMachine implements Runnable {
 		}
 
 		// Shouldn't be possible for this to be null...
+		terminationMonitor.await();
+	}
+
+	public void halt() throws InterruptedException {
+		if (!running.get()) {
+			return;
+		}
+
+		running.set(false);
+
 		terminationMonitor.await();
 	}
 

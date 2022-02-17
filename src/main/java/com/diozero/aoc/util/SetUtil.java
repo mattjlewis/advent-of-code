@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 public final class SetUtil {
 	private SetUtil() {
-		//
 	}
 
 	public static <E> Set<E> difference(final Set<E> a, final Set<E> b) {

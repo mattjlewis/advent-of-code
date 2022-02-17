@@ -3,15 +3,12 @@ package com.diozero.aoc.util;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-
-import com.diozero.aoc.geometry.Point2D;
 
 public class ArrayUtil {
 	private ArrayUtil() {
@@ -45,43 +42,11 @@ public class ArrayUtil {
 		});
 	}
 
-	public static boolean[][] clone(final boolean[][] matrix) {
-		boolean[][] new_array = new boolean[matrix.length][matrix[0].length];
-
-		for (int y = 0; y < matrix.length; y++) {
-			System.arraycopy(matrix[y], 0, new_array[y], 0, new_array[y].length);
-		}
-
-		return new_array;
-	}
-
-	public static char[][] clone(char[][] matrix) {
-		char[][] new_array = new char[matrix.length][matrix[0].length];
-
-		for (int y = 0; y < matrix.length; y++) {
-			System.arraycopy(matrix[y], 0, new_array[y], 0, new_array[y].length);
-		}
-
-		return new_array;
-	}
-
-	public static Set<Point2D> toPoints(boolean[][] matrix) {
-		Set<Point2D> points = new HashSet<>();
-		for (int y = 0; y < matrix.length; y++) {
-			for (int x = 0; x < matrix[0].length; x++) {
-				if (matrix[y][x]) {
-					points.add(new Point2D(x, y));
-				}
-			}
-		}
-		return points;
-	}
-
-	public static <T> Stream<List<T>> permutations(List<T> values) {
+	public static <T> Stream<List<T>> permutations(Collection<T> values) {
 		return permutations(values, values.size());
 	}
 
-	private static <T> Stream<List<T>> permutations(List<T> values, int r) {
+	public static <T> Stream<List<T>> permutations(Collection<T> values, int r) {
 		if (r <= 0) {
 			return Stream.empty();
 		}
@@ -114,5 +79,13 @@ public class ArrayUtil {
 		}
 
 		return new_array;
+	}
+
+	public static void reverse(int[] array) {
+		for (int i = 0; i < array.length / 2; i++) {
+			int tmp = array[i];
+			array[i] = array[array.length - i - 1];
+			array[array.length - i - 1] = tmp;
+		}
 	}
 }

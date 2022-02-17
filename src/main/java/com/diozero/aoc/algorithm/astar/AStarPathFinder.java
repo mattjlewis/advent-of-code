@@ -14,6 +14,9 @@ import com.diozero.aoc.algorithm.GraphNode;
  * Introduce a Graph class that has the set of all nodes and mapping from node key to set of neighbours?
  */
 public class AStarPathFinder {
+	private AStarPathFinder() {
+	}
+
 	public static <K, V> GraphNode<K, V> findPath(GraphNode<K, V> start, GraphNode<K, V> target,
 			ToIntBiFunction<V, V> heuristicFunction) {
 		final Queue<GraphNode<K, V>> open_nodes = new PriorityQueue<>();
