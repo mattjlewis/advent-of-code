@@ -1,5 +1,7 @@
 package com.diozero.aoc.algorithm;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.StringJoiner;
@@ -101,6 +103,18 @@ public class GraphNode<K, V> implements Comparable<GraphNode<K, V>> {
 	public String toString() {
 		return new StringJoiner(", ", GraphNode.class.getSimpleName() + "[", "]").add("id=" + id).add("value=" + value)
 				.add("parent.id=" + (parent == null ? "null" : parent.id)).add("cost=" + cost).toString();
+	}
+
+	public Deque<V> path() {
+		final Deque<V> stack = new ArrayDeque<>();
+
+		GraphNode<K, V> current = this;
+		do {
+			stack.offerFirst(current.value);
+			current = current.getParent();
+		} while (current != null);
+
+		return stack;
 	}
 
 	public static record Neighbour<K, V> (GraphNode<K, V> node, int cost) {

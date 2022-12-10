@@ -8,9 +8,9 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import com.diozero.aoc.Day;
+import com.diozero.aoc.util.StringUtil;
 
 public class Day6 extends Day {
 	public static void main(String[] args) {
@@ -46,8 +46,7 @@ public class Day6 extends Day {
 					}
 					answers = null;
 				} else {
-					Set<Character> set = line.chars().mapToObj(ch -> Character.valueOf((char) ch))
-							.collect(Collectors.toSet());
+					Set<Character> set = StringUtil.toCharSet(line);
 					if (answers == null) {
 						answers = set;
 					} else {

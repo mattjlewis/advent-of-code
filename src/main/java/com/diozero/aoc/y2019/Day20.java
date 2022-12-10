@@ -5,7 +5,10 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.tinylog.Logger;
 
@@ -31,15 +34,93 @@ public class Day20 extends Day {
 
 	@Override
 	public String part1(Path input) throws IOException {
-		final char[][] maze = TextParser.loadCharMatrix(input);
-		final int height = maze.length;
-		final int width = maze[0].length;
+		final DoughnutMaze maze = buildDoughnutMaze(input);
+
+		if (maze.exitNode == null || !Dijkstra.findPath(maze.startNode, maze.exitNode)) {
+			throw new IllegalArgumentException("No path found");
+		}
+
+		if (Logger.isDebugEnabled()) {
+			System.out.println("Path: " + maze.exitNode.path());
+		}
+
+		return Integer.toString(maze.exitNode.cost());
+	}
+
+	@Override
+	public String part2(Path input) throws IOException {
+		final DoughnutMaze maze = buildDoughnutMaze(input);
+		final GraphNode<String, Point2D> target = maze.exitNode;
+
+		final Queue<NodeWithDepth> open_nodes = new PriorityQueue<>();
+		final Set<String> closed_nodes = new HashSet<>();
+
+		maze.startNode.updateCost(0);
+		open_nodes.offer(new NodeWithDepth(maze.startNode, 0));
+
+		while (!open_nodes.isEmpty()) {
+			// Get the node with the lowest cost from the set of open nodes
+			final NodeWithDepth current = open_nodes.poll();
+			if (target == current.graphNode() && current.depth == 0) {
+				break;
+			}
+
+			getNeighbours(maze, current).forEach(neighbour -> {
+				final NodeWithDepth next = NodeWithDepth.create(maze, current.depth, neighbour.node());
+				final int new_cost = current.graphNode.cost() + neighbour.cost();
+
+				/*-
+				if (!closed_nodes.contains(next.id()) && !open_nodes.contains(next)) {
+					next.setParent(current);
+					next.updateCost(new_cost);
+				
+					open_nodes.offer(next);
+				} else if (new_cost < next.cost()) {
+					next.setParent(current);
+					next.updateCost(new_cost);
+				
+					if (closed_nodes.contains(next.id())) {
+						closed_nodes.remove(next.id());
+						open_nodes.offer(next);
+					}
+				}
+				*/
+			});
+
+			closed_nodes.add(current.id());
+		}
+
+		return null;
+	}
+
+	private static Stream<GraphNode.Neighbour<String, Point2D>> getNeighbours(DoughnutMaze maze, NodeWithDepth node) {
+		/*
+		 * When at the outermost level (depth=0), only the outer labels AA and ZZ
+		 * function (as the start and end, respectively); all other outer labelled tiles
+		 * are effectively walls.
+		 */
+		if (node.depth == 0) {
+			// Remove all outer portal gateways other than ZZ
+			// Keep all inner portals and the ZZ outer portal
+			return node.graphNode.neighbours().stream()
+					.filter(neighbour -> maze.isInnerPortalAt(neighbour.node().value())
+							|| maze.isExitPortalAt(neighbour.node().value()));
+		}
+
+		return node.graphNode.neighbours().stream();
+	}
+
+	private static DoughnutMaze buildDoughnutMaze(Path input) throws IOException {
 		final Graph<String, Point2D> graph = new Graph<>();
 		final Map<String, PortalGateway> portal_gateways = new HashMap<>();
 		final Map<String, Portal> portals = new HashMap<>();
-		final Set<Point2D> irreducible_points = new HashSet<>();
 		GraphNode<String, Point2D> start_node = null;
-		GraphNode<String, Point2D> end_node = null;
+		GraphNode<String, Point2D> exit_node = null;
+
+		final char[][] maze = TextParser.loadCharMatrix(input);
+		final int height = maze.length;
+		final int width = maze[0].length;
+		final Set<Point2D> irreducible_points = new HashSet<>();
 
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
@@ -63,19 +144,20 @@ public class Day20 extends Day {
 								node.addNeighbour(graph.getOrPut(new Point2D(dx, dy), Point2D::toString), 1);
 							} else {
 								// A portal gateway - need to find the other part
-								PortalGateway p1 = buildPortal(maze,
+								final PortalGateway p1 = buildPortal(maze,
 										graph.getOrPut(new Point2D(dx, dy), Point2D::toString), node);
 								node.addNeighbour(p1.node(), 1);
-								irreducible_points.add(p1.node().value());
-								irreducible_points.add(p1.entryOrExit().value());
 								Logger.debug("Built portal gateway {}", p1);
 
+								irreducible_points.add(p1.node().value());
+								irreducible_points.add(p1.entryOrExit().value());
+
 								// Find the other part of this portal
-								PortalGateway p2 = portal_gateways.remove(p1.id());
+								final PortalGateway p2 = portal_gateways.remove(p1.id());
 								if (p1.id().equals(ENTRANCE_PORTAL_ID)) {
 									start_node = p1.entryOrExit();
 								} else if (p1.id().equals(EXIT_PORTAL_ID)) {
-									end_node = p1.entryOrExit();
+									exit_node = p1.entryOrExit();
 								} else if (p2 != null) {
 									Logger.debug("Adding neighbour from {} to {}", p1.node().value(),
 											p2.node().value());
@@ -94,19 +176,7 @@ public class Day20 extends Day {
 
 		graph.reduce(irreducible_points, false);
 
-		if (!Dijkstra.findPath(start_node, end_node)) {
-			throw new IllegalArgumentException("No path found");
-		}
-
-		if (Logger.isDebugEnabled()) {
-			GraphNode<String, Point2D> current = end_node;
-			do {
-				Logger.debug("current: {}", current.id());
-				current = current.getParent();
-			} while (current != null);
-		}
-
-		return Integer.toString(end_node.cost());
+		return new DoughnutMaze(graph, portals, start_node, exit_node);
 	}
 
 	private static PortalGateway buildPortal(char[][] maze, GraphNode<String, Point2D> node,
@@ -155,15 +225,15 @@ public class Day20 extends Day {
 		return new PortalGateway(id, node, entryOrExit, inner);
 	}
 
-	@Override
-	public String part2(Path input) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	private static record DoughnutMaze(Graph<String, Point2D> graph, Map<String, Portal> portals,
+			GraphNode<String, Point2D> startNode, GraphNode<String, Point2D> exitNode) {
+		public boolean isInnerPortalAt(Point2D location) {
+			return portals.values().stream().anyMatch(p -> p.inner().node().value().equals(location));
+		}
 
-	private static final record PortalGateway(String id, GraphNode<String, Point2D> node,
-			GraphNode<String, Point2D> entryOrExit, boolean inner) {
-		//
+		public boolean isExitPortalAt(Point2D location) {
+			return exitNode.value().equals(location);
+		}
 	}
 
 	private static final record Portal(String id, PortalGateway inner, PortalGateway outer) {
@@ -173,6 +243,22 @@ public class Day20 extends Day {
 			}
 
 			return new Portal(p1.id(), p2, p1);
+		}
+	}
+
+	private static final record PortalGateway(String id, GraphNode<String, Point2D> node,
+			GraphNode<String, Point2D> entryOrExit, boolean inner) {
+		//
+	}
+
+	private static final record NodeWithDepth(GraphNode<String, Point2D> graphNode, int depth) {
+		public static NodeWithDepth create(DoughnutMaze maze, int currentDepth, GraphNode<String, Point2D> node) {
+
+			return null;
+		}
+
+		public String id() {
+			return depth + ":" + graphNode.id();
 		}
 	}
 }

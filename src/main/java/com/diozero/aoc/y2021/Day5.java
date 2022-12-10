@@ -92,6 +92,7 @@ public class Day5 extends Day {
 				for (int x = line.minX(); x <= line.maxX(); x++) {
 					incrementCount(counts, x, line.minY());
 				}
+				break;
 			default:
 			}
 		}

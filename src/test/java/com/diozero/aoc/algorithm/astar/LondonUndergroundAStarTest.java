@@ -1,7 +1,6 @@
 package com.diozero.aoc.algorithm.astar;
 
-import java.util.Deque;
-import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -32,18 +31,9 @@ public class LondonUndergroundAStarTest {
 		long duration = System.currentTimeMillis() - start;
 		System.out.format("Route distance: %,.1f km, duration: %,dms%n", Float.valueOf(to.cost() / 1000f), duration);
 
-		Deque<String> path = new LinkedList<>();
-		GraphNode<String, Station> current = result;
-		do {
-			path.offerFirst(current.value().name());
-			current = current.getParent();
-		} while (current != null);
-
-		String path_string = String.join(" -> ", path);
-
 		Assertions.assertEquals(
 				"Earl's Court -> Gloucester Road -> Knightsbridge -> Hyde Park Corner -> Green Park -> Oxford Circus"
 						+ " -> Warren Street -> Euston -> King's Cross St. Pancras -> Angel",
-				path_string);
+				result.path().stream().map(Station::name).collect(Collectors.joining(" -> ")));
 	}
 }

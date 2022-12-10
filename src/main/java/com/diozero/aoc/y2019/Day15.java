@@ -337,7 +337,7 @@ public class Day15 extends Day {
 					case O2_SUPPLY:
 						o2SupplyPosition = target_pos;
 						Logger.debug("Found O2 supply! " + o2SupplyPosition);
-						// Note deliberate case statement fall-through
+						//$FALL-THROUGH$ Note deliberate case statement fall-through
 					case CLEAR:
 						// Add to the list of neighbours for this graph node
 						// Note that neighbour_node must be null here as this map node was unknown

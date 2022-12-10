@@ -117,12 +117,7 @@ public class Day25 extends Day {
 			throw new IllegalStateException("Cannot get from " + start.id() + " to " + dest.id());
 		}
 
-		final Deque<Room> path = new ArrayDeque<>();
-		GraphNode<String, Room> current = dest;
-		do {
-			path.offerFirst(current.value());
-			current = current.getParent();
-		} while (current != null);
+		final Deque<Room> path = dest.path();
 		Logger.debug("Path from {} to {}: {}", start.id(), dest.id(), path);
 		path.stream().skip(1).forEach(r -> moveTo(r, input_queue, output));
 

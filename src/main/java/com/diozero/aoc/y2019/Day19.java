@@ -21,7 +21,7 @@ import com.diozero.aoc.util.PrintUtil;
 import com.diozero.aoc.y2019.util.IntcodeVirtualMachine;
 
 public class Day19 extends Day {
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		new Day19().run();
 	}
 

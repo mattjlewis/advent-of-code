@@ -1,6 +1,8 @@
 package com.diozero.aoc.util;
 
+import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class StringUtil {
 	private StringUtil() {
@@ -18,5 +20,9 @@ public class StringUtil {
 
 	public static int countOccurrences(char ch, String string) {
 		return (int) string.chars().filter(c -> c == ch).count();
+	}
+
+	public static Set<Character> toCharSet(String s) {
+		return s.chars().mapToObj(ch -> Character.valueOf((char) ch)).collect(Collectors.toSet());
 	}
 }

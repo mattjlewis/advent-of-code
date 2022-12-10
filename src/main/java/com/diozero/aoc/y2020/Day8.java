@@ -108,7 +108,7 @@ public class Day8 extends Day {
 				break;
 			case acc:
 				acc += instr.argument();
-				// Note deliberate fall-through to increment the program counter
+				//$FALL-THROUGH$ Note deliberate fall-through to increment the program counter
 			case nop:
 				pc++;
 				break;

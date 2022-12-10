@@ -2,8 +2,7 @@ package com.diozero.aoc.y2021;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.stream.Collectors;
 
 import org.tinylog.Logger;
 
@@ -61,13 +60,7 @@ public class Day15 extends Day {
 		final GraphNode<Integer, Point2D> result = AStarPathFinder.findPath(start, end, Day15::heuristic);
 
 		if (Logger.isDebugEnabled()) {
-			Deque<String> stack = new ArrayDeque<>();
-			GraphNode<Integer, Point2D> current = result;
-			do {
-				stack.offerFirst("(" + current.value().x() + ", " + current.value().y() + ")");
-				current = current.getParent();
-			} while (current != null);
-			System.out.println(String.join(" -> ", stack));
+			Logger.debug("Path: {}", result.path().stream().map(Point2D::toString).collect(Collectors.joining(" -> ")));
 		}
 
 		return Integer.toString(result.cost());

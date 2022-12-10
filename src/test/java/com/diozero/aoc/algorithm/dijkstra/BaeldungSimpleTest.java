@@ -1,7 +1,6 @@
 package com.diozero.aoc.algorithm.dijkstra;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -43,15 +42,6 @@ public class BaeldungSimpleTest {
 		System.out.format("Lowest cost to get from %s to %s: %d%n", start.value(), target.value(), target.cost());
 		Assertions.assertEquals(24, target.cost());
 
-		Deque<String> path = new ArrayDeque<>();
-		GraphNode<String, String> current = target;
-		do {
-			path.addFirst(current.value());
-			current = current.getParent();
-		} while (current != null);
-
-		String path_string = String.join("->", path);
-		System.out.println("Shortest path: " + path_string);
-		Assertions.assertEquals("A->B->D->E", path_string);
+		Assertions.assertEquals("A->B->D->E", target.path().stream().collect(Collectors.joining("->")));
 	}
 }
