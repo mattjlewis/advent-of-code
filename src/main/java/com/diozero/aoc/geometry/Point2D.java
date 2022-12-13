@@ -29,7 +29,7 @@ public record Point2D(int x, int y) {
 	}
 
 	public int manhattanDistance(int otherX, int otherY) {
-		return Math.abs(x - otherX) + Math.abs(y - otherY);
+		return Math.abs(otherX - x) + Math.abs(otherY - y);
 	}
 
 	public double distance(Point2D other) {

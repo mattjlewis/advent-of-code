@@ -92,4 +92,27 @@ public class MatrixUtil {
 
 		return points;
 	}
+
+	public static int count(boolean[][] matrix) {
+		int count = 0;
+		for (int y = 0; y < matrix.length; y++) {
+			for (int x = 0; x < matrix[0].length; x++) {
+				if (matrix[y][x]) {
+					count++;
+				}
+			}
+		}
+		return count;
+	}
+
+	public static int max(final int[][] matrix) {
+		int max = Integer.MIN_VALUE;
+		for (int y = 0; y < matrix.length; y++) {
+			for (int x = 0; x < matrix[0].length; x++) {
+				max = Math.max(max, matrix[y][x]);
+			}
+		}
+
+		return max;
+	}
 }

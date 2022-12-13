@@ -56,6 +56,9 @@ public class Day20 extends Day {
 		final Set<String> closed_nodes = new HashSet<>();
 
 		maze.startNode.updateCost(0);
+		if (true) {
+			return null;
+		}
 		open_nodes.offer(new NodeWithDepth(maze.startNode, 0));
 
 		while (!open_nodes.isEmpty()) {

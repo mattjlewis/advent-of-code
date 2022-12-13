@@ -1,8 +1,12 @@
 package com.diozero.aoc.geometry;
 
+import java.util.List;
+
 public enum CompassDirection {
 	SOUTH(0, -1), SOUTH_EAST(1, -1), EAST(1, 0), NORTH_EAST(1, 1), NORTH(0, 1), NORTH_WEST(-1, 1), WEST(-1, 0),
 	SOUTH_WEST(-1, -1);
+
+	public static final List<CompassDirection> NESW = List.of(NORTH, EAST, SOUTH, WEST);
 
 	private final Point2D delta;
 
@@ -45,5 +49,15 @@ public enum CompassDirection {
 
 	public CompassDirection turnRight90() {
 		return values()[(ordinal() + 2) % values().length];
+	}
+
+	public static CompassDirection fromUDLR(String udlr) {
+		return switch (udlr) {
+		case "U" -> CompassDirection.NORTH;
+		case "D" -> CompassDirection.SOUTH;
+		case "L" -> CompassDirection.WEST;
+		case "R" -> CompassDirection.EAST;
+		default -> throw new IllegalArgumentException();
+		};
 	}
 }

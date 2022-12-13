@@ -32,9 +32,20 @@ public class MutablePoint2D {
 		this.y = y;
 	}
 
+	public MutablePoint2D translate(CompassDirection direction) {
+		return translate(direction.delta());
+	}
+
 	public MutablePoint2D translate(Point2D delta) {
 		this.x += delta.x();
 		this.y += delta.y();
+
+		return this;
+	}
+
+	public MutablePoint2D translate(int deltaX, int deltaY) {
+		this.x += deltaX;
+		this.y += deltaY;
 
 		return this;
 	}
@@ -45,8 +56,32 @@ public class MutablePoint2D {
 		return this;
 	}
 
+	public Point2D delta(MutablePoint2D other) {
+		return delta(other.x, other.y);
+	}
+
+	public Point2D delta(Point2D other) {
+		return delta(other.x(), other.y());
+	}
+
+	public Point2D delta(int otherX, int otherY) {
+		return new Point2D(otherX - x, otherY - y);
+	}
+
 	public Point2D immutable() {
 		return new Point2D(x, y);
+	}
+
+	public int manhattanDistance(MutablePoint2D other) {
+		return manhattanDistance(other.x(), other.y());
+	}
+
+	public int manhattanDistance(Point2D other) {
+		return manhattanDistance(other.x(), other.y());
+	}
+
+	public int manhattanDistance(int otherX, int otherY) {
+		return Math.abs(otherX - x) + Math.abs(otherY - y);
 	}
 
 	@Override
