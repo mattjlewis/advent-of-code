@@ -1,4 +1,4 @@
-package com.diozero.aoc.util;
+package com.diozero.aoc.function;
 
 @FunctionalInterface
 public interface ToCharFunction<T> {

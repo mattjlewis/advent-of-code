@@ -3,6 +3,7 @@ package com.diozero.aoc.util;
 import java.util.Map;
 import java.util.Set;
 
+import com.diozero.aoc.function.ToCharFunction;
 import com.diozero.aoc.geometry.Point2D;
 import com.diozero.aoc.geometry.Rectangle;
 

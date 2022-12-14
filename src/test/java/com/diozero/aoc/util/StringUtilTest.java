@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("static-method")
@@ -95,6 +96,37 @@ public class StringUtilTest {
 			}
 		}
 		System.out.println("--- parts: " + parts + " ---");
+	}
+
+	@Test
+	public void test3() {
+		String str = "███   ██  ███    ██  ██  ███  █  █ ███  " + //
+				"█  █ █  █ █  █    █ █  █ █  █ █  █ █  █ " + //
+				"█  █ █  █ █  █    █ █    ███  ████ █  █ " + //
+				"███  ████ ███     █ █    █  █ █  █ ███  " + //
+				"█    █  █ █    █  █ █  █ █  █ █  █ █    " + //
+				"█    █  █ █     ██   ██  ███  █  █ █    ";
+		for (String s1 : StringUtil.split(str, 40)) {
+			System.out.println(s1);
+		}
+
+		str = "01234567890123456789";
+		int split_at = 5;
+		List<String> split = StringUtil.split(str, split_at);
+		Assertions.assertEquals(str.length() / split_at, split.size());
+
+		split_at = 4;
+		split = StringUtil.split(str, split_at);
+		Assertions.assertEquals(str.length() / split_at, split.size());
+
+		split_at = 3;
+		split = StringUtil.split(str, split_at);
+		Assertions.assertEquals(str.length() / split_at + 1, split.size());
+		Assertions.assertEquals(str.length() % split_at, split.get(split.size() - 1).length());
+		Assertions.assertEquals(str.substring(str.length() - str.length() % split_at), split.get(split.size() - 1));
+
+		split = StringUtil.split(str, 1);
+		Assertions.assertEquals(str.length(), split.size());
 	}
 
 	private static void printParts(String string) {
