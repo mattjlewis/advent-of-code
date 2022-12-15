@@ -4,11 +4,12 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.diozero.aoc.Day;
 import com.diozero.aoc.geometry.CompassDirection;
 import com.diozero.aoc.geometry.Point2D;
-import com.diozero.aoc.util.PrintUtil;
+import com.diozero.aoc.util.OcrUtil;
 import com.diozero.aoc.y2019.util.IntcodeVirtualMachine;
 
 public class Day11 extends Day {
@@ -38,17 +39,15 @@ public class Day11 extends Day {
 		IntcodeVirtualMachine vm = IntcodeVirtualMachine.load(input, robot::getColourAtPosition, robot::update);
 		vm.run();
 
-		PrintUtil.print(robot.panelColours, Robot.BLACK_CHAR, Robot::valueOf);
-
-		return "BCKFPCRA";
+		return OcrUtil
+				.decode(robot.panelColours.entrySet().stream().filter(entry -> !entry.getValue().equals(Robot.BLACK))
+						.map(Map.Entry::getKey).collect(Collectors.toSet()));
 	}
 
 	private static class Robot {
 		// Panel colours
 		private static final Long BLACK = Long.valueOf(0);
-		static final char BLACK_CHAR = PrintUtil.BLANK_PIXEL;
 		private static final Long WHITE = Long.valueOf(1);
-		static final char WHITE_CHAR = PrintUtil.FILLED_PIXEL;
 		private static final int LEFT = 0;
 
 		private Map<Point2D, Long> panelColours;
@@ -105,14 +104,6 @@ public class Day11 extends Day {
 			 * colour
 			 */
 			return panelColours.size();
-		}
-
-		public static char valueOf(Long colour) {
-			if (colour.equals(BLACK)) {
-				return BLACK_CHAR;
-			}
-
-			return WHITE_CHAR;
 		}
 	}
 }

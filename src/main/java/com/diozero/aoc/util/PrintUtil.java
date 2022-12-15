@@ -75,7 +75,7 @@ public class PrintUtil {
 		}
 	}
 
-	private static Rectangle getBounds(Set<Point2D> points) {
+	public static Rectangle getBounds(Set<Point2D> points) {
 		int min_x = Integer.MAX_VALUE;
 		int max_x = Integer.MIN_VALUE;
 		int min_y = Integer.MAX_VALUE;
@@ -91,7 +91,7 @@ public class PrintUtil {
 	}
 
 	public static <T> void print(Map<Point2D, T> grid, char defaultValue, ToCharFunction<T> cellFunction) {
-		Rectangle bounds = getBounds(grid.keySet());
+		final Rectangle bounds = getBounds(grid.keySet());
 
 		for (int y = bounds.topLeft().y(); y <= bounds.bottomRight().y(); y++) {
 			for (int x = bounds.topLeft().x(); x <= bounds.bottomRight().x(); x++) {

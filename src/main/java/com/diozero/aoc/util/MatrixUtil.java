@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.diozero.aoc.geometry.Point2D;
+import com.diozero.aoc.geometry.Rectangle;
 
 public class MatrixUtil {
 	private MatrixUtil() {
@@ -42,6 +43,17 @@ public class MatrixUtil {
 			}
 		}
 
+		return matrix;
+	}
+
+	public static boolean[][] toMatrix(boolean[] data, int width) {
+		if (data.length % width != 0) {
+			throw new IllegalArgumentException();
+		}
+		boolean[][] matrix = new boolean[data.length / width][width];
+		for (int y = 0; y < data.length / width; y++) {
+			System.arraycopy(data, y * width, matrix[y], 0, width);
+		}
 		return matrix;
 	}
 
@@ -114,5 +126,17 @@ public class MatrixUtil {
 		}
 
 		return max;
+	}
+
+	public static boolean[][] toMatrix(Set<Point2D> points) {
+		final Rectangle bounds = PrintUtil.getBounds(points);
+		final boolean[][] matrix = new boolean[bounds.height()][bounds.width()];
+		for (int y = 0; y < matrix.length; y++) {
+			for (int x = 0; x < matrix[0].length; x++) {
+				matrix[y][x] = points.contains(new Point2D(bounds.topLeft().x() + x, bounds.topLeft().y() + y));
+			}
+		}
+
+		return matrix;
 	}
 }

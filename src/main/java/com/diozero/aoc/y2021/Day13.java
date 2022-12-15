@@ -12,6 +12,8 @@ import org.tinylog.Logger;
 
 import com.diozero.aoc.Day;
 import com.diozero.aoc.geometry.Point2D;
+import com.diozero.aoc.util.MatrixUtil;
+import com.diozero.aoc.util.OcrUtil;
 import com.diozero.aoc.util.PrintUtil;
 
 public class Day13 extends Day {
@@ -29,18 +31,14 @@ public class Day13 extends Day {
 		final Puzzle puzzle = loadData(input);
 
 		// Part 1 calculates the number of dots after one fold
-		return Integer.toString(fold(puzzle.matrix(), Arrays.asList(puzzle.folds().get(0))));
+		return Integer.toString(MatrixUtil.count(fold(puzzle.matrix(), Arrays.asList(puzzle.folds().get(0)))));
 	}
 
 	@Override
 	public String part2(final Path input) throws IOException {
 		final Puzzle puzzle = loadData(input);
 
-		int count = fold(puzzle.matrix(), puzzle.folds());
-		Logger.debug("num folds: {}", count);
-
-		return "AHGCPGAU";
-		// return Integer.toString(count);
+		return OcrUtil.decode(fold(puzzle.matrix(), puzzle.folds()));
 	}
 
 	private static Puzzle loadData(final Path input) throws IOException {
@@ -77,7 +75,7 @@ public class Day13 extends Day {
 		return new Puzzle(matrix, folds);
 	}
 
-	private static int fold(final boolean[][] startMatrix, final List<Fold> folds) {
+	private static boolean[][] fold(final boolean[][] startMatrix, final List<Fold> folds) {
 		boolean[][] matrix = startMatrix.clone();
 
 		for (Fold fold : folds) {
@@ -126,23 +124,7 @@ public class Day13 extends Day {
 			}
 		}
 
-		if (matrix.length < 50 && matrix[0].length < 50) {
-			// Part 2 should print "AHGCPGAU" (40x6 matrix)
-			System.out.println();
-			PrintUtil.print(matrix, PrintUtil.FILLED_PIXEL, PrintUtil.BLANK_PIXEL);
-			System.out.println();
-		}
-
-		int count = 0;
-		for (int y = 0; y < matrix.length; y++) {
-			for (int x = 0; x < matrix[y].length; x++) {
-				if (matrix[y][x]) {
-					count++;
-				}
-			}
-		}
-
-		return count;
+		return matrix;
 	}
 
 	private static record Puzzle(boolean[][] matrix, List<Fold> folds) {

@@ -59,4 +59,12 @@ public record Rectangle(Point2D topLeft, Point2D bottomRight) {
 	public boolean contains(int x, int y) {
 		return x >= topLeft.x() && x <= bottomRight.x() && y <= topLeft.y() && y >= bottomRight.y();
 	}
+
+	public int width() {
+		return 1 + bottomRight.x() - topLeft.x();
+	}
+
+	public int height() {
+		return 1 + bottomRight.y() - topLeft.y();
+	}
 }

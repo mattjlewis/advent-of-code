@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
 import com.diozero.aoc.Day;
-import com.diozero.aoc.util.PrintUtil;
+import com.diozero.aoc.util.OcrUtil;
 
 public class Day8 extends Day {
 	public static void main(String[] args) {
@@ -40,21 +40,19 @@ public class Day8 extends Day {
 		int height = layers.get(0).size();
 
 		// TODO Can this be optimised?
-		char[][] image = new char[height][width];
+		boolean[][] image = new boolean[height][width];
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				for (List<String> layer : layers) {
 					char ch = layer.get(y).charAt(x);
 					if (ch == '0' || ch == '1') {
-						image[y][x] = ch == '1' ? PrintUtil.FILLED_PIXEL : PrintUtil.BLANK_PIXEL;
+						image[y][x] = ch == '1' ? true : false;
 						break;
 					}
 				}
 			}
 		}
-		PrintUtil.print(image);
-
-		return "AZCJC";
+		return OcrUtil.decode(image);
 	}
 
 	private static List<List<String>> loadData(Path input) throws IOException {

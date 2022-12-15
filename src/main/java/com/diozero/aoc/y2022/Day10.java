@@ -4,16 +4,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.diozero.aoc.Day;
 import com.diozero.aoc.function.IntBiFunction;
-import com.diozero.aoc.util.PrintUtil;
-import com.diozero.aoc.util.StringUtil;
+import com.diozero.aoc.util.OcrUtil;
 
 public class Day10 extends Day {
 	private static final int SCREEN_WIDTH = 40;
@@ -58,15 +57,19 @@ public class Day10 extends Day {
 
 	@Override
 	public String part2(final Path input) throws IOException {
-		for (String s : StringUtil.split(
-				solve(input, Day10::getPixel).map(Object::toString).collect(Collectors.joining()), SCREEN_WIDTH)) {
-			System.out.println(s);
+		final boolean[][] pixels = new boolean[OcrUtil.CHAR_HEIGHT][SCREEN_WIDTH];
+		final Iterator<Boolean> it = solve(input, Day10::getPixel).iterator();
+		int i = 0;
+		while (it.hasNext()) {
+			pixels[i / SCREEN_WIDTH][i % SCREEN_WIDTH] = it.next().booleanValue();
+			i++;
 		}
-		return "PAPJCBHP";
+
+		return OcrUtil.decode(pixels);
 	}
 
-	private static Character getPixel(final int x, final int cycle) {
+	private static Boolean getPixel(final int x, final int cycle) {
 		int pixel_pos = (cycle - 1) % SCREEN_WIDTH;
-		return Character.valueOf(Math.abs(pixel_pos - x) <= 1 ? PrintUtil.FILLED_PIXEL : PrintUtil.BLANK_PIXEL);
+		return Boolean.valueOf(Math.abs(pixel_pos - x) <= 1);
 	}
 }
