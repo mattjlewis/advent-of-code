@@ -205,16 +205,12 @@ public class Day15 extends Day {
 				}
 
 				// Add the neighbours
-				//
 				for (int dy = Math.max(0, y - 1); dy <= Math.min(height - 1, y + 1); dy++) {
 					for (int dx = Math.max(0, x - 1); dx <= Math.min(width - 1, x + 1); dx++) {
 						// No diagonals
 						if ((x != dx || y != dy) && (x == dx || y == dy)) {
-							final Point2D neighbour_cell = new Point2D(dx, dy);
-
-							final GraphNode<Integer, Point2D> neighbour = graph.getOrPut(neighbour_cell,
-									p -> idFunction(p, width));
-							node.addNeighbour(neighbour, costMatrix[dy][dx]);
+							node.addNeighbour(graph.getOrPut(new Point2D(dx, dy), p -> idFunction(p, width)),
+									costMatrix[dy][dx]);
 						}
 					}
 				}

@@ -22,10 +22,6 @@ public class Dijkstra {
 	private Dijkstra() {
 	}
 
-	public static <K, V> void findRoutes(GraphNode<K, V> start) {
-		findRoutes(start, Optional.empty(), GraphNode::neighboursStream);
-	}
-
 	public static <K, V> boolean findPath(GraphNode<K, V> start, GraphNode<K, V> target) {
 		return findRoutes(start, Optional.of(target), GraphNode::neighboursStream);
 	}
@@ -33,6 +29,10 @@ public class Dijkstra {
 	public static <K, V> boolean findPath(GraphNode<K, V> start, GraphNode<K, V> target,
 			Function<GraphNode<K, V>, Stream<GraphNode.Neighbour<K, V>>> getNeighboursFunction) {
 		return findRoutes(start, Optional.of(target), getNeighboursFunction);
+	}
+
+	public static <K, V> void findRoutes(GraphNode<K, V> start) {
+		findRoutes(start, Optional.empty(), GraphNode::neighboursStream);
 	}
 
 	public static <K, V> boolean findRoutes(GraphNode<K, V> start, Optional<GraphNode<K, V>> target,
