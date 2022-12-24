@@ -46,13 +46,15 @@ public class InputDownloader {
 				final HttpResponse<Path> response = httpClient.send(request, BodyHandlers.ofFile(dest));
 				if (response.statusCode() != 200) {
 					Logger.error("Failed to download from {}: {}", source, Integer.valueOf(response.statusCode()));
-				}
-			}
-			dest.getParent().getParent().resolve(year + "_samples").toFile().mkdirs();
+					dest.toFile().delete();
+				} else {
+					dest.getParent().getParent().resolve(year + "_samples").toFile().mkdirs();
 
-			final Path answers_file = dest.getParent().resolve("day" + day + "_answers.txt");
-			if (!answers_file.toFile().exists()) {
-				answers_file.toFile().createNewFile();
+					final Path answers_file = dest.getParent().resolve("day" + day + "_answers.txt");
+					if (!answers_file.toFile().exists()) {
+						answers_file.toFile().createNewFile();
+					}
+				}
 			}
 		} catch (Exception e) {
 			Logger.error(e, "Error downloading from {}: {}", source, e);

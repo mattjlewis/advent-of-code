@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.util.stream.Stream;
 
 import com.diozero.aoc.Day;
+import com.diozero.aoc.util.IntRange;
 
 public class Day4 extends Day {
 	public static void main(String[] args) {
@@ -27,30 +28,15 @@ public class Day4 extends Day {
 		return Long.toString(Files.lines(input).map(Day4::load).filter(Day4::overlaps).count());
 	}
 
-	private static Assignment[] load(String line) {
-		return Stream.of(line.split(",")).map(Assignment::parse).toArray(Assignment[]::new);
+	private static IntRange[] load(String line) {
+		return Stream.of(line.split(",")).map(IntRange::parseDashSeparated).toArray(IntRange[]::new);
 	}
 
-	private static boolean fullyContains(Assignment[] assignmentPair) {
-		return assignmentPair[0].fullyContains(assignmentPair[1]) || assignmentPair[1].fullyContains(assignmentPair[0]);
+	private static boolean fullyContains(IntRange[] assignmentPair) {
+		return assignmentPair[0].contains(assignmentPair[1]) || assignmentPair[1].contains(assignmentPair[0]);
 	}
 
-	private static boolean overlaps(Assignment[] assignmentPair) {
+	private static boolean overlaps(IntRange[] assignmentPair) {
 		return assignmentPair[0].overlaps(assignmentPair[1]);
-	}
-
-	private static record Assignment(int start, int end) {
-		public static Assignment parse(String startEnd) {
-			final String[] parts = startEnd.split("-");
-			return new Assignment(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
-		}
-
-		public boolean fullyContains(Assignment other) {
-			return start <= other.start && end >= other.end;
-		}
-
-		public boolean overlaps(Assignment other) {
-			return start <= other.end && end >= other.start;
-		}
 	}
 }

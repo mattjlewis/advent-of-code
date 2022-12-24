@@ -1,7 +1,9 @@
 package com.diozero.aoc.geometry;
 
+import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 import org.tinylog.Logger;
 
@@ -56,8 +58,29 @@ public record Rectangle(Point2D topLeft, Point2D bottomRight) {
 		return new Rectangle(new Point2D(x1, y1), new Point2D(x2, y2));
 	}
 
+	public static Rectangle getBounds(final Stream<Rectangle> rectangles) {
+		int min_x = Integer.MAX_VALUE;
+		int max_x = Integer.MIN_VALUE;
+		int min_y = Integer.MAX_VALUE;
+		int max_y = Integer.MIN_VALUE;
+		final Iterator<Rectangle> it = rectangles.iterator();
+		while (it.hasNext()) {
+			final Rectangle r = it.next();
+			min_x = Math.min(min_x, r.x1());
+			max_x = Math.max(max_x, r.x2());
+			min_y = Math.min(min_y, r.y1());
+			max_y = Math.max(max_y, r.y2());
+		}
+
+		return Rectangle.create(min_x, min_y, max_x, max_y);
+	}
+
 	public boolean contains(int x, int y) {
-		return x >= topLeft.x() && x <= bottomRight.x() && y <= topLeft.y() && y >= bottomRight.y();
+		return x >= topLeft.x() && x <= bottomRight.x() && y >= topLeft.y() && y <= bottomRight.y();
+	}
+
+	public boolean contains(Point2D p) {
+		return contains(p.x(), p.y());
 	}
 
 	public int width() {
@@ -66,5 +89,21 @@ public record Rectangle(Point2D topLeft, Point2D bottomRight) {
 
 	public int height() {
 		return 1 + bottomRight.y() - topLeft.y();
+	}
+
+	public int x1() {
+		return topLeft.x();
+	}
+
+	public int y1() {
+		return topLeft.y();
+	}
+
+	public int x2() {
+		return bottomRight.x();
+	}
+
+	public int y2() {
+		return bottomRight.y();
 	}
 }

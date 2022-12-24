@@ -129,7 +129,7 @@ public class MatrixUtil {
 	}
 
 	public static boolean[][] toMatrix(Set<Point2D> points) {
-		final Rectangle bounds = PrintUtil.getBounds(points);
+		final Rectangle bounds = Point2D.getBounds(points);
 		final boolean[][] matrix = new boolean[bounds.height()][bounds.width()];
 		for (int y = 0; y < matrix.length; y++) {
 			for (int x = 0; x < matrix[0].length; x++) {

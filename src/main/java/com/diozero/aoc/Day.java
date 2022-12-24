@@ -9,6 +9,7 @@ import org.tinylog.Logger;
 public abstract class Day implements Runnable {
 	private int year;
 	private int day;
+	private boolean sample;
 
 	public Day() {
 		year = Integer.parseInt(getClass().getPackageName().split("\\.(?=[^.]*$)")[1].substring(1));
@@ -38,6 +39,7 @@ public abstract class Day implements Runnable {
 		if (sample_prop == null) {
 			sample_prop = System.getProperty("sample");
 		}
+
 		String input = "day" + day;
 		if (sample_prop != null) {
 			if (!sample_prop.isEmpty()) {
@@ -51,6 +53,7 @@ public abstract class Day implements Runnable {
 
 		if (sample_prop != null) {
 			System.out.format("--- %d Day %d: Working from sample data set '%s' ---%n", year, day, input);
+			sample = true;
 		}
 
 		try {
@@ -85,6 +88,10 @@ public abstract class Day implements Runnable {
 		} catch (IOException e) {
 			System.out.println("Error unable to read input '" + input_path + "'");
 		}
+	}
+
+	public final boolean isSample() {
+		return sample;
 	}
 
 	private void checkResult(int part, String[] answers, String result, long duration) {

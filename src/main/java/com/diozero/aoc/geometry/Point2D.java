@@ -1,6 +1,9 @@
 package com.diozero.aoc.geometry;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Stream;
 
 public record Point2D(int x, int y) {
 	public enum Axis {
@@ -11,6 +14,27 @@ public record Point2D(int x, int y) {
 
 	public static Point2D sum(List<Point2D> points) {
 		return ORIGIN.translate(points);
+	}
+
+	public static Rectangle getBounds(final Collection<Point2D> points) {
+		return getBounds(points.stream());
+	}
+
+	public static Rectangle getBounds(final Stream<Point2D> points) {
+		int min_x = Integer.MAX_VALUE;
+		int max_x = Integer.MIN_VALUE;
+		int min_y = Integer.MAX_VALUE;
+		int max_y = Integer.MIN_VALUE;
+		final Iterator<Point2D> it = points.iterator();
+		while (it.hasNext()) {
+			final Point2D p = it.next();
+			min_x = Math.min(min_x, p.x());
+			max_x = Math.max(max_x, p.x());
+			min_y = Math.min(min_y, p.y());
+			max_y = Math.max(max_y, p.y());
+		}
+
+		return Rectangle.create(min_x, min_y, max_x, max_y);
 	}
 
 	private static final int[] COS_VALUES;

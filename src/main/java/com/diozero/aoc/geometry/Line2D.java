@@ -1,5 +1,6 @@
 package com.diozero.aoc.geometry;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -157,5 +158,31 @@ public record Line2D(int x1, int y1, int x2, int y2, Line2D.Direction direction)
 	@Override
 	public String toString() {
 		return direction + ": (" + x1 + "," + y1 + ")->(" + x2 + "," + y2 + ")";
+	}
+
+	public Collection<? extends Point2D> toSet() {
+		final Set<Point2D> points = new HashSet<>();
+
+		switch (direction) {
+		case DIAGONAL:
+			for (int x = minX(); x <= maxX(); x++) {
+				points.add(new Point2D(x, minY() + x - minX()));
+			}
+			break;
+		case HORIZONTAL:
+			for (int x = minX(); x <= maxX(); x++) {
+				points.add(new Point2D(x, y1));
+			}
+			break;
+		case VERTICAL:
+			for (int y = minY(); y <= maxY(); y++) {
+				points.add(new Point2D(x1, y));
+			}
+			break;
+		default:
+			throw new IllegalArgumentException("Invalid direction " + direction);
+		}
+
+		return points;
 	}
 }

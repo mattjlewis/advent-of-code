@@ -56,12 +56,12 @@ public class PrintUtil {
 		}
 	}
 
-	public static void print(Set<Point2D> points) {
+	public static void print(final Set<Point2D> points) {
 		print(points, FILLED_PIXEL, BLANK_PIXEL);
 	}
 
 	public static void print(Set<Point2D> points, char filledPixel, char blankPixel) {
-		Rectangle bounds = getBounds(points);
+		Rectangle bounds = Point2D.getBounds(points);
 
 		for (int y = bounds.topLeft().y(); y <= bounds.bottomRight().y(); y++) {
 			for (int x = bounds.topLeft().x(); x <= bounds.bottomRight().x(); x++) {
@@ -75,23 +75,9 @@ public class PrintUtil {
 		}
 	}
 
-	public static Rectangle getBounds(Set<Point2D> points) {
-		int min_x = Integer.MAX_VALUE;
-		int max_x = Integer.MIN_VALUE;
-		int min_y = Integer.MAX_VALUE;
-		int max_y = Integer.MIN_VALUE;
-		for (Point2D p : points) {
-			min_x = Math.min(min_x, p.x());
-			max_x = Math.max(max_x, p.x());
-			min_y = Math.min(min_y, p.y());
-			max_y = Math.max(max_y, p.y());
-		}
-
-		return Rectangle.create(min_x, min_y, max_x, max_y);
-	}
-
-	public static <T> void print(Map<Point2D, T> grid, char defaultValue, ToCharFunction<T> cellFunction) {
-		final Rectangle bounds = getBounds(grid.keySet());
+	public static <T> void print(final Map<Point2D, T> grid, final char defaultValue,
+			final ToCharFunction<T> cellFunction) {
+		final Rectangle bounds = Point2D.getBounds(grid.keySet());
 
 		for (int y = bounds.topLeft().y(); y <= bounds.bottomRight().y(); y++) {
 			for (int x = bounds.topLeft().x(); x <= bounds.bottomRight().x(); x++) {
