@@ -22,7 +22,7 @@ public class Day1 extends Day {
 	public String part1(final Path input) throws IOException {
 		final AtomicInteger count = new AtomicInteger();
 		final AtomicInteger last_depth = new AtomicInteger(Integer.MAX_VALUE);
-		Files.lines(input).mapToInt(Integer::valueOf).forEach(val -> update(val, count, last_depth));
+		Files.lines(input).mapToInt(Integer::parseInt).forEach(val -> update(val, count, last_depth));
 
 		return Integer.toString(count.get());
 	}

@@ -19,6 +19,9 @@ import com.diozero.aoc.algorithm.dijkstra.Dijkstra;
 import com.diozero.aoc.geometry.Point2D;
 import com.diozero.aoc.util.TextParser;
 
+/*
+ * TODO Complete part2!!
+ */
 public class Day20 extends Day {
 	private static final String ENTRANCE_PORTAL_ID = "AA";
 	private static final String EXIT_PORTAL_ID = "ZZ";
@@ -50,7 +53,7 @@ public class Day20 extends Day {
 	@Override
 	public String part2(Path input) throws IOException {
 		final DoughnutMaze maze = buildDoughnutMaze(input);
-		final GraphNode<String, Point2D> target = maze.exitNode;
+		final GraphNode<Integer, Point2D> target = maze.exitNode;
 
 		final Queue<NodeWithDepth> open_nodes = new PriorityQueue<>();
 		final Set<String> closed_nodes = new HashSet<>();
@@ -96,7 +99,7 @@ public class Day20 extends Day {
 		return null;
 	}
 
-	private static Stream<GraphNode.Neighbour<String, Point2D>> getNeighbours(DoughnutMaze maze, NodeWithDepth node) {
+	private static Stream<GraphNode.Neighbour<Integer, Point2D>> getNeighbours(DoughnutMaze maze, NodeWithDepth node) {
 		/*
 		 * When at the outermost level (depth=0), only the outer labels AA and ZZ
 		 * function (as the start and end, respectively); all other outer labelled tiles
@@ -114,15 +117,15 @@ public class Day20 extends Day {
 	}
 
 	private static DoughnutMaze buildDoughnutMaze(Path input) throws IOException {
-		final Graph<String, Point2D> graph = new Graph<>();
+		final Graph<Integer, Point2D> graph = new Graph<>();
 		final Map<String, PortalGateway> portal_gateways = new HashMap<>();
 		final Map<String, Portal> portals = new HashMap<>();
-		GraphNode<String, Point2D> start_node = null;
-		GraphNode<String, Point2D> exit_node = null;
+		GraphNode<Integer, Point2D> start_node = null;
+		GraphNode<Integer, Point2D> exit_node = null;
 
 		final char[][] maze = TextParser.loadCharMatrix(input);
-		final int height = maze.length;
 		final int width = maze[0].length;
+		final int height = maze.length;
 		final Set<Point2D> irreducible_points = new HashSet<>();
 
 		for (int y = 0; y < height; y++) {
@@ -131,7 +134,7 @@ public class Day20 extends Day {
 					continue;
 				}
 
-				final GraphNode<String, Point2D> node = graph.getOrPut(new Point2D(x, y), Point2D::toString);
+				final GraphNode<Integer, Point2D> node = graph.getOrPut(new Point2D(x, y), p -> p.identity(width));
 
 				if (maze[y][x] == '.') {
 					// Look for neighbours
@@ -144,11 +147,11 @@ public class Day20 extends Day {
 
 							// Blank spaces or portals
 							if (maze[dy][dx] == '.') {
-								node.addNeighbour(graph.getOrPut(new Point2D(dx, dy), Point2D::toString), 1);
+								node.addNeighbour(graph.getOrPut(new Point2D(dx, dy), p -> p.identity(width)), 1);
 							} else {
 								// A portal gateway - need to find the other part
 								final PortalGateway p1 = buildPortal(maze,
-										graph.getOrPut(new Point2D(dx, dy), Point2D::toString), node);
+										graph.getOrPut(new Point2D(dx, dy), p -> p.identity(width)), node);
 								node.addNeighbour(p1.node(), 1);
 								Logger.debug("Built portal gateway {}", p1);
 
@@ -182,8 +185,8 @@ public class Day20 extends Day {
 		return new DoughnutMaze(graph, portals, start_node, exit_node);
 	}
 
-	private static PortalGateway buildPortal(char[][] maze, GraphNode<String, Point2D> node,
-			GraphNode<String, Point2D> entryOrExit) {
+	private static PortalGateway buildPortal(char[][] maze, GraphNode<Integer, Point2D> node,
+			GraphNode<Integer, Point2D> entryOrExit) {
 		final int x = node.value().x();
 		final int y = node.value().y();
 
@@ -228,8 +231,8 @@ public class Day20 extends Day {
 		return new PortalGateway(id, node, entryOrExit, inner);
 	}
 
-	private static record DoughnutMaze(Graph<String, Point2D> graph, Map<String, Portal> portals,
-			GraphNode<String, Point2D> startNode, GraphNode<String, Point2D> exitNode) {
+	private static record DoughnutMaze(Graph<Integer, Point2D> graph, Map<String, Portal> portals,
+			GraphNode<Integer, Point2D> startNode, GraphNode<Integer, Point2D> exitNode) {
 		public boolean isInnerPortalAt(Point2D location) {
 			return portals.values().stream().anyMatch(p -> p.inner().node().value().equals(location));
 		}
@@ -249,13 +252,13 @@ public class Day20 extends Day {
 		}
 	}
 
-	private static final record PortalGateway(String id, GraphNode<String, Point2D> node,
-			GraphNode<String, Point2D> entryOrExit, boolean inner) {
+	private static final record PortalGateway(String id, GraphNode<Integer, Point2D> node,
+			GraphNode<Integer, Point2D> entryOrExit, boolean inner) {
 		//
 	}
 
-	private static final record NodeWithDepth(GraphNode<String, Point2D> graphNode, int depth) {
-		public static NodeWithDepth create(DoughnutMaze maze, int currentDepth, GraphNode<String, Point2D> node) {
+	private static final record NodeWithDepth(GraphNode<Integer, Point2D> graphNode, int depth) {
+		public static NodeWithDepth create(DoughnutMaze maze, int currentDepth, GraphNode<Integer, Point2D> node) {
 
 			return null;
 		}

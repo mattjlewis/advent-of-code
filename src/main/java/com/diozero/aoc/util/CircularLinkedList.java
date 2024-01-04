@@ -250,4 +250,20 @@ public class CircularLinkedList<E> {
 			return value.toString();
 		}
 	}
+
+	public static class NodeIterator<T> {
+		private Node<T> node;
+
+		public NodeIterator(Node<T> node) {
+			this.node = node;
+		}
+
+		public T getValueAndIncrement() {
+			T value = node.value;
+
+			node = node.next;
+
+			return value;
+		}
+	}
 }

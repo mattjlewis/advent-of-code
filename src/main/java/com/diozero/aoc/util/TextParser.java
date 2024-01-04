@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.PrimitiveIterator;
 import java.util.Set;
+import java.util.function.IntFunction;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
@@ -97,6 +98,10 @@ public class TextParser {
 
 	public static char[][] loadCharMatrix(Path input) throws IOException {
 		return Files.lines(input).map(String::toCharArray).toArray(char[][]::new);
+	}
+
+	public static <R> List<List<R>> loadMatrix(Path input, IntFunction<R> mapper) throws IOException {
+		return Files.lines(input).map(line -> line.chars().mapToObj(i -> mapper.apply(i)).toList()).toList();
 	}
 
 	public static boolean[] toBooleanArray(final String line, final char ch) {

@@ -1,9 +1,14 @@
 package com.diozero.aoc.util;
 
+import java.util.ArrayDeque;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
+import com.diozero.aoc.geometry.CompassDirection;
+import com.diozero.aoc.geometry.MutablePoint2D;
 import com.diozero.aoc.geometry.Point2D;
 import com.diozero.aoc.geometry.Rectangle;
 
@@ -41,6 +46,16 @@ public class MatrixUtil {
 			for (int x = 0; x < width; x++) {
 				matrix[y][x] = isSet(mask, x, y, width);
 			}
+		}
+
+		return matrix;
+	}
+
+	public static char[][] initialiseMatrix(int width, int height, char ch) {
+		char[][] matrix = new char[height][width];
+		final char[] ground_row = Character.toString(ch).repeat(width).toCharArray();
+		for (int y = 0; y < height; y++) {
+			System.arraycopy(ground_row, 0, matrix[y], 0, width);
 		}
 
 		return matrix;
@@ -105,6 +120,20 @@ public class MatrixUtil {
 		return points;
 	}
 
+	public static Set<MutablePoint2D> toMutablePoints(boolean[][] matrix) {
+		final Set<MutablePoint2D> points = new HashSet<>();
+
+		for (int y = 0; y < matrix.length; y++) {
+			for (int x = 0; x < matrix[0].length; x++) {
+				if (matrix[y][x]) {
+					points.add(new MutablePoint2D(x, y));
+				}
+			}
+		}
+
+		return points;
+	}
+
 	public static int count(boolean[][] matrix) {
 		int count = 0;
 		for (int y = 0; y < matrix.length; y++) {
@@ -138,5 +167,78 @@ public class MatrixUtil {
 		}
 
 		return matrix;
+	}
+
+	public static Optional<Point2D> find(char[][] grid, char ch) {
+		for (int y = 0; y < grid.length; y++) {
+			for (int x = 0; x < grid[0].length; x++) {
+				if (grid[y][x] == ch) {
+					return Optional.of(new Point2D(x, y));
+				}
+			}
+		}
+		return Optional.empty();
+	}
+
+	// Get the previous value at (x, y) and call the recursive floodFill method
+	public static void floodFill(char grid[][], int x, int y, char newValue) {
+		final char previous_value = grid[y][x];
+		if (previous_value == newValue) {
+			return;
+		}
+		floodFill(grid, x, y, previous_value, newValue);
+	}
+
+	private static void floodFill(char grid[][], int x, int y, char previousValue, char newValue) {
+		final Deque<Point2D> queue = new ArrayDeque<>();
+		final Set<Point2D> visited = new HashSet<>();
+
+		Point2D curr = new Point2D(x, y);
+		queue.add(curr);
+		visited.add(curr);
+
+		while (!queue.isEmpty()) {
+			curr = queue.removeFirst();
+
+			grid[curr.y()][curr.x()] = newValue;
+
+			for (CompassDirection dir : CompassDirection.NESW) {
+				final Point2D next = curr.translate(dir);
+				if (!visited.contains(next) && isValid(grid, next.x(), next.y(), previousValue)) {
+					visited.add(next);
+					queue.add(next);
+				}
+			}
+		}
+	}
+
+	/*
+	 * A recursive function to replace the previous value at (x, y) and all
+	 * surrounding values of (x, y) with the new value.
+	 */
+	private static void floodFillRecursive(char grid[][], int x, int y, char previousValue, char newValue) {
+		if (!isValid(grid, x, y, previousValue)) {
+			return;
+		}
+
+		// Replace the value at (x, y)
+		grid[y][x] = newValue;
+
+		// Recurse east, west, south and north
+		floodFillRecursive(grid, x + 1, y, previousValue, newValue);
+		floodFillRecursive(grid, x - 1, y, previousValue, newValue);
+		floodFillRecursive(grid, x, y + 1, previousValue, newValue);
+		floodFillRecursive(grid, x, y - 1, previousValue, newValue);
+	}
+
+	private static boolean isValid(char[][] grid, int x, int y, char previousValue) {
+		if (x < 0 || x >= grid[0].length || y < 0 || y >= grid.length) {
+			return false;
+		}
+		if (grid[y][x] != previousValue) {
+			return false;
+		}
+
+		return true;
 	}
 }

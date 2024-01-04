@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class StringUtil {
 	private StringUtil() {
@@ -36,5 +37,13 @@ public class StringUtil {
 		}
 
 		return result;
+	}
+
+	public static String repeat(String s, String delimiter, int count) {
+		return IntStream.range(0, count).mapToObj(i -> s).collect(Collectors.joining(delimiter));
+	}
+
+	public static String substring(String s, int start, int end) {
+		return s.substring(start, end > s.length() ? s.length() : end);
 	}
 }

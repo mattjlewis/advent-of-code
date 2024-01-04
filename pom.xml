@@ -8,13 +8,13 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<maven.compiler.release>17</maven.compiler.release>
+		<maven.compiler.release>21</maven.compiler.release>
 
 		<maven-compiler-plugin.version>3.9.0</maven-compiler-plugin.version>
 
-		<tinylog.version>2.4.1</tinylog.version>
-		<hipparchus.version>2.0</hipparchus.version>
-		<junit.version>5.8.2</junit.version>
+		<tinylog.version>2.6.2</tinylog.version>
+		<hipparchus.version>3.0</hipparchus.version>
+		<junit.version>5.10.1</junit.version>
 	</properties>
 
 	<build>

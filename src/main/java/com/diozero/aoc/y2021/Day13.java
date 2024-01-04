@@ -50,7 +50,7 @@ public class Day13 extends Day {
 		int max_y = Integer.MIN_VALUE;
 		while (it.hasNext()) {
 			String line = it.next();
-			if (line.trim().isEmpty()) {
+			if (line.isBlank()) {
 				process_points = false;
 				continue;
 			}

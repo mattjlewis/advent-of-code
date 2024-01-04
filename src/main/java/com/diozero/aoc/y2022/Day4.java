@@ -3,7 +3,7 @@ package com.diozero.aoc.y2022;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.stream.Stream;
+import java.util.Arrays;
 
 import com.diozero.aoc.Day;
 import com.diozero.aoc.util.IntRange;
@@ -29,7 +29,7 @@ public class Day4 extends Day {
 	}
 
 	private static IntRange[] load(String line) {
-		return Stream.of(line.split(",")).map(IntRange::parseDashSeparated).toArray(IntRange[]::new);
+		return Arrays.stream(line.split(",")).map(IntRange::parseDashSeparated).toArray(IntRange[]::new);
 	}
 
 	private static boolean fullyContains(IntRange[] assignmentPair) {

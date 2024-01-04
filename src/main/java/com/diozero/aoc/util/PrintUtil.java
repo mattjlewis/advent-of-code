@@ -1,7 +1,7 @@
 package com.diozero.aoc.util;
 
+import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 
 import com.diozero.aoc.function.ToCharFunction;
 import com.diozero.aoc.geometry.Point2D;
@@ -56,12 +56,12 @@ public class PrintUtil {
 		}
 	}
 
-	public static void print(final Set<Point2D> points) {
+	public static void print(final Collection<Point2D> points) {
 		print(points, FILLED_PIXEL, BLANK_PIXEL);
 	}
 
-	public static void print(Set<Point2D> points, char filledPixel, char blankPixel) {
-		Rectangle bounds = Point2D.getBounds(points);
+	public static void print(Collection<Point2D> points, char filledPixel, char blankPixel) {
+		final Rectangle bounds = Point2D.getBounds(points);
 
 		for (int y = bounds.topLeft().y(); y <= bounds.bottomRight().y(); y++) {
 			for (int x = bounds.topLeft().x(); x <= bounds.bottomRight().x(); x++) {

@@ -2,10 +2,10 @@ package com.diozero.aoc.y2021;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import org.tinylog.Logger;
 
@@ -25,7 +25,7 @@ public class Day6 extends Day {
 	@Override
 	public String part1(final Path input) throws IOException {
 		// Can't use Stream.toList() as that returns an immutable list
-		final List<AtomicInteger> ages = IntStream.of(TextParser.loadFirstLineAsCsvIntArray(input))
+		final List<AtomicInteger> ages = Arrays.stream(TextParser.loadFirstLineAsCsvIntArray(input))
 				.mapToObj(AtomicInteger::new).collect(Collectors.toList());
 
 		// Note that this solution doesn't scale to the number of days in part 2
@@ -52,7 +52,7 @@ public class Day6 extends Day {
 	@Override
 	public String part2(final Path input) throws IOException {
 		final long[] count_at_age = new long[9];
-		IntStream.of(TextParser.loadFirstLineAsCsvIntArray(input)).forEach(age -> count_at_age[age]++);
+		Arrays.stream(TextParser.loadFirstLineAsCsvIntArray(input)).forEach(age -> count_at_age[age]++);
 
 		final int days = 256;
 		for (int day = 1; day <= days; day++) {

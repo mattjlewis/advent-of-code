@@ -2,7 +2,7 @@ package com.diozero.aoc.y2019;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.stream.IntStream;
+import java.util.Arrays;
 
 import com.diozero.aoc.Day;
 import com.diozero.aoc.util.TextParser;
@@ -19,7 +19,7 @@ public class Day1 extends Day {
 
 	@Override
 	public String part1(Path input) throws IOException {
-		return Integer.toString(IntStream.of(TextParser.loadIntArray(input)).map(mass -> mass / 3 - 2).sum());
+		return Integer.toString(Arrays.stream(TextParser.loadIntArray(input)).map(mass -> mass / 3 - 2).sum());
 	}
 
 	@Override

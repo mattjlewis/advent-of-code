@@ -83,6 +83,10 @@ public record Point2D(int x, int y) {
 		return new Point2D(x + delta.x, y + delta.y);
 	}
 
+	public Point2D delta(Point2D other) {
+		return new Point2D(other.x - x, other.y - y);
+	}
+
 	public Point2D translate(CompassDirection direction) {
 		return translate(direction.delta());
 	}
@@ -112,6 +116,14 @@ public record Point2D(int x, int y) {
 	public double angleTo(Point2D other, int offset) {
 		double result = (Math.toDegrees(Math.atan2(other.y - y, other.x - x)) + offset) % 360;
 		return result < 0 ? result + 360 : result;
+	}
+
+	public Integer identity(int width) {
+		return Integer.valueOf(y * width + x);
+	}
+
+	public boolean inBounds(int x1, int y1, int x2, int y2) {
+		return !(x < x1 || y < y1 || x >= x2 || y >= y2);
 	}
 
 	@Override

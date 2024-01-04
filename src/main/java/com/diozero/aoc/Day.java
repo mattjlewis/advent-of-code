@@ -24,7 +24,7 @@ public abstract class Day implements Runnable {
 
 	@Override
 	public final void run() {
-		String s = System.getProperty("perf");
+		final String s = System.getProperty("perf");
 		boolean perf = false;
 		int iterations = 10;
 		if (s != null) {
@@ -46,10 +46,10 @@ public abstract class Day implements Runnable {
 				input = input + "_" + sample_prop;
 			}
 		}
-		Path input_folder = Path.of(String.format("src/main/resources/input/%d%s", Integer.valueOf(year),
+		final Path input_folder = Path.of(String.format("src/main/resources/input/%d%s", Integer.valueOf(year),
 				sample_prop == null ? "" : "_samples"));
-		Path input_path = input_folder.resolve(input + ".txt");
-		Path answers_path = input_folder.resolve(input + "_answers.txt");
+		final Path input_path = input_folder.resolve(input + ".txt");
+		final Path answers_path = input_folder.resolve(input + "_answers.txt");
 
 		if (sample_prop != null) {
 			System.out.format("--- %d Day %d: Working from sample data set '%s' ---%n", year, day, input);
@@ -68,9 +68,9 @@ public abstract class Day implements Runnable {
 				}
 			}
 			try {
-				long start = System.currentTimeMillis();
-				String answer = part1(input_path);
-				long duration = System.currentTimeMillis() - start;
+				final long start = System.currentTimeMillis();
+				final String answer = part1(input_path);
+				final long duration = System.currentTimeMillis() - start;
 				checkResult(1, answers, answer, duration);
 			} catch (Exception e) {
 				Logger.error(e, "Error: {}", e);
@@ -81,9 +81,9 @@ public abstract class Day implements Runnable {
 					part2(input_path);
 				}
 			}
-			long start = System.currentTimeMillis();
-			String answer = part2(input_path);
-			long duration = System.currentTimeMillis() - start;
+			final long start = System.currentTimeMillis();
+			final String answer = part2(input_path);
+			final long duration = System.currentTimeMillis() - start;
 			checkResult(2, answers, answer, duration);
 		} catch (IOException e) {
 			System.out.println("Error unable to read input '" + input_path + "'");

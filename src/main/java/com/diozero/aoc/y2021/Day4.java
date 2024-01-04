@@ -80,7 +80,7 @@ public class Day4 extends Day {
 		BingoCard card = null;
 		boolean added_to_list = false;
 		for (int i = 0; i < card_lines.length; i++) {
-			if (card_lines[i].trim().isEmpty()) {
+			if (card_lines[i].isBlank()) {
 				if (card != null) {
 					cards.add(card);
 					added_to_list = true;

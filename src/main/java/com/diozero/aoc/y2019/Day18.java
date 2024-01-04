@@ -195,8 +195,7 @@ public class Day18 extends Day {
 
 	private static GraphNode<Integer, MazeNode> getOrCreateGraphNode(Graph<Integer, MazeNode> graph, int width, int x,
 			int y, char ch) {
-		return graph.getOrPut(MazeNode.create(x, y, ch),
-				mn -> Integer.valueOf(mn.location().y() * width + mn.location().x()));
+		return graph.getOrPut(MazeNode.create(x, y, ch), mn -> mn.location().identity(width));
 	}
 
 	public static record Maze(Graph<Integer, MazeNode> graph, List<MazeNode> startingPositions,

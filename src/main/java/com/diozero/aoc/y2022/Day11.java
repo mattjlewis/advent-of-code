@@ -5,11 +5,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Deque;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.LongUnaryOperator;
-import java.util.stream.Stream;
 
 import org.hipparchus.util.ArithmeticUtils;
 
@@ -69,7 +69,7 @@ public class Day11 extends Day {
 				id = Integer.parseInt(line.substring("Monkey ".length(), line.length() - 1));
 				break;
 			case 1:
-				items = Stream.of(line.substring("  Starting items: ".length()).split(", ")).map(Long::valueOf)
+				items = Arrays.stream(line.substring("  Starting items: ".length()).split(", ")).map(Long::valueOf)
 						.toList();
 				break;
 			case 2:

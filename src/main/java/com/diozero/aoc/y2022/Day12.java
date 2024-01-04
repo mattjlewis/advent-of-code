@@ -62,8 +62,7 @@ public class Day12 extends Day {
 			GraphNode<Integer, Point2D> end = null;
 			for (int y = 0; y < height; y++) {
 				for (int x = 0; x < width; x++) {
-					final GraphNode<Integer, Point2D> node = graph.getOrPut(new Point2D(x, y),
-							p -> idFunction(p, width));
+					final GraphNode<Integer, Point2D> node = graph.getOrPut(new Point2D(x, y), p -> p.identity(width));
 					if (elevation_map[y][x] == END) {
 						end = node;
 						elevation_map[y][x] = HIGHEST_ELEVATION;
@@ -89,7 +88,7 @@ public class Day12 extends Day {
 							// Note part 2 must be done in reverse (end to start)
 							// Part 1 can be done either way so do in reverse to be compatible
 							if (getElevation(elevation_map[y][x]) - getElevation(elevation_map[dy][dx]) <= 1) {
-								node.addNeighbour(graph.getOrPut(new Point2D(dx, dy), p -> idFunction(p, width)), 1);
+								node.addNeighbour(graph.getOrPut(new Point2D(dx, dy), p -> p.identity(width)), 1);
 							}
 						}
 					}
@@ -108,10 +107,6 @@ public class Day12 extends Day {
 			// END has highest elevation 'z' hence can be reached from 'y' or 'z'
 			// Still have to deal with S/E chars despite replacing them - the dy/dx loop
 			return ch == START ? 0 : ch == END ? HIGHEST_ELEVATION - LOWEST_ELEVATION : ch - LOWEST_ELEVATION;
-		}
-
-		private static Integer idFunction(Point2D p, int width) {
-			return Integer.valueOf(p.x() + p.y() * width);
 		}
 	}
 }

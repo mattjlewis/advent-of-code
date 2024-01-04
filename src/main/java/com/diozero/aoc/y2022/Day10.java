@@ -48,7 +48,7 @@ public class Day10 extends Day {
 
 	@Override
 	public String part1(final Path input) throws IOException {
-		return Integer.toString(solve(input, Day10::getSignalStrength).mapToInt(Integer::valueOf).sum());
+		return Integer.toString(solve(input, Day10::getSignalStrength).mapToInt(Integer::intValue).sum());
 	}
 
 	private static Integer getSignalStrength(final int x, final int cycle) {
