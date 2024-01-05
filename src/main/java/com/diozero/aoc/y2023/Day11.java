@@ -35,7 +35,7 @@ public class Day11 extends Day {
 	}
 
 	private static long getShortestPathSum(Path input, int expansionRate) throws IOException {
-		final boolean[][] grid = TextParser.loadBooleanArray(input, '#');
+		final boolean[][] grid = TextParser.loadBooleanArray(input);
 		final Set<MutablePoint2D> mutable_galaxies = MatrixUtil.toMutablePoints(grid);
 
 		// Find empty rows

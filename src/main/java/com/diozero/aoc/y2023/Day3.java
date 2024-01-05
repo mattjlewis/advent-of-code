@@ -83,7 +83,7 @@ public class Day3 extends Day {
 
 	private static record Part(char part, List<Integer> numbers) {
 		public static boolean isPart(char ch) {
-			return ch != '.' && !Character.isDigit(ch);
+			return ch != TextParser.UNSET_CHAR && !Character.isDigit(ch);
 		}
 
 		public boolean isEngine() {

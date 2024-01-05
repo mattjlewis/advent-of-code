@@ -73,7 +73,7 @@ public class Day24 extends Day {
 
 	@Override
 	public String part1(Path input) throws IOException {
-		final boolean[][] bugs_matrix = TextParser.loadBooleanArray(input, '#');
+		final boolean[][] bugs_matrix = TextParser.loadBooleanArray(input);
 		final int height = bugs_matrix.length;
 		final int width = bugs_matrix[0].length;
 		if (width * height > 31) {
@@ -131,7 +131,7 @@ public class Day24 extends Day {
 
 	@Override
 	public String part2(Path input) throws IOException {
-		final boolean[][] bugs_matrix = TextParser.loadBooleanArray(input, '#');
+		final boolean[][] bugs_matrix = TextParser.loadBooleanArray(input);
 		final int height = bugs_matrix.length;
 		final int width = bugs_matrix[0].length;
 		if (height != HEIGHT || width != WIDTH) {
@@ -274,7 +274,8 @@ public class Day24 extends Day {
 		bugs.entrySet().stream().filter(e -> e.getValue().intValue() != 0)
 				.sorted(Comparator.comparingInt(Map.Entry::getKey)).forEach(e -> {
 					System.out.println("Depth " + e.getKey() + ":");
-					PrintUtil.print(MatrixUtil.convertToMatrix(e.getValue().intValue(), width, height), '#', '.');
+					PrintUtil.print(MatrixUtil.convertToMatrix(e.getValue().intValue(), width, height),
+							TextParser.SET_CHAR, TextParser.UNSET_CHAR);
 				});
 	}
 }

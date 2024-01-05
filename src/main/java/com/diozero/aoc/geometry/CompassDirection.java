@@ -51,6 +51,14 @@ public enum CompassDirection {
 		return values()[(ordinal() + 2) % values().length];
 	}
 
+	public boolean isHorizontal() {
+		return this == EAST || this == WEST;
+	}
+
+	public boolean isVertical() {
+		return this == NORTH || this == SOUTH;
+	}
+
 	public static CompassDirection fromUDLR(String udlr) {
 		return switch (udlr) {
 		case "U" -> CompassDirection.NORTH;

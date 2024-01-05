@@ -27,6 +27,7 @@ import com.diozero.aoc.algorithm.Graph;
 import com.diozero.aoc.algorithm.GraphNode;
 import com.diozero.aoc.geometry.Point2D;
 import com.diozero.aoc.util.PrintUtil;
+import com.diozero.aoc.util.TextParser;
 
 public class Day18 extends Day {
 	public static void main(String[] args) {
@@ -202,8 +203,8 @@ public class Day18 extends Day {
 			Map<Character, MazeNode> keys, Map<Character, MazeNode> doors,
 			Map<Point2D, GraphNode<Integer, MazeNode>> pointsToGraphNodeMap) {
 
-		private static final char WALL = '#';
-		private static final char FLOOR = '.';
+		private static final char WALL = TextParser.SET_CHAR;
+		private static final char FLOOR = TextParser.UNSET_CHAR;
 		private static final char ROBOT = '@';
 
 		public static Maze load(Path input, boolean part2) throws IOException {

@@ -13,7 +13,7 @@ import com.diozero.aoc.util.MatrixUtil;
 import com.diozero.aoc.util.TextParser;
 
 public class Day10 extends Day {
-	private static final char GROUND_TILE = '.';
+	private static final char GROUND_TILE = TextParser.UNSET_CHAR;
 	private static final char VERTICAL_TILE = '|';
 	private static final char HORIZONTAL_TILE = '-';
 	private static final char NE_BEND_TILE = 'L';

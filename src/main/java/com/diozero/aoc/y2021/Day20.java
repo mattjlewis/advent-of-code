@@ -70,13 +70,13 @@ public class Day20 extends Day {
 	 */
 	private static class Image {
 		public static Image create(String algorithmLine, List<String> imageRows) {
-			boolean[] algorithm = TextParser.toBooleanArray(algorithmLine, '#');
+			boolean[] algorithm = TextParser.toBooleanArray(algorithmLine);
 
 			Set<Point2D> pixels = new HashSet<>();
 			for (int y = 0; y < imageRows.size(); y++) {
 				String row = imageRows.get(y);
 				for (int x = 0; x < row.length(); x++) {
-					if (row.charAt(x) == '#') {
+					if (row.charAt(x) == TextParser.SET_CHAR) {
 						pixels.add(new Point2D(x, y));
 					}
 				}

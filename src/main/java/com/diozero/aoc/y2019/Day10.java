@@ -29,7 +29,7 @@ public class Day10 extends Day {
 
 	@Override
 	public String part1(Path input) throws IOException {
-		final Set<Point2D> asteroids = TextParser.loadPoints(input, '#');
+		final Set<Point2D> asteroids = TextParser.loadPoints(input);
 
 		return Integer.toString(asteroids.stream()
 				.mapToInt(asteroid -> getAngleColinearPoints(asteroid, asteroids).size()).max().orElseThrow());
@@ -37,7 +37,7 @@ public class Day10 extends Day {
 
 	@Override
 	public String part2(Path input) throws IOException {
-		final Set<Point2D> asteroids = TextParser.loadPoints(input, '#');
+		final Set<Point2D> asteroids = TextParser.loadPoints(input);
 		final Point2D station = asteroids.stream()
 				.max(Comparator.comparingInt(asteroid -> getAngleColinearPoints(asteroid, asteroids).size()))
 				.orElseThrow();

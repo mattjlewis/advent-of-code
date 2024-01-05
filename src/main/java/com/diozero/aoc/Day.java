@@ -6,7 +6,9 @@ import java.nio.file.Path;
 
 import org.tinylog.Logger;
 
-public abstract class Day implements Runnable {
+public abstract class Day {
+	public static final String NOT_APPLICABLE = "N/A";
+
 	private int year;
 	private int day;
 	private boolean sample;
@@ -22,8 +24,7 @@ public abstract class Day implements Runnable {
 
 	public abstract String part2(final Path input) throws IOException;
 
-	@Override
-	public final void run() {
+	public final int run() {
 		final String s = System.getProperty("perf");
 		boolean perf = false;
 		int iterations = 10;
@@ -52,10 +53,12 @@ public abstract class Day implements Runnable {
 		final Path answers_path = input_folder.resolve(input + "_answers.txt");
 
 		if (sample_prop != null) {
-			System.out.format("--- %d Day %d: Working from sample data set '%s' ---%n", year, day, input);
+			System.out.format("--- %d Day %d: Working from sample data set '%s' ---%n", Integer.valueOf(year),
+					Integer.valueOf(day), input);
 			sample = true;
 		}
 
+		int score = 0;
 		try {
 			String[] answers = null;
 			if (answers_path.toFile().canRead()) {
@@ -71,7 +74,9 @@ public abstract class Day implements Runnable {
 				final long start = System.currentTimeMillis();
 				final String answer = part1(input_path);
 				final long duration = System.currentTimeMillis() - start;
-				checkResult(1, answers, answer, duration);
+				if (checkResult(1, answers, answer, duration)) {
+					score++;
+				}
 			} catch (Exception e) {
 				Logger.error(e, "Error: {}", e);
 			}
@@ -84,28 +89,39 @@ public abstract class Day implements Runnable {
 			final long start = System.currentTimeMillis();
 			final String answer = part2(input_path);
 			final long duration = System.currentTimeMillis() - start;
-			checkResult(2, answers, answer, duration);
+			if (checkResult(2, answers, answer, duration)) {
+				score++;
+			}
 		} catch (IOException e) {
 			System.out.println("Error unable to read input '" + input_path + "'");
 		}
+
+		return score;
 	}
 
 	public final boolean isSample() {
 		return sample;
 	}
 
-	private void checkResult(int part, String[] answers, String result, long duration) {
+	private boolean checkResult(int part, String[] answers, String result, long duration) {
 		if (answers == null || answers.length < part) {
-			System.out.format("%d Day %d: '%s' part %d: %s. Duration: %dms%n", year, day, name(), part, result,
-					duration);
-		} else {
-			if (result != null && result.equals(answers[part - 1])) {
-				System.out.format("%d Day %d: '%s' part %d - Correct answer: %s. Duration: %,dms%n", year, day, name(),
-						part, result, duration);
-			} else {
-				System.out.format("WRONG! %d Day %d: '%s' part %d - Wrong answer (%s), expected: %s. Duration: %,dms%n",
-						year, day, name(), part, result, answers[part - 1], duration);
-			}
+			System.out.format("%d Day %d: '%s' part %d: %s. Duration: %dms%n", Integer.valueOf(year),
+					Integer.valueOf(day), name(), Integer.valueOf(part), result, Long.valueOf(duration));
+
+			return false;
 		}
+
+		if (result != null && result.equals(answers[part - 1])) {
+			System.out.format("%d Day %d: '%s' part %d - Correct answer: %s. Duration: %,dms%n", Integer.valueOf(year),
+					Integer.valueOf(day), name(), Integer.valueOf(part), result, Long.valueOf(duration));
+
+			return true;
+		}
+
+		System.out.format("WRONG! %d Day %d: '%s' part %d - Wrong answer (%s), expected: %s. Duration: %,dms%n",
+				Integer.valueOf(year), Integer.valueOf(day), name(), Integer.valueOf(part), result, answers[part - 1],
+				Long.valueOf(duration));
+
+		return false;
 	}
 }

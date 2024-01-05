@@ -9,8 +9,8 @@ import com.diozero.aoc.Day;
 import com.diozero.aoc.util.TextParser;
 
 public class Day3 extends Day {
-	private static final char TREE = '#';
-	private static final char BLANK = '.';
+	private static final char TREE = TextParser.SET_CHAR;
+	private static final char BLANK = TextParser.UNSET_CHAR;
 	private static final char HIT_TREE = 'X';
 	private static final char SLED = 'O';
 

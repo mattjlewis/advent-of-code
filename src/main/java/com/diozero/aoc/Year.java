@@ -11,8 +11,10 @@ public abstract class Year implements Runnable {
 
 	@Override
 	public final void run() {
-		System.out.format("--- %d '%s' ---%n", year, name());
-		IntStream.range(1, 26).mapToObj(this::instantiateDay).filter(day -> day != null).forEach(Day::run);
+		System.out.format("--- %d '%s' ---%n", Integer.valueOf(year), name());
+		final int score = IntStream.range(1, 26).mapToObj(this::instantiateDay).filter(day -> day != null)
+				.mapToInt(Day::run).sum();
+		System.out.format("--- %d '%s' : Score: %d/50 ---%n", Integer.valueOf(year), name(), Integer.valueOf(score));
 		System.out.println();
 	}
 

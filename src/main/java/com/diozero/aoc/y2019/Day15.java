@@ -28,6 +28,7 @@ import com.diozero.aoc.algorithm.dijkstra.Dijkstra;
 import com.diozero.aoc.geometry.CompassDirection;
 import com.diozero.aoc.geometry.Point2D;
 import com.diozero.aoc.util.PrintUtil;
+import com.diozero.aoc.util.TextParser;
 import com.diozero.aoc.y2019.util.IntcodeVirtualMachine;
 
 /*
@@ -86,7 +87,7 @@ public class Day15 extends Day {
 
 	private enum Tile {
 		// Note that DROID tile is only used when printing the maze
-		WALL(PrintUtil.FILLED_PIXEL), CLEAR('.'), O2_SUPPLY('O'), DROID('D');
+		WALL(PrintUtil.FILLED_PIXEL), CLEAR(TextParser.UNSET_CHAR), O2_SUPPLY('O'), DROID('D');
 
 		private final char pixel;
 

@@ -18,7 +18,14 @@ import org.tinylog.Logger;
 import com.diozero.aoc.geometry.Point2D;
 
 public class TextParser {
+	public static final char SET_CHAR = '#';
+	public static final char UNSET_CHAR = '.';
+
 	private TextParser() {
+	}
+
+	public static Set<Point2D> loadPoints(final Path input) throws IOException {
+		return loadPoints(input, SET_CHAR);
 	}
 
 	public static Set<Point2D> loadPoints(final Path input, final char ch) throws IOException {
@@ -39,11 +46,33 @@ public class TextParser {
 	}
 
 	public static boolean[][] loadBooleanArray(final Path input) throws IOException {
-		return loadBooleanArray(input, '#');
+		return loadBooleanArray(input, SET_CHAR);
 	}
 
 	public static boolean[][] loadBooleanArray(final Path input, final char ch) throws IOException {
 		return Files.lines(input).map(line -> toBooleanArray(line, ch)).toArray(boolean[][]::new);
+	}
+
+	public static boolean[][] loadBooleanArray(List<String> lines) {
+		return loadBooleanArray(lines, SET_CHAR);
+	}
+
+	public static boolean[][] loadBooleanArray(List<String> lines, final char ch) {
+		return lines.stream().map(line -> toBooleanArray(line, ch)).toArray(boolean[][]::new);
+	}
+
+	public static boolean[] toBooleanArray(final String line) {
+		return toBooleanArray(line, SET_CHAR);
+	}
+
+	public static boolean[] toBooleanArray(final String line, final char ch) {
+		final boolean[] data = new boolean[line.length()];
+
+		for (int i = 0; i < data.length; i++) {
+			data[i] = line.charAt(i) == ch ? true : false;
+		}
+
+		return data;
 	}
 
 	public static int[] loadIntArray(final Path input) throws IOException {
@@ -102,16 +131,6 @@ public class TextParser {
 
 	public static <R> List<List<R>> loadMatrix(Path input, IntFunction<R> mapper) throws IOException {
 		return Files.lines(input).map(line -> line.chars().mapToObj(i -> mapper.apply(i)).toList()).toList();
-	}
-
-	public static boolean[] toBooleanArray(final String line, final char ch) {
-		final boolean[] data = new boolean[line.length()];
-
-		for (int i = 0; i < data.length; i++) {
-			data[i] = line.charAt(i) == ch ? true : false;
-		}
-
-		return data;
 	}
 
 	public static int[] loadFirstLineAsCsvIntArray(Path input) throws IOException {

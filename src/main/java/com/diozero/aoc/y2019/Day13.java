@@ -11,6 +11,7 @@ import com.diozero.aoc.Day;
 import com.diozero.aoc.geometry.MutablePoint2D;
 import com.diozero.aoc.geometry.Point2D;
 import com.diozero.aoc.util.PrintUtil;
+import com.diozero.aoc.util.TextParser;
 import com.diozero.aoc.y2019.util.IntcodeVirtualMachine;
 
 public class Day13 extends Day {
@@ -66,7 +67,7 @@ public class Day13 extends Day {
 				return switch (tile) {
 				case EMPTY -> EMPTY_CHAR;
 				case WALL -> PrintUtil.FILLED_PIXEL;
-				case BLOCK -> '#';
+				case BLOCK -> TextParser.SET_CHAR;
 				case PADDLE -> '_';
 				case BALL -> 'o';
 				default -> throw new IllegalArgumentException("Invalid tile " + tile);

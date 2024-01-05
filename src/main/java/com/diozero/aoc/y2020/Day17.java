@@ -11,6 +11,7 @@ import org.tinylog.Logger;
 import com.diozero.aoc.Day;
 import com.diozero.aoc.geometry.Point3D;
 import com.diozero.aoc.geometry.Point4D;
+import com.diozero.aoc.util.TextParser;
 
 public class Day17 extends Day {
 	public static void main(String[] args) {
@@ -28,7 +29,7 @@ public class Day17 extends Day {
 		int y = 0;
 		for (String line : Files.readAllLines(input)) {
 			for (int x = 0; x < line.length(); x++) {
-				if (line.charAt(x) == '#') {
+				if (line.charAt(x) == TextParser.SET_CHAR) {
 					cubes.add(new Point3D(x, y, 0));
 				}
 			}
@@ -91,7 +92,7 @@ public class Day17 extends Day {
 		int y = 0;
 		for (String line : Files.readAllLines(input)) {
 			for (int x = 0; x < line.length(); x++) {
-				if (line.charAt(x) == '#') {
+				if (line.charAt(x) == TextParser.SET_CHAR) {
 					cubes.add(new Point4D(x, y, 0, 0));
 				}
 			}

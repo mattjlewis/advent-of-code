@@ -16,6 +16,7 @@ import com.diozero.aoc.geometry.CompassDirection;
 import com.diozero.aoc.geometry.Line2D;
 import com.diozero.aoc.geometry.Point2D;
 import com.diozero.aoc.util.PrintUtil;
+import com.diozero.aoc.util.TextParser;
 
 public class Day14 extends Day {
 	private static final Pattern ROCK_PATH_PATTERN = Pattern.compile("(\\d+),(\\d+)");
@@ -120,7 +121,7 @@ public class Day14 extends Day {
 
 	private static record Cave(Map<Point2D, Character> contents, int lowestRock, Optional<Integer> floorLevel) {
 
-		private static final Character ROCK = Character.valueOf('#');
+		private static final Character ROCK = Character.valueOf(TextParser.SET_CHAR);
 		private static final Character SAND = Character.valueOf('o');
 
 		public static Cave create(final List<List<Point2D>> wallStartAndEnds, boolean part1) {
@@ -150,7 +151,7 @@ public class Day14 extends Day {
 
 		public static char toChar(Character ch) {
 			return switch (ch.charValue()) {
-			case '#' -> PrintUtil.FILLED_PIXEL;
+			case TextParser.SET_CHAR -> PrintUtil.FILLED_PIXEL;
 			case 'o' -> SAND.charValue();
 			default -> PrintUtil.BLANK_PIXEL;
 			};

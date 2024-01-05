@@ -13,8 +13,8 @@ import com.diozero.aoc.util.TextParser;
 
 public class Day11 extends Day {
 	private static final char SEAT = 'L';
-	private static final char BLANK = '.';
-	private static final char OCCUPIED = '#';
+	private static final char BLANK = TextParser.UNSET_CHAR;
+	private static final char OCCUPIED = TextParser.SET_CHAR;
 
 	public static void main(String[] args) {
 		new Day11().run();

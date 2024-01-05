@@ -16,10 +16,11 @@ import java.util.regex.Pattern;
 import org.tinylog.Logger;
 
 import com.diozero.aoc.Day;
+import com.diozero.aoc.util.TextParser;
 
 public class Day20 extends Day {
-	private static final char PIXEL = '#';
-	private static final char BLANK = '.';
+	private static final char PIXEL = TextParser.SET_CHAR;
+	private static final char BLANK = TextParser.UNSET_CHAR;
 	private static final char SEA_HORSE = 'O';
 
 	public static void main(String[] args) {

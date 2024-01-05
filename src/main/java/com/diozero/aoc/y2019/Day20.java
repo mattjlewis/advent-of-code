@@ -25,6 +25,8 @@ import com.diozero.aoc.util.TextParser;
 public class Day20 extends Day {
 	private static final String ENTRANCE_PORTAL_ID = "AA";
 	private static final String EXIT_PORTAL_ID = "ZZ";
+	private static final char WALL = TextParser.SET_CHAR;
+	private static final char GROUND = TextParser.UNSET_CHAR;
 
 	public static void main(String[] args) {
 		new Day20().run();
@@ -130,23 +132,23 @@ public class Day20 extends Day {
 
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				if (maze[y][x] == ' ' || maze[y][x] == '#') {
+				if (maze[y][x] == ' ' || maze[y][x] == WALL) {
 					continue;
 				}
 
 				final GraphNode<Integer, Point2D> node = graph.getOrPut(new Point2D(x, y), p -> p.identity(width));
 
-				if (maze[y][x] == '.') {
+				if (maze[y][x] == GROUND) {
 					// Look for neighbours
 					for (int dy = Math.max(0, y - 1); dy <= Math.min(height - 1, y + 1); dy++) {
 						for (int dx = Math.max(0, x - 1); dx <= Math.min(height - 1, x + 1); dx++) {
 							if ((dy == y && dx == x) || (dy != y && dx != x) || maze[dy][dx] == ' '
-									|| maze[dy][dx] == '#') {
+									|| maze[dy][dx] == WALL) {
 								continue;
 							}
 
 							// Blank spaces or portals
-							if (maze[dy][dx] == '.') {
+							if (maze[dy][dx] == GROUND) {
 								node.addNeighbour(graph.getOrPut(new Point2D(dx, dy), p -> p.identity(width)), 1);
 							} else {
 								// A portal gateway - need to find the other part
@@ -193,8 +195,8 @@ public class Day20 extends Day {
 		String id = null;
 		a: for (int dy = Math.max(0, y - 1); dy <= Math.min(maze.length - 1, y + 1); dy++) {
 			for (int dx = Math.max(0, x - 1); dx <= Math.min(maze[0].length - 1, x + 1); dx++) {
-				if ((dy == y && dx == x) || (dy != y && dx != x) || maze[dy][dx] == ' ' || maze[dy][dx] == '#'
-						|| maze[dy][dx] == '.') {
+				if ((dy == y && dx == x) || (dy != y && dx != x) || maze[dy][dx] == ' ' || maze[dy][dx] == WALL
+						|| maze[dy][dx] == GROUND) {
 					continue;
 				}
 
@@ -218,13 +220,13 @@ public class Day20 extends Day {
 		// Inner if there is a '#' or '.' to the left and right
 		// Search right
 		for (int dx = x + 1; dx < maze[0].length && !inner; dx++) {
-			inner = maze[y][dx] == '#' || maze[y][dx] == '.';
+			inner = maze[y][dx] == WALL || maze[y][dx] == GROUND;
 		}
 		if (inner) {
 			inner = false;
 			// Search left
 			for (int dx = x - 1; dx >= 0 && !inner; dx--) {
-				inner = maze[y][dx] == '#' || maze[y][dx] == '.';
+				inner = maze[y][dx] == WALL || maze[y][dx] == GROUND;
 			}
 		}
 

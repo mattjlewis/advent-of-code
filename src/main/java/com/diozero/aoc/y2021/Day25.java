@@ -9,11 +9,12 @@ import org.tinylog.Logger;
 import com.diozero.aoc.Day;
 import com.diozero.aoc.util.MatrixUtil;
 import com.diozero.aoc.util.PrintUtil;
+import com.diozero.aoc.util.TextParser;
 
 public class Day25 extends Day {
 	private static final char EAST = '>';
 	private static final char SOUTH = 'v';
-	private static final char SPACE = '.';
+	private static final char SPACE = TextParser.UNSET_CHAR;
 
 	public static void main(String[] args) {
 		new Day25().run();
@@ -100,6 +101,6 @@ public class Day25 extends Day {
 
 	@Override
 	public String part2(Path input) throws IOException {
-		return "";
+		return Day.NOT_APPLICABLE;
 	}
 }

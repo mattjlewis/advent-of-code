@@ -24,6 +24,7 @@ import com.diozero.aoc.geometry.Line2D;
 import com.diozero.aoc.geometry.Point2D;
 import com.diozero.aoc.util.FunctionUtil;
 import com.diozero.aoc.util.PrintUtil;
+import com.diozero.aoc.util.TextParser;
 import com.diozero.aoc.y2019.util.IntcodeVirtualMachine;
 
 public class Day17 extends Day {
@@ -119,25 +120,25 @@ public class Day17 extends Day {
 
 		return switch (robotDirection) {
 		case NORTH -> switch (lineDirection) {
-			case EAST -> Turn.RIGHT;
-			case WEST -> Turn.LEFT;
-			default -> throw new IllegalArgumentException();
-			};
+		case EAST -> Turn.RIGHT;
+		case WEST -> Turn.LEFT;
+		default -> throw new IllegalArgumentException();
+		};
 		case EAST -> switch (lineDirection) {
-			case SOUTH -> Turn.RIGHT;
-			case NORTH -> Turn.LEFT;
-			default -> throw new IllegalArgumentException();
-			};
+		case SOUTH -> Turn.RIGHT;
+		case NORTH -> Turn.LEFT;
+		default -> throw new IllegalArgumentException();
+		};
 		case SOUTH -> switch (lineDirection) {
-			case WEST -> Turn.RIGHT;
-			case EAST -> Turn.LEFT;
-			default -> throw new IllegalArgumentException();
-			};
+		case WEST -> Turn.RIGHT;
+		case EAST -> Turn.LEFT;
+		default -> throw new IllegalArgumentException();
+		};
 		case WEST -> switch (lineDirection) {
-			case NORTH -> Turn.RIGHT;
-			case SOUTH -> Turn.LEFT;
-			default -> throw new IllegalArgumentException();
-			};
+		case NORTH -> Turn.RIGHT;
+		case SOUTH -> Turn.LEFT;
+		default -> throw new IllegalArgumentException();
+		};
 		default -> throw new IllegalArgumentException();
 		};
 	}
@@ -157,13 +158,13 @@ public class Day17 extends Day {
 
 			for (int x = 0; x < line.length(); x++) {
 				char ch = line.charAt(x);
-				if (ch == '.') {
+				if (ch == TextParser.UNSET_CHAR) {
 					continue;
 				}
 
 				final Point2D pos = new Point2D(x, y);
 				points.add(pos);
-				if (ch != '#') {
+				if (ch != TextParser.SET_CHAR) {
 					robot_direction = ROBOT_DIRECTIONS.get(Character.valueOf(ch));
 					robot_pos = pos;
 				}
@@ -245,9 +246,9 @@ public class Day17 extends Day {
 		@Override
 		public void accept(long value) {
 			char ch = (char) value;
-			if (ch != '\n' && ch != '.' && ch != '#' && ch != '<' && ch != '>' && ch != '^' && ch != 'v') {
-				Logger.trace("Got value {}", value);
-				spaceDust.add(value);
+			if (ch != '\n' && ch != TextParser.UNSET_CHAR && ch != TextParser.SET_CHAR && ch != '<' && ch != '>'
+					&& ch != '^' && ch != 'v') {
+				spaceDust.add(Long.valueOf(value));
 			} else if (Logger.isDebugEnabled()) {
 				System.out.print(ch);
 			}
