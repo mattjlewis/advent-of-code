@@ -45,7 +45,7 @@ public class Day8 extends Day {
 								.iterate(new NodeWithDirectionIterator(map, start_node),
 										NodeWithDirectionIterator::isNotEnd, NodeWithDirectionIterator::iterate)
 								.count())
-						.reduce((a, b) -> ArithmeticUtils.lcm(a, b)).orElseThrow());
+						.reduce(1, ArithmeticUtils::lcm));
 	}
 
 	public static record SandstormMap(CircularLinkedList<Direction> directions, Map<String, Node> nodes) {

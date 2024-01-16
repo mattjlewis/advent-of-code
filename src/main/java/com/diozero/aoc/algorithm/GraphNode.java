@@ -117,7 +117,7 @@ public class GraphNode<K, V> implements Comparable<GraphNode<K, V>> {
 		return stack;
 	}
 
-	public static record Neighbour<K, V> (GraphNode<K, V> node, int cost) {
+	public static record Neighbour<K, V>(GraphNode<K, V> node, int cost) {
 		//
 	}
 }

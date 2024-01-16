@@ -113,14 +113,14 @@ public class Day16 extends Day {
 		public Stream<Beam> next(final Beam beam) {
 			final Deflector deflector = deflectors.get(beam.location);
 			if (deflector == null) {
-				final Point2D next_location = beam.location.translate(beam.direction);
+				final Point2D next_location = beam.location.move(beam.direction);
 				if (!next_location.inBounds(0, 0, width, height)) {
 					return Stream.empty();
 				}
 				return Stream.of(new Beam(next_location, beam.direction));
 			}
 
-			return deflector.next(beam.direction).map(dir -> new Beam(beam.location.translate(dir), dir))
+			return deflector.next(beam.direction).map(dir -> new Beam(beam.location.move(dir), dir))
 					.filter(b -> b.location.inBounds(0, 0, width, height));
 		}
 

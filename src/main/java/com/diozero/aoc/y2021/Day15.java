@@ -182,10 +182,6 @@ public class Day15 extends Day {
 		return Integer.toString(end_node.cost());
 	}
 
-	private static Integer idFunction(Point2D p, int width) {
-		return Integer.valueOf(p.x() + p.y() * width);
-	}
-
 	private static Graph<Integer, Point2D> buildGraph(int[][] costMatrix) {
 		final int width = costMatrix[0].length;
 		final int height = costMatrix.length;
@@ -197,7 +193,7 @@ public class Day15 extends Day {
 			for (int x = 0; x < width; x++) {
 				final Point2D cell = new Point2D(x, y);
 
-				final GraphNode<Integer, Point2D> node = graph.getOrPut(cell, p -> idFunction(p, width));
+				final GraphNode<Integer, Point2D> node = graph.getOrPut(cell, p -> p.identity(width));
 
 				// The end node has no onward connections
 				if (y == height - 1 && x == width - 1) {
@@ -209,7 +205,7 @@ public class Day15 extends Day {
 					for (int dx = Math.max(0, x - 1); dx <= Math.min(width - 1, x + 1); dx++) {
 						// No diagonals
 						if ((x != dx || y != dy) && (x == dx || y == dy)) {
-							node.addNeighbour(graph.getOrPut(new Point2D(dx, dy), p -> idFunction(p, width)),
+							node.addNeighbour(graph.getOrPut(new Point2D(dx, dy), p -> p.identity(width)),
 									costMatrix[dy][dx]);
 						}
 					}

@@ -34,6 +34,10 @@ public final class SetUtil {
 		return a.stream().filter(b::contains).count();
 	}
 
+	public static <E> boolean intersects(final Set<E> a, final Set<E> b) {
+		return a.stream().anyMatch(b::contains);
+	}
+
 	public static <E> void addOrRemove(final Set<E> set, final E e) {
 		if (set.contains(e)) {
 			set.remove(e);

@@ -37,6 +37,11 @@ public record Point3D(int x, int y, int z) {
 		}
 	}
 
+	public static Point3D parse(String s) {
+		final String[] parts = s.split(",");
+		return new Point3D(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), Integer.parseInt(parts[2]));
+	}
+
 	public Point3D delta(Point3D other) {
 		return new Point3D(other.x - x, other.y - y, other.z - z);
 	}
@@ -47,6 +52,14 @@ public record Point3D(int x, int y, int z) {
 
 	public Point3D translate(Point3D delta) {
 		return new Point3D(delta.x + x, delta.y + y, delta.z + z);
+	}
+
+	public Point3D translate(Axis axis, int amount) {
+		return switch (axis) {
+		case X -> new Point3D(x + amount, y, z);
+		case Y -> new Point3D(x, y + amount, z);
+		case Z -> new Point3D(x, y, z + amount);
+		};
 	}
 
 	public boolean isAdjacentTo(Point3D other) {

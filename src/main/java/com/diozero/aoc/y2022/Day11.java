@@ -29,7 +29,7 @@ public class Day11 extends Day {
 	public String part1(final Path input) throws IOException {
 		final List<Monkey> monkeys = load(input);
 		// Note LCM not technically needed for part 1
-		final long lcm = monkeys.stream().mapToLong(Monkey::divisor).reduce(1, (a, b) -> ArithmeticUtils.lcm(a, b));
+		final long lcm = monkeys.stream().mapToLong(Monkey::divisor).reduce(1, ArithmeticUtils::lcm);
 
 		for (int round = 1; round <= 20; round++) {
 			monkeys.forEach(monkey -> monkey.step(monkeys, 3, lcm));
@@ -43,7 +43,7 @@ public class Day11 extends Day {
 	public String part2(final Path input) throws IOException {
 		final List<Monkey> monkeys = load(input);
 		// Need the lcm of all divisors to prevent worry level number overflow
-		final long lcm = monkeys.stream().mapToLong(Monkey::divisor).reduce(1, (a, b) -> ArithmeticUtils.lcm(a, b));
+		final long lcm = monkeys.stream().mapToLong(Monkey::divisor).reduce(1, ArithmeticUtils::lcm);
 
 		for (int round = 1; round <= 10_000; round++) {
 			monkeys.forEach(monkey -> monkey.step(monkeys, 1, lcm));

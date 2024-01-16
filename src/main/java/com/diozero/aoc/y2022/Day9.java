@@ -51,7 +51,7 @@ public class Day9 extends Day {
 		public static Move parse(String line) {
 			final String[] parts = line.split(" ");
 
-			return new Move(CompassDirection.fromUDLR(parts[0]), Integer.parseInt(parts[1]));
+			return new Move(CompassDirection.fromUdlr(parts[0]), Integer.parseInt(parts[1]));
 		}
 	}
 

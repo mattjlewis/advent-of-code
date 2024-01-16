@@ -59,13 +59,23 @@ public enum CompassDirection {
 		return this == NORTH || this == SOUTH;
 	}
 
-	public static CompassDirection fromUDLR(String udlr) {
+	public static CompassDirection fromUdlr(String udlr) {
 		return switch (udlr) {
 		case "U" -> CompassDirection.NORTH;
 		case "D" -> CompassDirection.SOUTH;
 		case "L" -> CompassDirection.WEST;
 		case "R" -> CompassDirection.EAST;
-		default -> throw new IllegalArgumentException();
+		default -> throw new IllegalArgumentException("Invalid UDLR value '" + udlr + "'");
+		};
+	}
+
+	public static CompassDirection fromUdlrSwapped(String udlr) {
+		return switch (udlr) {
+		case "U" -> CompassDirection.SOUTH;
+		case "D" -> CompassDirection.NORTH;
+		case "L" -> CompassDirection.WEST;
+		case "R" -> CompassDirection.EAST;
+		default -> throw new IllegalArgumentException("Invalid UDLR value '" + udlr + "'");
 		};
 	}
 }

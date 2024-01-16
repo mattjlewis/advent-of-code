@@ -92,7 +92,7 @@ public class Day11 extends Day {
 					direction = direction.turnRight90();
 				}
 
-				position = position.translate(direction);
+				position = position.move(direction);
 			}
 
 			updateIndex++;

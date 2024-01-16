@@ -1,5 +1,7 @@
 package com.diozero.aoc.geometry;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -72,5 +74,15 @@ public class Point2DTest {
 		other = new Point2D(3, 4);
 		Assertions.assertEquals(5, other.distance(origin));
 		Assertions.assertEquals(5, origin.distance(other));
+	}
+
+	@Test
+	public void areaTest() {
+		System.out.println(Point2D.area(List.of(new Point2D(1, 6), new Point2D(3, 1), new Point2D(7, 2),
+				new Point2D(4, 4), new Point2D(8, 5))));
+		System.out.println(Point2D.area(
+				List.of(new Point2D(0, 0), new Point2D(6, 0), new Point2D(6, 5), new Point2D(4, 5), new Point2D(4, 7),
+						new Point2D(6, 7), new Point2D(6, 9), new Point2D(1, 9), new Point2D(1, 7), new Point2D(0, 7),
+						new Point2D(0, 5), new Point2D(2, 5), new Point2D(2, 2), new Point2D(0, 2))));
 	}
 }

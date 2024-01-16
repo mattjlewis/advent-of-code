@@ -169,6 +169,24 @@ public class MatrixUtil {
 		return matrix;
 	}
 
+	public static char[][] toCharMatrix(Set<Point2D> points) {
+		return toCharMatrix(points, TextParser.SET_CHAR, TextParser.UNSET_CHAR);
+	}
+
+	public static char[][] toCharMatrix(Set<Point2D> points, char setChar, char unsetChar) {
+		final Rectangle bounds = Point2D.getBounds(points);
+		final char[][] matrix = new char[bounds.height()][bounds.width()];
+		for (int y = 0; y < matrix.length; y++) {
+			for (int x = 0; x < matrix[0].length; x++) {
+				matrix[y][x] = points.contains(new Point2D(bounds.topLeft().x() + x, bounds.topLeft().y() + y))
+						? setChar
+						: unsetChar;
+			}
+		}
+
+		return matrix;
+	}
+
 	public static Optional<Point2D> find(char[][] grid, char ch) {
 		for (int y = 0; y < grid.length; y++) {
 			for (int x = 0; x < grid[0].length; x++) {
@@ -203,32 +221,13 @@ public class MatrixUtil {
 			grid[curr.y()][curr.x()] = newValue;
 
 			for (CompassDirection dir : CompassDirection.NESW) {
-				final Point2D next = curr.translate(dir);
+				final Point2D next = curr.move(dir);
 				if (!visited.contains(next) && isValid(grid, next.x(), next.y(), previousValue)) {
 					visited.add(next);
 					queue.add(next);
 				}
 			}
 		}
-	}
-
-	/*
-	 * A recursive function to replace the previous value at (x, y) and all
-	 * surrounding values of (x, y) with the new value.
-	 */
-	private static void floodFillRecursive(char grid[][], int x, int y, char previousValue, char newValue) {
-		if (!isValid(grid, x, y, previousValue)) {
-			return;
-		}
-
-		// Replace the value at (x, y)
-		grid[y][x] = newValue;
-
-		// Recurse east, west, south and north
-		floodFillRecursive(grid, x + 1, y, previousValue, newValue);
-		floodFillRecursive(grid, x - 1, y, previousValue, newValue);
-		floodFillRecursive(grid, x, y + 1, previousValue, newValue);
-		floodFillRecursive(grid, x, y - 1, previousValue, newValue);
 	}
 
 	private static boolean isValid(char[][] grid, int x, int y, char previousValue) {

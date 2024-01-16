@@ -300,7 +300,7 @@ public class Day15 extends Day {
 		 */
 		private List<CompassDirection> getUnexploredDirections(Set<Point2D> visited) throws InterruptedException {
 			final List<CompassDirection> directions = getValidDirections();
-			directions.removeIf(direction -> visited.contains(droidPosition.translate(direction)));
+			directions.removeIf(direction -> visited.contains(droidPosition.move(direction)));
 			return directions;
 		}
 
@@ -320,7 +320,7 @@ public class Day15 extends Day {
 
 			// Try to move in each direction to discover what is there
 			for (CompassDirection direction : DIRECTION_MAPPING.keySet()) {
-				final Point2D target_pos = droidPosition.translate(direction);
+				final Point2D target_pos = droidPosition.move(direction);
 
 				GraphNode<String, Point2D> neighbour_node = graph.get(target_pos.toString());
 				Tile target_tile = map.get(target_pos);
@@ -370,7 +370,7 @@ public class Day15 extends Day {
 			// Consume and ignore the output as we know what it is
 			responses.take();
 			// Update the droid's position and direction
-			droidPosition = droidPosition.translate(direction);
+			droidPosition = droidPosition.move(direction);
 			droidDirection = direction;
 			// Mark this position as visited
 			visited.add(droidPosition);

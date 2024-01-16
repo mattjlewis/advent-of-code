@@ -87,8 +87,12 @@ public record Point2D(int x, int y) {
 		return new Point2D(other.x - x, other.y - y);
 	}
 
-	public Point2D translate(CompassDirection direction) {
+	public Point2D move(CompassDirection direction) {
 		return translate(direction.delta());
+	}
+
+	public Point2D move(CompassDirection direction, int amount) {
+		return translate(direction.delta().scale(amount));
 	}
 
 	public Point2D translate(List<Point2D> deltas) {
@@ -124,6 +128,21 @@ public record Point2D(int x, int y) {
 
 	public boolean inBounds(int x1, int y1, int x2, int y2) {
 		return !(x < x1 || y < y1 || x >= x2 || y >= y2);
+	}
+
+	public static long area(List<Point2D> vertices) {
+		// Shoelace theorem: https://en.wikipedia.org/wiki/Shoelace_formula
+
+		long shoelace_area = 0;
+		long boundaries = 0;
+		for (int i = 0; i < vertices.size(); i++) {
+			final Point2D a = vertices.get(i);
+			final Point2D b = vertices.get((i + 1) % vertices.size());
+			shoelace_area += a.x * (long) b.y - b.x * (long) a.y;
+			boundaries += a.manhattanDistance(b);
+		}
+
+		return (shoelace_area + boundaries) / 2 + 1;
 	}
 
 	@Override

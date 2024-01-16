@@ -187,7 +187,7 @@ public class Day17 extends Day {
 		CompassDirection current_dir = null;
 		do {
 			// Direction not set or changed?
-			if (current_dir == null || !points.contains(current_pos.translate(current_dir))) {
+			if (current_dir == null || !points.contains(current_pos.move(current_dir))) {
 				// Find the new direction
 				CompassDirection new_direction = null;
 				for (CompassDirection dir : ROBOT_DIRECTIONS.values()) {
@@ -196,7 +196,7 @@ public class Day17 extends Day {
 						continue;
 					}
 
-					if (points.contains(current_pos.translate(dir))) {
+					if (points.contains(current_pos.move(dir))) {
 						new_direction = dir;
 						break;
 					}
@@ -216,7 +216,7 @@ public class Day17 extends Day {
 				current_dir = new_direction;
 			}
 
-			current_pos = current_pos.translate(current_dir);
+			current_pos = current_pos.move(current_dir);
 		} while (true);
 
 		return new ShipScaffolding(path, robot_pos, robot_direction);

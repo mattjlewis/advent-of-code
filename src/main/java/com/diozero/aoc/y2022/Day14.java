@@ -68,7 +68,7 @@ public class Day14 extends Day {
 					break;
 				}
 
-				Point2D p = sand_pos.translate(DOWN);
+				Point2D p = sand_pos.move(DOWN);
 
 				// Have we reached floor level? (part 2 only)
 				if (cave.hasReachedFloor(p)) {
@@ -85,14 +85,14 @@ public class Day14 extends Day {
 				}
 
 				// ... else is there space down and left?
-				p = sand_pos.translate(DOWN_LEFT);
+				p = sand_pos.move(DOWN_LEFT);
 				if (!cave.contains(p)) {
 					sand_pos = p;
 					continue;
 				}
 
 				// ... else is there space down and right?
-				p = sand_pos.translate(DOWN_RIGHT);
+				p = sand_pos.move(DOWN_RIGHT);
 				if (!cave.contains(p)) {
 					sand_pos = p;
 					continue;
