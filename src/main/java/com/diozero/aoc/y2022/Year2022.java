@@ -9,6 +9,6 @@ public class Year2022 extends Year {
 
 	@Override
 	public String name() {
-		return "Santa's reindeer";
+		return "Santa's Reindeer";
 	}
 }

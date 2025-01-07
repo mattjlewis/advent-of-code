@@ -25,7 +25,7 @@ public class Day25 extends Day {
 
 	@Override
 	public String part2(Path input) throws IOException {
-		return "";
+		return Day.NOT_APPLICABLE;
 	}
 
 	private static long fromSnafu(String s) {

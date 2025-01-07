@@ -107,18 +107,19 @@ public abstract class Day {
 	}
 
 	private boolean checkResult(int part, String[] answers, String result, long duration) {
+		if (result != null && day == 25 && part == 2 && result.equals(NOT_APPLICABLE)
+				|| answers != null && result != null && result.equals(answers[part - 1])) {
+			System.out.format("%d Day %d: '%s' part %d - Correct answer: %s. Duration: %,dms%n", Integer.valueOf(year),
+					Integer.valueOf(day), name(), Integer.valueOf(part), result, Long.valueOf(duration));
+
+			return true;
+		}
+
 		if (answers == null || answers.length < part) {
 			System.out.format("%d Day %d: '%s' part %d: %s. Duration: %dms%n", Integer.valueOf(year),
 					Integer.valueOf(day), name(), Integer.valueOf(part), result, Long.valueOf(duration));
 
 			return false;
-		}
-
-		if (result != null && result.equals(answers[part - 1])) {
-			System.out.format("%d Day %d: '%s' part %d - Correct answer: %s. Duration: %,dms%n", Integer.valueOf(year),
-					Integer.valueOf(day), name(), Integer.valueOf(part), result, Long.valueOf(duration));
-
-			return true;
 		}
 
 		System.out.format("WRONG! %d Day %d: '%s' part %d - Wrong answer (%s), expected: %s. Duration: %,dms%n",

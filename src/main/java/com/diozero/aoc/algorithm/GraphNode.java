@@ -117,7 +117,7 @@ public class GraphNode<K, V> implements Comparable<GraphNode<K, V>> {
 	public void addAltParent(GraphNode<K, V> node) {
 		altParents.add(node);
 	}
-	
+
 	public Collection<GraphNode<K, V>> altParents() {
 		return altParents;
 	}
@@ -125,7 +125,8 @@ public class GraphNode<K, V> implements Comparable<GraphNode<K, V>> {
 	@Override
 	public String toString() {
 		return new StringJoiner(", ", GraphNode.class.getSimpleName() + "[", "]").add("id=" + id).add("value=" + value)
-				.add("parent.id=" + (parent == null ? "null" : parent.id)).add("cost=" + cost).toString();
+				.add("parent.id=" + (parent == null ? "null" : parent.id)).add("cost=" + cost)
+				.add("neighbours=" + neighbours.size()).toString();
 	}
 
 	public Deque<V> path() {

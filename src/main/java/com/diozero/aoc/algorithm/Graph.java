@@ -44,6 +44,10 @@ public class Graph<K extends Comparable<K>, V> {
 		return getOrPut(idFunction.apply(value), value);
 	}
 
+	public GraphNode<K, V> remove(K id) {
+		return nodes.remove(id);
+	}
+
 	public Collection<GraphNode<K, V>> nodes() {
 		return nodes.values();
 	}
