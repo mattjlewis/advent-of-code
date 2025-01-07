@@ -12,8 +12,7 @@ import java.util.Set;
 import java.util.function.IntFunction;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
-
-import org.tinylog.Logger;
+import java.util.stream.Stream;
 
 import com.diozero.aoc.geometry.Point2D;
 
@@ -29,7 +28,7 @@ public class TextParser {
 	}
 
 	public static Set<Point2D> loadPoints(final Path input, final char ch) throws IOException {
-		Set<Point2D> points = new HashSet<>();
+		final Set<Point2D> points = new HashSet<>();
 
 		final Iterator<String> it = Files.lines(input).iterator();
 		for (int y = 0; it.hasNext(); y++) {
@@ -109,24 +108,26 @@ public class TextParser {
 	}
 
 	public static int[][] loadIntMatrix(final Path input) throws IOException {
-		// Note the lazy conversion from ASCII character code to integer
-		final int[][] matrix = Files.lines(input).map(line -> line.chars().map(TextParser::charToInt).toArray())
-				.toArray(int[][]::new);
+		return loadIntMatrix(input, false);
+	}
 
-		if (Logger.isDebugEnabled()) {
-			// Print the matrix if not too big
-			if (matrix.length < 20) {
-				for (int[] row : matrix) {
-					Logger.debug("matrix: {}", Arrays.toString(row));
-				}
-			}
+	public static int[][] loadIntMatrix(final Path input, boolean spaces) throws IOException {
+		if (!spaces) {
+			// Note the lazy conversion from ASCII character code to integer
+			return Files.lines(input).map(line -> line.chars().map(TextParser::charToInt).toArray())
+					.toArray(int[][]::new);
 		}
 
-		return matrix;
+		return Files.lines(input).map(line -> Arrays.stream(line.split("\\s+")).mapToInt(Integer::parseInt).toArray())
+				.toArray(int[][]::new);
 	}
 
 	public static char[][] loadCharMatrix(Path input) throws IOException {
-		return Files.lines(input).map(String::toCharArray).toArray(char[][]::new);
+		return loadCharMatrix(Files.lines(input));
+	}
+
+	public static char[][] loadCharMatrix(Stream<String> lines) {
+		return lines.map(String::toCharArray).toArray(char[][]::new);
 	}
 
 	public static <R> List<List<R>> loadMatrix(Path input, IntFunction<R> mapper) throws IOException {

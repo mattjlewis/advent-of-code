@@ -46,4 +46,12 @@ public class StringUtil {
 	public static String substring(String s, int start, int end) {
 		return s.substring(start, end > s.length() ? s.length() : end);
 	}
+
+	public static String toString(char... chars) {
+		return new String(chars);
+	}
+
+	public static String repeat(char ch, int count) {
+		return IntStream.range(0, count).mapToObj(i -> Character.toString(ch)).collect(Collectors.joining());
+	}
 }

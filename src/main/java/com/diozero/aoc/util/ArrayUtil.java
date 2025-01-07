@@ -69,6 +69,12 @@ public class ArrayUtil {
 		}));
 	}
 
+	public static <T> Stream<Tuple2<T, T>> pairCombinations(List<T> values) {
+		return IntStream.range(0, values.size() - 1).boxed()
+				.flatMap(i -> IntStream.range(i.intValue() + 1, values.size())
+						.mapToObj(j -> new Tuple2<>(values.get(i.intValue()), values.get(j))));
+	}
+
 	public static int[] repeat(int[] array, int repetitions) {
 		final int length = array.length;
 		final int new_length = repetitions * length;

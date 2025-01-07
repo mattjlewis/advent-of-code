@@ -111,6 +111,8 @@ public class Dijkstra {
 						closed_nodes.remove(next.id());
 						open_nodes.offer(next);
 					}
+				} else if (new_cost == next.cost()) {
+					next.addAltParent(current);
 				}
 			});
 

@@ -50,7 +50,10 @@ public abstract class Day {
 		final Path input_folder = Path.of(String.format("src/main/resources/input/%d%s", Integer.valueOf(year),
 				sample_prop == null ? "" : "_samples"));
 		final Path input_path = input_folder.resolve(input + ".txt");
-		final Path answers_path = input_folder.resolve(input + "_answers.txt");
+		Path answers_path = input_folder.resolve(input + "_answers.txt");
+		if (!Files.isReadable(answers_path)) {
+			answers_path = input_folder.resolve("answers_" + input + ".txt");
+		}
 
 		if (sample_prop != null) {
 			System.out.format("--- %d Day %d: Working from sample data set '%s' ---%n", Integer.valueOf(year),

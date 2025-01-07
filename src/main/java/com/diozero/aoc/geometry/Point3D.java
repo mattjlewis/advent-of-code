@@ -39,7 +39,12 @@ public record Point3D(int x, int y, int z) {
 
 	public static Point3D parse(String s) {
 		final String[] parts = s.split(",");
-		return new Point3D(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), Integer.parseInt(parts[2]));
+		return new Point3D(Integer.parseInt(parts[0].trim()), Integer.parseInt(parts[1].trim()),
+				Integer.parseInt(parts[2].trim()));
+	}
+
+	public Point3D(Point2D p, int z) {
+		this(p.x(), p.y(), z);
 	}
 
 	public Point3D delta(Point3D other) {

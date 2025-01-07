@@ -2,13 +2,12 @@ package com.diozero.aoc.y2023;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Set;
+import java.util.List;
 
 import com.diozero.aoc.Day;
 import com.diozero.aoc.algorithm.Graph;
 import com.diozero.aoc.algorithm.GraphNode;
 import com.diozero.aoc.geometry.Point2D;
-import com.diozero.aoc.util.PrintUtil;
 import com.diozero.aoc.util.TextParser;
 
 public class Day23 extends Day {
@@ -30,17 +29,28 @@ public class Day23 extends Day {
 
 	@Override
 	public String part1(final Path input) throws IOException {
+		final Day23.Maze maze = Day23.load(input, true);
+		return Integer.toString(maze.graph().longestPath(maze.start(), maze.end()));
+	}
+
+	@Override
+	public String part2(final Path input) throws IOException {
+		final Day23.Maze maze = Day23.load(input, false);
+		return Integer.toString(maze.graph().longestPath(maze.start(), maze.end()));
+	}
+
+	static Maze load(Path input, boolean slipperySlopes) throws IOException {
 		final char[][] maze = TextParser.loadCharMatrix(input);
 		final int width = maze[0].length;
 		final int height = maze.length;
 
-		GraphNode<Integer, Point2D> start = null;
-		GraphNode<Integer, Point2D> end = null;
-		final Graph<Integer, Point2D> graph = new Graph<>();
+		GraphNode<String, Point2D> start = null;
+		GraphNode<String, Point2D> end = null;
+		final Graph<String, Point2D> graph = new Graph<>();
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				if (maze[y][x] != WALL) {
-					final GraphNode<Integer, Point2D> node = graph.getOrPut(new Point2D(x, y), p -> p.identity(width));
+					final GraphNode<String, Point2D> node = graph.getOrPut(new Point2D(x, y), Point2D::toString);
 					if (y == 0) {
 						start = node;
 					} else if (y == maze.length - 1) {
@@ -55,24 +65,28 @@ public class Day23 extends Day {
 								continue;
 							}
 
-							// If currently on GROUND, can move any non-wall direction
-							if (maze[y][x] == GROUND // Can move any direction when on ground
-									|| maze[y][x] == SLOPE_RIGHT && dx > x // Must go right when on >
-									|| maze[y][x] == SLOPE_LEFT && dx < x // Must go left when on <
-									|| maze[y][x] == SLOPE_UP && dy < y // Must go up when on ^
-									|| maze[y][x] == SLOPE_DOWN && dy > y // Must go down when on v
-							) {
-								// Cannot move right to '<' slope
-								// Cannot move 'up' to 'v' slope
-								// Cannot move 'down' to '^' slope
-								if (maze[dy][dx] == GROUND //
-										|| maze[dy][dx] == SLOPE_RIGHT && dx > x // Can only move right to '>' slope
-										|| maze[dy][dx] == SLOPE_LEFT && dx < x // Can only move left to '<' slope
-										|| maze[dy][dx] == SLOPE_UP && dy < y // Can only move up to '^' slope
-										|| maze[dy][dx] == SLOPE_DOWN && dy > y // Can only move up to '^' slope
+							if (slipperySlopes) {
+								// If currently on GROUND, can move in any non-wall direction
+								if (maze[y][x] == GROUND // Can move in any direction when on ground
+										|| maze[y][x] == SLOPE_RIGHT && dx > x // Must go right when on >
+										|| maze[y][x] == SLOPE_LEFT && dx < x // Must go left when on <
+										|| maze[y][x] == SLOPE_UP && dy < y // Must go up when on ^
+										|| maze[y][x] == SLOPE_DOWN && dy > y // Must go down when on v
 								) {
-									node.addNeighbour(graph.getOrPut(new Point2D(dx, dy), p -> p.identity(width)), 1);
+									// Cannot move right to '<' slope
+									// Cannot move 'up' to 'v' slope
+									// Cannot move 'down' to '^' slope
+									if (maze[dy][dx] == GROUND //
+											|| maze[dy][dx] == SLOPE_RIGHT && dx > x // Can only move right to '>' slope
+											|| maze[dy][dx] == SLOPE_LEFT && dx < x // Can only move left to '<' slope
+											|| maze[dy][dx] == SLOPE_UP && dy < y // Can only move up to '^' slope
+											|| maze[dy][dx] == SLOPE_DOWN && dy > y // Can only move up to '^' slope
+									) {
+										node.addNeighbour(graph.getOrPut(new Point2D(dx, dy), Point2D::toString), 1);
+									}
 								}
+							} else {
+								node.addNeighbour(graph.getOrPut(new Point2D(dx, dy), Point2D::toString), 1);
 							}
 						}
 					}
@@ -81,34 +95,16 @@ public class Day23 extends Day {
 		}
 
 		if (start == null || end == null) {
-			throw new IllegalStateException("Unable to find start or end");
+			throw new IllegalStateException();
 		}
 
-		PrintUtil.print(graph.nodes().stream().map(GraphNode::value).toList());
-		graph.reduce(Set.of(start.value(), end.value()), false);
-		PrintUtil.print(graph.nodes().stream().map(GraphNode::value).toList());
+		// Remove corridors (TBD also remove dead-ends?)
+		graph.reduce(List.of(start.value(), end.value()), false);
 
-		boolean result = true;
-		/*-
-		boolean result = Dijkstra.findPath(start, end);
-		
-		final Set<Point2D> path = new HashSet<>();
-		GraphNode<Integer, Point2D> n = end;
-		do {
-			path.add(n.value());
-			n = n.getParent();
-		} while (n != null);
-		System.out.println("Shortest path:");
-		PrintUtil.print(path);
-		 */
-
-		System.out.println(result + ", shortest path: " + end.cost());
-
-		return Integer.toString(end.cost());
+		return new Maze(maze, graph, start, end);
 	}
 
-	@Override
-	public String part2(final Path input) throws IOException {
-		return Long.toString(0);
+	private static record Maze(char[][] grid, Graph<String, Point2D> graph, GraphNode<String, Point2D> start,
+			GraphNode<String, Point2D> end) {
 	}
 }

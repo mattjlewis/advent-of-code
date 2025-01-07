@@ -1,6 +1,7 @@
 package com.diozero.aoc.algorithm;
 
 import java.util.ArrayDeque;
+import java.util.Collection;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
@@ -33,6 +34,7 @@ public class GraphNode<K, V> implements Comparable<GraphNode<K, V>> {
 	protected int cost;
 	// Dijkstra: estimate == cost
 	protected int estimate;
+	private Set<GraphNode<K, V>> altParents = new HashSet<>();
 
 	public GraphNode(K id, V value) {
 		this.id = id;
@@ -60,6 +62,11 @@ public class GraphNode<K, V> implements Comparable<GraphNode<K, V>> {
 
 	public void addNeighbour(GraphNode<K, V> destination, int neighbourCost) {
 		neighbours.add(new Neighbour<>(destination, neighbourCost));
+	}
+
+	public void addBiDirectionalNeighbour(GraphNode<K, V> destination, int neighbourCost) {
+		neighbours.add(new Neighbour<>(destination, neighbourCost));
+		destination.addNeighbour(this, neighbourCost);
 	}
 
 	public GraphNode<K, V> getParent() {
@@ -99,6 +106,22 @@ public class GraphNode<K, V> implements Comparable<GraphNode<K, V>> {
 		return Integer.compare(estimate, other.estimate);
 	}
 
+	public boolean idEquals(GraphNode<K, V> other) {
+		return id.equals(other.id());
+	}
+
+	public boolean idEquals(K otherId) {
+		return id.equals(otherId);
+	}
+
+	public void addAltParent(GraphNode<K, V> node) {
+		altParents.add(node);
+	}
+	
+	public Collection<GraphNode<K, V>> altParents() {
+		return altParents;
+	}
+
 	@Override
 	public String toString() {
 		return new StringJoiner(", ", GraphNode.class.getSimpleName() + "[", "]").add("id=" + id).add("value=" + value)
@@ -118,6 +141,12 @@ public class GraphNode<K, V> implements Comparable<GraphNode<K, V>> {
 	}
 
 	public static record Neighbour<K, V>(GraphNode<K, V> node, int cost) {
-		//
+		public boolean nodeIdEquals(GraphNode<K, V> other) {
+			return node.idEquals(other);
+		}
+
+		public boolean nodeIdEquals(K otherId) {
+			return node.idEquals(otherId);
+		}
 	}
 }

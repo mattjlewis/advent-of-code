@@ -78,4 +78,25 @@ public enum CompassDirection {
 		default -> throw new IllegalArgumentException("Invalid UDLR value '" + udlr + "'");
 		};
 	}
+
+	public static CompassDirection fromArrow(int arrow) {
+		return switch ((char) arrow) {
+		case '^' -> CompassDirection.SOUTH;
+		case '>' -> CompassDirection.EAST;
+		case '<' -> CompassDirection.WEST;
+		case 'v' -> CompassDirection.NORTH;
+		default -> throw new IllegalArgumentException("Invalid arrow value '" + arrow + "'");
+		};
+	}
+
+	public char toArrow() {
+		return switch (this) {
+		case SOUTH -> '^';
+		case EAST -> '>';
+		case WEST -> '<';
+		case NORTH -> 'v';
+		default ->
+			throw new IllegalArgumentException("CompassDirection '" + this + "' cannot be converted to an arrow");
+		};
+	}
 }

@@ -16,6 +16,11 @@ public record Point2D(int x, int y) {
 		return ORIGIN.translate(points);
 	}
 
+	public static Point2D parse(String s) {
+		final String[] parts = s.split(",");
+		return new Point2D(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
+	}
+
 	public static Rectangle getBounds(final Collection<Point2D> points) {
 		return getBounds(points.stream());
 	}
@@ -97,8 +102,8 @@ public record Point2D(int x, int y) {
 
 	public Point2D translate(List<Point2D> deltas) {
 		/*
-		 * This would be more efficient for large delta sets as it avoids instantiating
-		 * a lot of Point2D instances:
+		 * This would be more efficient for large delta sets as it avoids instantiating a lot of
+		 * Point2D instances:
 		 *
 		 * return new MutablePoint2D(x, x).translate(deltas).toPoint2D();
 		 */
@@ -126,6 +131,10 @@ public record Point2D(int x, int y) {
 		return Integer.valueOf(y * width + x);
 	}
 
+	public boolean inBounds(int width, int height) {
+		return x >= 0 && x < width && y >= 0 && y < height;
+	}
+
 	public boolean inBounds(int x1, int y1, int x2, int y2) {
 		return !(x < x1 || y < y1 || x >= x2 || y >= y2);
 	}
@@ -148,5 +157,9 @@ public record Point2D(int x, int y) {
 	@Override
 	public String toString() {
 		return "(" + x + "," + y + ")";
+	}
+
+	public Point2D wrap(int width, int height) {
+		return new Point2D(((x % width) + width) % width, ((y % height) + height) % height);
 	}
 }

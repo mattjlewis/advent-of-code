@@ -9,6 +9,6 @@ public class Year2023 extends Year {
 
 	@Override
 	public String name() {
-		return "Global snow production";
+		return "Snow Island";
 	}
 }
