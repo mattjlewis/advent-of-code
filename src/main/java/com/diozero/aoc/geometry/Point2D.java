@@ -85,7 +85,15 @@ public record Point2D(int x, int y) {
 	}
 
 	public Point2D translate(Point2D delta) {
-		return new Point2D(x + delta.x, y + delta.y);
+		return translate(delta.x, delta.y);
+	}
+
+	public Point2D translate(int dx, int dy) {
+		return new Point2D(x + dx, y + dy);
+	}
+
+	public Point2DLong translate(long dx, long dy) {
+		return new Point2DLong(x + dx, y + dy);
 	}
 
 	public Point2D delta(Point2D other) {

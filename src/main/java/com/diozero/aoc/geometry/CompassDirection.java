@@ -43,6 +43,13 @@ public enum CompassDirection {
 		*/
 	}
 
+	public CompassDirection turn(Turn turn) {
+		return switch (turn) {
+		case LEFT -> turnLeft90();
+		case RIGHT -> turnRight90();
+		};
+	}
+
 	public CompassDirection turnLeft90() {
 		return values()[(ordinal() - 2 + values().length) % values().length];
 	}
@@ -98,5 +105,27 @@ public enum CompassDirection {
 		default ->
 			throw new IllegalArgumentException("CompassDirection '" + this + "' cannot be converted to an arrow");
 		};
+	}
+
+	public static enum Turn {
+		LEFT('L'), RIGHT('R');
+
+		private char value;
+
+		Turn(char value) {
+			this.value = value;
+		}
+
+		public char value() {
+			return value;
+		}
+
+		public static Turn of(String value) {
+			return switch (value) {
+			case "L", "LEFT" -> LEFT;
+			case "R", "RIGHT" -> RIGHT;
+			default -> throw new IllegalArgumentException("Unexpected value: " + value);
+			};
+		}
 	}
 }

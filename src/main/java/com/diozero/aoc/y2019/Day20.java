@@ -195,7 +195,8 @@ public class Day20 extends Day {
 					NodeWithDepth nested_destination = null;
 					if (!pg.inner) {
 						if (current_node.depth() > 0) {
-							nested_destination = new NodeWithDepth(portal_pair.inner.entryOrExit, current_node.depth() - 1);
+							nested_destination = new NodeWithDepth(portal_pair.inner.entryOrExit,
+									current_node.depth() - 1);
 						}
 					} else {
 						nested_destination = new NodeWithDepth(portal_pair.outer.entryOrExit, current_node.depth() + 1);
@@ -241,9 +242,6 @@ public class Day20 extends Day {
 	}
 
 	private static final record NodeWithDepth(GraphNode<Integer, Point2D> node, int depth) {
-		public String id() {
-			return depth + ":" + node.id();
-		}
 	}
 
 	private static Point2D getPortalEntryOrExit(char[][] maze, Point2D p1, Point2D p2) {

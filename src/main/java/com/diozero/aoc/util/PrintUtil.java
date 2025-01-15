@@ -49,7 +49,7 @@ public class PrintUtil {
 
 	public static void print(final char[][] matrix) {
 		for (int y = 0; y < matrix.length; y++) {
-			for (int x = 0; x < matrix[0].length; x++) {
+			for (int x = 0; x < matrix[y].length; x++) {
 				System.out.print(matrix[y][x]);
 			}
 			System.out.println();
@@ -61,6 +61,10 @@ public class PrintUtil {
 	}
 
 	public static void print(Collection<Point2D> points, char filledPixel, char blankPixel) {
+		if (points.isEmpty()) {
+			return;
+		}
+
 		final Rectangle bounds = Point2D.getBounds(points);
 
 		for (int y = bounds.topLeft().y(); y <= bounds.bottomRight().y(); y++) {

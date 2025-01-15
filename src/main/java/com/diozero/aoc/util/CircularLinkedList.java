@@ -22,6 +22,30 @@ public class CircularLinkedList<E> {
 		values.forEach(this::add);
 	}
 
+	public int size() {
+		if (tail == null) {
+			return 0;
+		}
+
+		int size = 0;
+
+		// Start at head
+		Node<E> current_node = tail.next;
+		do {
+			current_node = current_node.next;
+			size++;
+		} while (current_node != tail.next);
+
+		return size;
+	}
+
+	public E poll() {
+		final E value = tail.next.value;
+		tail = tail.next;
+
+		return value;
+	}
+
 	public Node<E> head() {
 		if (tail == null) {
 			throw new NoSuchElementException();

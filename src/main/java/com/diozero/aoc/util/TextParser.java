@@ -32,10 +32,25 @@ public class TextParser {
 
 		final Iterator<String> it = Files.lines(input).iterator();
 		for (int y = 0; it.hasNext(); y++) {
-
-			PrimitiveIterator.OfInt char_it = it.next().chars().iterator();
+			final PrimitiveIterator.OfInt char_it = it.next().chars().iterator();
 			for (int x = 0; char_it.hasNext(); x++) {
 				if (char_it.nextInt() == ch) {
+					points.add(new Point2D(x, y));
+				}
+			}
+		}
+
+		return points;
+	}
+
+	public static Set<Point2D> loadPoints(final Stream<String> lines) {
+		final Set<Point2D> points = new HashSet<>();
+
+		final Iterator<String> it = lines.iterator();
+		for (int y = 0; it.hasNext(); y++) {
+			final PrimitiveIterator.OfInt char_it = it.next().chars().iterator();
+			for (int x = 0; char_it.hasNext(); x++) {
+				if (char_it.nextInt() == SET_CHAR) {
 					points.add(new Point2D(x, y));
 				}
 			}
