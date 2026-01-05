@@ -4,8 +4,10 @@ import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.IntStream;
 
 import com.diozero.aoc.geometry.CompassDirection;
 import com.diozero.aoc.geometry.MutablePoint2D;
@@ -120,6 +122,20 @@ public class MatrixUtil {
 		return points;
 	}
 
+	public static Set<Point2D> toPoints(char[][] matrix, char ch) {
+		final Set<Point2D> points = new HashSet<>();
+
+		for (int y = 0; y < matrix.length; y++) {
+			for (int x = 0; x < matrix[0].length; x++) {
+				if (matrix[y][x] == ch) {
+					points.add(new Point2D(x, y));
+				}
+			}
+		}
+
+		return points;
+	}
+
 	public static Set<MutablePoint2D> toMutablePoints(boolean[][] matrix) {
 		final Set<MutablePoint2D> points = new HashSet<>();
 
@@ -205,6 +221,52 @@ public class MatrixUtil {
 			return;
 		}
 		floodFill(grid, x, y, previous_value, newValue);
+	}
+
+	public static int[][] transpose(int[][] matrix) {
+		final int[][] transposed = new int[matrix[0].length][matrix.length];
+		for (int i = 0; i < matrix.length; i++) {
+			for (int j = 0; j < matrix[0].length; j++) {
+				transposed[j][i] = matrix[i][j];
+			}
+		}
+		return transposed;
+	}
+
+	public static long[][] transpose(long[][] matrix) {
+		final long[][] transposed = new long[matrix[0].length][matrix.length];
+		for (int i = 0; i < matrix.length; i++) {
+			for (int j = 0; j < matrix[0].length; j++) {
+				transposed[j][i] = matrix[i][j];
+			}
+		}
+		return transposed;
+	}
+
+	public static char[][] transpose(char[][] matrix) {
+		final char[][] transposed = new char[matrix[0].length][matrix.length];
+		for (int i = 0; i < matrix.length; i++) {
+			for (int j = 0; j < matrix[0].length; j++) {
+				transposed[j][i] = matrix[i][j];
+			}
+		}
+		return transposed;
+	}
+
+	public static String[][] transpose(String[][] matrix) {
+		final String[][] transposed = new String[matrix[0].length][matrix.length];
+		for (int i = 0; i < matrix.length; i++) {
+			for (int j = 0; j < matrix[0].length; j++) {
+				transposed[j][i] = matrix[i][j];
+			}
+		}
+		return transposed;
+	}
+
+	public static <T> List<List<T>> transpose(List<List<T>> matrix) {
+		// XXX Must be a uniform matrix where every row has the same number of items
+		return IntStream.range(0, matrix.get(0).size())
+				.mapToObj(col -> matrix.stream().map(row -> row.get(col)).toList()).toList();
 	}
 
 	private static void floodFill(char grid[][], int x, int y, char previousValue, char newValue) {

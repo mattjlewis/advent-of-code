@@ -19,7 +19,7 @@ public class InputDownloader {
 			System.exit(1);
 		}
 
-		IntStream.rangeClosed(2015, 2022).boxed()
+		IntStream.rangeClosed(2015, 2025).boxed()
 				.flatMap(year -> IntStream.rangeClosed(1, 25).mapToObj(day -> new int[] { year.intValue(), day }))
 				.forEach(year_day -> download(year_day, http_client, session_cookie));
 	}

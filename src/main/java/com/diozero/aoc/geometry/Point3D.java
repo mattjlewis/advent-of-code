@@ -59,6 +59,20 @@ public record Point3D(int x, int y, int z) {
 		return Math.abs(x - p.x) + Math.abs(y - p.y) + Math.abs(z - p.z);
 	}
 
+	public double distance(Point3D other) {
+		long delta_x = x - other.x;
+		long delta_y = y - other.y;
+		long delta_z = z - other.z;
+		return Math.sqrt(delta_x * delta_x + delta_y * delta_y + delta_z * delta_z);
+	}
+
+	public long distanceLong(Point3D other) {
+		long delta_x = x - other.x;
+		long delta_y = y - other.y;
+		long delta_z = z - other.z;
+		return delta_x * delta_x + delta_y * delta_y + delta_z * delta_z;
+	}
+
 	public Point3D translate(Point3D delta) {
 		return new Point3D(delta.x + x, delta.y + y, delta.z + z);
 	}
@@ -119,5 +133,10 @@ public record Point3D(int x, int y, int z) {
 
 	public MutablePoint3D mutable() {
 		return new MutablePoint3D(x, y, z);
+	}
+
+	@Override
+	public String toString() {
+		return "(" + x + "," + y + "," + z + ")";
 	}
 }

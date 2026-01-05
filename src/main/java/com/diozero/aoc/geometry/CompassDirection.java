@@ -1,6 +1,8 @@
 package com.diozero.aoc.geometry;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 public enum CompassDirection {
 	SOUTH(0, -1), SOUTH_EAST(1, -1), EAST(1, 0), NORTH_EAST(1, 1), NORTH(0, 1), NORTH_WEST(-1, 1), WEST(-1, 0),
@@ -64,6 +66,10 @@ public enum CompassDirection {
 
 	public boolean isVertical() {
 		return this == NORTH || this == SOUTH;
+	}
+
+	public static Stream<CompassDirection> stream() {
+		return Arrays.stream(values());
 	}
 
 	public static CompassDirection fromUdlr(String udlr) {

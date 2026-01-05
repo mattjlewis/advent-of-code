@@ -2,7 +2,6 @@ package com.diozero.aoc.y2024;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.stream.Stream;
 
 import com.diozero.aoc.Day;
@@ -31,8 +30,8 @@ public class Day4 extends Day {
 			for (int x = 0; x < grid[y].length; x++) {
 				if (grid[y][x] == WORD[0]) {
 					final Point2D p = new Point2D(x, y);
-					count += Arrays.stream(CompassDirection.values())
-							.filter(dir -> check(grid, dir, p.mutable().translate(dir), 1)).count();
+					count += CompassDirection.stream().filter(dir -> check(grid, dir, p.mutable().translate(dir), 1))
+							.count();
 				}
 			}
 		}

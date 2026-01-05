@@ -5,8 +5,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
- * Integer range where start <= n <= end. The numbers start and end are both
- * inclusive.
+ * Integer range where start <= n <= end. The numbers start and end are both inclusive.
  */
 public record IntRange(int startInclusive, int endInclusive) {
 	public static IntRange of(final int startInclusive, final int endInclusive) {
@@ -32,6 +31,14 @@ public record IntRange(int startInclusive, int endInclusive) {
 			}
 			i++;
 		}
+	}
+
+	public Optional<IntRange> merge(final IntRange other) {
+		if (!touches(other)) {
+			return Optional.empty();
+		}
+		return Optional.of(new IntRange(Math.min(startInclusive, other.startInclusive),
+				Math.max(endInclusive, other.endInclusive)));
 	}
 
 	// Return all different ranges that can be built from these two ranges
@@ -64,24 +71,16 @@ public record IntRange(int startInclusive, int endInclusive) {
 		return startInclusive <= (other.endInclusive + 1) && (endInclusive + 1) >= other.startInclusive;
 	}
 
-	public Optional<IntRange> merge(final IntRange other) {
-		if (!touches(other)) {
-			return Optional.empty();
-		}
-		return Optional.of(new IntRange(Math.min(startInclusive, other.startInclusive),
-				Math.max(endInclusive, other.endInclusive)));
-	}
-
-	public boolean equals(final int i1, final int i2) {
-		return startInclusive == i1 && endInclusive == i2;
-	}
-
 	public int start() {
 		return startInclusive;
 	}
 
 	public int end() {
 		return endInclusive;
+	}
+
+	public boolean equals(final int i1, final int i2) {
+		return startInclusive == i1 && endInclusive == i2;
 	}
 
 	@Override

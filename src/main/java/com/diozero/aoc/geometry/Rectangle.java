@@ -41,6 +41,10 @@ public record Rectangle(Point2D topLeft, Point2D bottomRight) {
 		return new Rectangle(new Point2D(x1, y1), new Point2D(x2, y2));
 	}
 
+	public static Rectangle create(Point2D p1, Point2D p2) {
+		return create(p1.x(), p1.y(), p2.x(), p2.y());
+	}
+
 	public static Rectangle create(int x1, int y1, int x2, int y2) {
 		if (x1 > x2) {
 			int tmp = x1;
@@ -105,5 +109,14 @@ public record Rectangle(Point2D topLeft, Point2D bottomRight) {
 
 	public int y2() {
 		return bottomRight.y();
+	}
+
+	public long area() {
+		return (Math.abs(bottomRight.x() - topLeft.x()) + 1) * (Math.abs(bottomRight.y() - topLeft.y()) + 1L);
+	}
+
+	public boolean overlaps(Line2D line) {
+		return topLeft.x() < line.maxX() && bottomRight.x() > line.minX() && topLeft.y() < line.maxY()
+				&& bottomRight.y() > line.minY();
 	}
 }

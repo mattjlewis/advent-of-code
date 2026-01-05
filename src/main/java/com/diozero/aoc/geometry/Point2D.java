@@ -62,9 +62,9 @@ public record Point2D(int x, int y) {
 	}
 
 	public double distance(Point2D other) {
-		int deltaX = x - other.x;
-		int deltaY = y - other.y;
-		return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+		int delta_x = x - other.x;
+		int delta_y = y - other.y;
+		return Math.sqrt(delta_x * delta_x + delta_y * delta_y);
 	}
 
 	public Point2D rotateDegrees(Axis axis, int degrees) {

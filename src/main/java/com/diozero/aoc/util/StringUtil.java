@@ -40,7 +40,7 @@ public class StringUtil {
 	}
 
 	public static String repeat(String s, String delimiter, int count) {
-		return IntStream.range(0, count).mapToObj(i -> s).collect(Collectors.joining(delimiter));
+		return IntStream.range(0, count).mapToObj(_ -> s).collect(Collectors.joining(delimiter));
 	}
 
 	public static String substring(String s, int start, int end) {
@@ -52,6 +52,18 @@ public class StringUtil {
 	}
 
 	public static String repeat(char ch, int count) {
-		return IntStream.range(0, count).mapToObj(i -> Character.toString(ch)).collect(Collectors.joining());
+		return IntStream.range(0, count).mapToObj(_ -> Character.toString(ch)).collect(Collectors.joining());
+	}
+
+	public static String reverse(String s) {
+		return new StringBuilder(s).reverse().toString();
+	}
+
+	public static boolean[] toBooleanArray(String s, char set) {
+		final boolean[] values = new boolean[s.length()];
+		for (int i = 0; i < s.length(); i++) {
+			values[i] = s.charAt(i) == set;
+		}
+		return values;
 	}
 }

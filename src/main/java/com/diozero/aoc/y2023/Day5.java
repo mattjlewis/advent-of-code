@@ -120,7 +120,7 @@ public class Day5 extends Day {
 		public long getLowestSeedLocation() {
 			final List<LongRange> seed_ranges = new ArrayList<>();
 			for (int i = 0; i < seeds.length; i += 2) {
-				seed_ranges.add(new LongRange(seeds[i], seeds[i] + seeds[i + 1]));
+				seed_ranges.add(new LongRange(seeds[i], seeds[i] + seeds[i + 1], false));
 			}
 
 			List<LongRange> ranges = new ArrayList<>(seed_ranges);
@@ -128,7 +128,7 @@ public class Day5 extends Day {
 				ranges = map(ranges, maps.get(type));
 			}
 
-			return ranges.stream().mapToLong(LongRange::startInclusive).min().orElseThrow();
+			return ranges.stream().mapToLong(LongRange::start).min().orElseThrow();
 		}
 
 		private static List<LongRange> map(final List<LongRange> ranges, final List<LongRangeMap> maps) {
@@ -137,27 +137,27 @@ public class Day5 extends Day {
 			Collections.sort(maps);
 
 			for (final LongRange range : ranges) {
-				long current_start_inclusive = range.startInclusive();
+				long current_start_inclusive = range.start();
 
 				for (final LongRangeMap map : maps) {
-					if (current_start_inclusive >= range.endExclusive()) {
+					if (current_start_inclusive >= range.end()) {
 						break;
 					}
 
 					if (current_start_inclusive < map.startInclusive()) {
-						long new_end_exclusive = Math.min(map.startInclusive(), range.endExclusive());
-						result.add(new LongRange(current_start_inclusive, new_end_exclusive));
+						long new_end_exclusive = Math.min(map.startInclusive(), range.end());
+						result.add(new LongRange(current_start_inclusive, new_end_exclusive, false));
 						current_start_inclusive = new_end_exclusive;
 					} else if (current_start_inclusive < map.endExclusive()) {
-						long new_end_exclusive = Math.min(map.endExclusive(), range.endExclusive());
-						result.add(
-								new LongRange(current_start_inclusive + map.delta(), new_end_exclusive + map.delta()));
+						long new_end_exclusive = Math.min(map.endExclusive(), range.end());
+						result.add(new LongRange(current_start_inclusive + map.delta(), new_end_exclusive + map.delta(),
+								false));
 						current_start_inclusive = new_end_exclusive;
 					}
 				}
 
-				if (current_start_inclusive < range.endExclusive()) {
-					result.add(new LongRange(current_start_inclusive, range.endExclusive()));
+				if (current_start_inclusive < range.end()) {
+					result.add(new LongRange(current_start_inclusive, range.end(), false));
 				}
 			}
 

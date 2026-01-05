@@ -41,6 +41,10 @@ public record RectangleLong(Point2DLong topLeft, Point2DLong bottomRight) {
 		return new RectangleLong(new Point2DLong(x1, y1), new Point2DLong(x2, y2));
 	}
 
+	public static RectangleLong create(Point2DLong p1, Point2DLong p2) {
+		return create(p1.x(), p1.y(), p2.x(), p2.y());
+	}
+
 	public static RectangleLong create(long x1, long y1, long x2, long y2) {
 		if (x1 > x2) {
 			long tmp = x1;
@@ -105,5 +109,9 @@ public record RectangleLong(Point2DLong topLeft, Point2DLong bottomRight) {
 
 	public long y2() {
 		return bottomRight.y();
+	}
+
+	public long area() {
+		return (bottomRight.x() - topLeft.x() + 1) * (bottomRight.y() - topLeft.y() + 1);
 	}
 }

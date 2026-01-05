@@ -13,6 +13,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 import java.util.function.LongConsumer;
 import java.util.function.LongSupplier;
@@ -62,7 +63,8 @@ public class Day23 extends Day {
 			Logger.error(e, "Error: {}", e);
 		}
 
-		return Long.toString(network.nat.previousY.getAsLong());
+		// return Long.toString(network.nat.previousY.getAsLong());
+		return network.nat.completionValue.toString();
 	}
 
 	private static class Network {
@@ -113,11 +115,8 @@ public class Day23 extends Day {
 				natFuture = null;
 			}
 
-			scheduler.shutdown();
-			try {
-				scheduler.awaitTermination(1, TimeUnit.SECONDS);
-			} catch (InterruptedException e) {
-				Logger.error(e, "Error: {}", e);
+			if (!scheduler.shutdownNow().isEmpty()) {
+				Logger.warn("There were tasks that never started");
 			}
 
 			completionMonitor.countDown();
@@ -138,6 +137,7 @@ public class Day23 extends Day {
 		private final Network network;
 		private Packet lastPacket;
 		private OptionalLong previousY;
+		private AtomicLong completionValue = new AtomicLong();
 
 		public NAT(Network network) {
 			this.network = network;
@@ -161,6 +161,7 @@ public class Day23 extends Day {
 				Logger.debug("Network is idle");
 				network.send(0, lastPacket);
 				if (previousY.isPresent() && lastPacket.y() == previousY.getAsLong()) {
+					completionValue.set(lastPacket.y());
 					Logger.debug("Received a NAT packet with the same y twice in a row: {}", lastPacket);
 					network.completed();
 				}

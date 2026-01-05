@@ -3,7 +3,6 @@ package com.diozero.aoc.y2022;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -75,7 +74,7 @@ public class Day23 extends Day {
 		final Map<Point2D, List<Point2D>> proposed_moves = new HashMap<>();
 		for (Point2D elf : elves) {
 			// If there is at least one elf next to this elf, then the elf proposes a move
-			if (Arrays.stream(CompassDirection.values()).map(elf::move).anyMatch(elves::contains)) {
+			if (CompassDirection.stream().map(elf::move).anyMatch(elves::contains)) {
 				int x;
 				for (x = 0; x < directions.size(); x++) {
 					final List<CompassDirection> dirs = directions.poll();
